@@ -1,0 +1,101 @@
+{-
+
+This file contains the grammar of JEZYK plus explanations how to render them
+in BNFC.
+
+-}
+
+VId. Var ::= Ident;
+VAt. Var ::= Ident "at" Expr;
+
+AId. Arg ::= Ident;
+ASeq. Arg ::= Ident "," Arg;
+
+-- BNFC expressions that define the part of the grammar for statements
+
+SCall.     Stmt ::= "call" Ident;
+SCallA.     Stmt ::= "call" Ident "with" Arg;
+SAssgn.    Stmt1 ::= "set" Var "to" Expr;
+SAssgnF.    Stmt1 ::= "set" Var "to call" Ident;
+SAssgnFA.    Stmt1 ::= "set" Var "to call" Ident "with" Arg;
+SDel.     Stmt1 ::= "del" Expr "from" Ident;
+-- We use this to declare a general form of expression, but parse it
+-- differently.
+internal SIf. Stmt2 ::= "if" BExpr "then" Stmt "else" Stmt "end";
+sif1.       Stmt2 ::= "if" BExpr "then" Stmt "else" Stmt1 "end";
+sif2.       Stmt2 ::= "if" BExpr "then" Stmt "end";
+SWhile.    Stmt2 ::= "while" BExpr "do" Stmt1;
+SFor.      Stmt2 ::= "for" Ident "from" Expr "to" Expr "do" Stmt "end";
+SForKeys.      Stmt2 ::= "for" Ident "in keys" Ident "do" Stmt "end";
+SForVals.      Stmt2 ::= "for" Ident "in values" Ident "do" Stmt "end";
+SForPairs.      Stmt2 ::= "for" Ident "," Ident "in" Ident "do" Stmt "end";
+SPrint.     Stmt ::= "print" Ident;
+SBlock.     Stmt ::= "begin" Decl ";" Stmt "end";
+STry.       Stmt ::= "try" Stmt "catch" Stmt "end";
+SSeq.      Stmt ::= Stmt1 ";" Stmt; 
+
+_. Stmt ::= Stmt1;
+_. Stmt1 ::= Stmt2;
+
+define sif1 b1 s1 s2 = SIf b1 s1 s2; 
+define sif2 b1 s1  = SIf b1 s1 SSkip;
+
+
+-- BNFC expressions that define the part of the grammar for boolean expressions
+
+BAnd.  BExpr ::= BExpr "&" BExpr1;
+BOr.  BExpr ::= BExpr "|" BExpr1;
+BNot.   BExpr1 ::= "!" BExpr1;
+BEq.   BExpr1 ::= Expr "=" Expr;
+BLt.   BExpr1 ::= Expr "<" Expr;
+BLeq.   BExpr1 ::= Expr "<=" Expr;
+BGt.   BExpr1 ::= Expr ">" Expr;
+BGeq.   BExpr1 ::= Expr ">=" Expr;
+BNeq.   BExpr1 ::= Expr "!=" Expr;
+BTrue.  BExpr1 ::= "true";
+BFalse. BExpr1 ::= "false";
+BCheck. BExpr  ::= "check" Expr "in" Ident
+
+_.       BExpr1 ::= "(" BExpr ")";
+_.       BExpr ::= BExpr1;
+
+
+-- BNFC expressions that define the part of the grammar for expressions
+
+EPlus.   Expr  ::= Expr "+" Expr1;
+EMinus.  Expr  ::= Expr "-" Expr1;
+EMul.    Expr1 ::= Expr1 "*" Expr2; 
+EDiv.    Expr1 ::= Expr1 "/" Expr2; 
+ENeg.    Expr  ::= "-" Expr;
+ENum.    Expr2 ::= Integer;
+EVar.    Expr2 ::= Ident;
+Etern.   Expr  ::= Expr "?" Expr ":" Expr
+
+_.       Expr2 ::= "(" Expr ")"; -- We silently introduce parentheses 
+_.       Expr1  ::= Expr2;       -- We silently make Expr1 and Expr2 equal
+_.       Expr ::= Expr1;         -- We silently make Expr and Expr1 equal
+
+
+-- BNFC expressions that define the part of the grammar for types
+
+TBool. Type ::= "bool";
+TInt. Type ::= "int";
+CTArray. CType ::= "array of" Integer Type;
+CTDict. CType ::= "dict of" Type;
+
+-- BNFC expressions that define the part of the grammar for declarations
+
+ADId. ADecl ::= Ident "of" Type;
+ADSeq. ADecl ::= Ident "of" Type "," ADecl;
+
+FDVoid. FDecl ::= "fun to void";
+FDRet. FDecl ::= "fun to" Ident "of" Type;
+FDArg. FDecl ::= "fun from" ADecl "to void";
+FDFull. FDecl ::= "fun from" ADecl "to" Ident "of" Type;
+
+DSimple. Decl ::= "let" Ident "be" Type;
+DComplex. Decl ::= "let" Ident "be" CType;
+DFunction. Decl ::= "elt" Ident "be" FDecl "do" Stmt "end";
+DSeq. Decl ::= Decl1 ";" Decl;
+
+_. Decl ::= Decl1;
