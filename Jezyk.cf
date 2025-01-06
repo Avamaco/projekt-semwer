@@ -21,9 +21,8 @@ SAssgnFA.    Stmt1 ::= "set" Var "to call" Ident "with" Arg;
 SDel.     Stmt1 ::= "del" Expr "from" Ident;
 -- We use this to declare a general form of expression, but parse it
 -- differently.
-internal SIf. Stmt2 ::= "if" BExpr "then" Stmt "else" Stmt "end";
-sif1.       Stmt2 ::= "if" BExpr "then" Stmt "else" Stmt1 "end";
-sif2.       Stmt2 ::= "if" BExpr "then" Stmt "end";
+SIfte. Stmt2 ::= "if" BExpr "then" Stmt "else" Stmt "end";
+SIfend.       Stmt2 ::= "if" BExpr "then" Stmt "end";
 SWhile.    Stmt2 ::= "while" BExpr "do" Stmt1;
 SFor.      Stmt2 ::= "for" Ident "from" Expr "to" Expr "do" Stmt "end";
 SForKeys.      Stmt2 ::= "for" Ident "in keys" Ident "do" Stmt "end";
@@ -36,10 +35,6 @@ SSeq.      Stmt ::= Stmt1 ";" Stmt;
 
 _. Stmt ::= Stmt1;
 _. Stmt1 ::= Stmt2;
-
-define sif1 b1 s1 s2 = SIf b1 s1 s2; 
-define sif2 b1 s1  = SIf b1 s1 SSkip;
-
 
 -- BNFC expressions that define the part of the grammar for boolean expressions
 
@@ -54,7 +49,7 @@ BGeq.   BExpr1 ::= Expr ">=" Expr;
 BNeq.   BExpr1 ::= Expr "!=" Expr;
 BTrue.  BExpr1 ::= "true";
 BFalse. BExpr1 ::= "false";
-BCheck. BExpr  ::= "check" Expr "in" Ident
+BCheck. BExpr  ::= "check" Expr "in" Ident;
 
 _.       BExpr1 ::= "(" BExpr ")";
 _.       BExpr ::= BExpr1;
@@ -69,7 +64,7 @@ EDiv.    Expr1 ::= Expr1 "/" Expr2;
 ENeg.    Expr  ::= "-" Expr;
 ENum.    Expr2 ::= Integer;
 EVar.    Expr2 ::= Ident;
-Etern.   Expr  ::= Expr "?" Expr ":" Expr
+Etern.   Expr  ::= Expr "?" Expr ":" Expr;
 
 _.       Expr2 ::= "(" Expr ")"; -- We silently introduce parentheses 
 _.       Expr1  ::= Expr2;       -- We silently make Expr1 and Expr2 equal
@@ -93,9 +88,9 @@ FDRet. FDecl ::= "fun to" Ident "of" Type;
 FDArg. FDecl ::= "fun from" ADecl "to void";
 FDFull. FDecl ::= "fun from" ADecl "to" Ident "of" Type;
 
-DSimple. Decl ::= "let" Ident "be" Type;
-DComplex. Decl ::= "let" Ident "be" CType;
-DFunction. Decl ::= "elt" Ident "be" FDecl "do" Stmt "end";
+DSimple. Decl1 ::= "let" Ident "be" Type;
+DComplex. Decl1 ::= "let" Ident "be" CType;
+DFunction. Decl1 ::= "elt" Ident "be" FDecl "do" Stmt "end";
 DSeq. Decl ::= Decl1 ";" Decl;
 
 _. Decl ::= Decl1;
