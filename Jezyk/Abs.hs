@@ -20,13 +20,12 @@ data Stmt
     = SCall Ident
     | SCallA Ident Arg
     | SAssgn Var Expr
-    | SAssgnB Var BExpr
     | SAssgnF Var Ident
     | SAssgnFA Var Ident Arg
     | SDel Expr Ident
-    | SIfte BExpr Stmt Stmt
-    | SIfend BExpr Stmt
-    | SWhile BExpr Stmt
+    | SIfte Expr Stmt Stmt
+    | SIfend Expr Stmt
+    | SWhile Expr Stmt
     | SFor Ident Expr Expr Stmt
     | SForKeys Ident Ident Stmt
     | SForVals Ident Ident Stmt
@@ -37,30 +36,27 @@ data Stmt
     | SSeq Stmt Stmt
   deriving (C.Eq, C.Ord, C.Show, C.Read)
 
-data BExpr
-    = BAnd BExpr BExpr
-    | BOr BExpr BExpr
-    | BNot BExpr
-    | BEq Expr Expr
-    | BLt Expr Expr
-    | BLeq Expr Expr
-    | BGt Expr Expr
-    | BGeq Expr Expr
-    | BNeq Expr Expr
-    | BTrue
-    | BFalse
-    | BCheck Expr Ident
-  deriving (C.Eq, C.Ord, C.Show, C.Read)
-
 data Expr
-    = EPlus Expr Expr
+    = ETrue
+    | EFalse
+    | ENum Integer
+    | EVar Ident
+    | EPlus Expr Expr
     | EMinus Expr Expr
     | EMul Expr Expr
     | EDiv Expr Expr
     | ENeg Expr
-    | ENum Integer
-    | EVar Ident
-    | Etern BExpr Expr Expr
+    | EEq Expr Expr
+    | ELt Expr Expr
+    | EGt Expr Expr
+    | ELeq Expr Expr
+    | EGeq Expr Expr
+    | ENeq Expr Expr
+    | EAnd Expr Expr
+    | EOr Expr Expr
+    | ENot Expr
+    | Etern Expr Expr Expr
+    | ECheck Expr Ident
   deriving (C.Eq, C.Ord, C.Show, C.Read)
 
 data Type = TBool | TInt

@@ -13,14 +13,12 @@ module Jezyk.Par
   , pStmt
   , pStmt1
   , pStmt2
-  , pBExpr
-  , pBExpr1
-  , pBExpr2
-  , pBExpr3
-  , pExpr1
-  , pExpr2
+  , pExpr6
   , pExpr3
   , pExpr4
+  , pExpr5
+  , pExpr2
+  , pExpr1
   , pExpr
   , pType
   , pCType
@@ -42,14 +40,12 @@ import Jezyk.Lex
 %name pStmt Stmt
 %name pStmt1 Stmt1
 %name pStmt2 Stmt2
-%name pBExpr BExpr
-%name pBExpr1 BExpr1
-%name pBExpr2 BExpr2
-%name pBExpr3 BExpr3
-%name pExpr1 Expr1
-%name pExpr2 Expr2
+%name pExpr6 Expr6
 %name pExpr3 Expr3
 %name pExpr4 Expr4
+%name pExpr5 Expr5
+%name pExpr2 Expr2
+%name pExpr1 Expr1
 %name pExpr Expr
 %name pType Type
 %name pCType CType
@@ -147,7 +143,6 @@ Stmt
 Stmt1 :: { Jezyk.Abs.Stmt }
 Stmt1
   : 'set' Var 'to' Expr { Jezyk.Abs.SAssgn $2 $4 }
-  | 'set' Var 'to' BExpr { Jezyk.Abs.SAssgnB $2 $4 }
   | 'set' Var 'to' 'call' Ident { Jezyk.Abs.SAssgnF $2 $5 }
   | 'set' Var 'to' 'call' Ident 'with' Arg { Jezyk.Abs.SAssgnFA $2 $5 $7 }
   | 'del' Expr 'from' Ident { Jezyk.Abs.SDel $2 $4 }
@@ -155,64 +150,60 @@ Stmt1
 
 Stmt2 :: { Jezyk.Abs.Stmt }
 Stmt2
-  : 'if' BExpr 'then' Stmt 'else' Stmt 'end' { Jezyk.Abs.SIfte $2 $4 $6 }
-  | 'if' BExpr 'then' Stmt 'end' { Jezyk.Abs.SIfend $2 $4 }
-  | 'while' BExpr 'do' Stmt1 { Jezyk.Abs.SWhile $2 $4 }
+  : 'if' Expr 'then' Stmt 'else' Stmt 'end' { Jezyk.Abs.SIfte $2 $4 $6 }
+  | 'if' Expr 'then' Stmt 'end' { Jezyk.Abs.SIfend $2 $4 }
+  | 'while' Expr 'do' Stmt1 { Jezyk.Abs.SWhile $2 $4 }
   | 'for' Ident 'from' Expr 'to' Expr 'do' Stmt 'end' { Jezyk.Abs.SFor $2 $4 $6 $8 }
   | 'for' Ident 'in' 'keys' Ident 'do' Stmt 'end' { Jezyk.Abs.SForKeys $2 $5 $7 }
   | 'for' Ident 'in' 'values' Ident 'do' Stmt 'end' { Jezyk.Abs.SForVals $2 $5 $7 }
   | 'for' Ident ',' Ident 'in' Ident 'do' Stmt 'end' { Jezyk.Abs.SForPairs $2 $4 $6 $8 }
 
-BExpr :: { Jezyk.Abs.BExpr }
-BExpr
-  : BExpr '&' BExpr1 { Jezyk.Abs.BAnd $1 $3 }
-  | BExpr '|' BExpr1 { Jezyk.Abs.BOr $1 $3 }
-  | BExpr1 { $1 }
-
-BExpr1 :: { Jezyk.Abs.BExpr }
-BExpr1 : '!' BExpr3 { Jezyk.Abs.BNot $2 } | BExpr2 { $1 }
-
-BExpr2 :: { Jezyk.Abs.BExpr }
-BExpr2
-  : Expr1 '=' Expr1 { Jezyk.Abs.BEq $1 $3 }
-  | Expr1 '<' Expr1 { Jezyk.Abs.BLt $1 $3 }
-  | Expr1 '<=' Expr1 { Jezyk.Abs.BLeq $1 $3 }
-  | Expr1 '>' Expr1 { Jezyk.Abs.BGt $1 $3 }
-  | Expr1 '>=' Expr1 { Jezyk.Abs.BGeq $1 $3 }
-  | Expr1 '!=' Expr1 { Jezyk.Abs.BNeq $1 $3 }
-  | 'check' Expr 'in' Ident { Jezyk.Abs.BCheck $2 $4 }
-  | BExpr3 { $1 }
-
-BExpr3 :: { Jezyk.Abs.BExpr }
-BExpr3
-  : 'true' { Jezyk.Abs.BTrue }
-  | 'false' { Jezyk.Abs.BFalse }
-  | '(' BExpr ')' { $2 }
-
-Expr1 :: { Jezyk.Abs.Expr }
-Expr1
-  : Expr1 '+' Expr2 { Jezyk.Abs.EPlus $1 $3 }
-  | Expr1 '-' Expr2 { Jezyk.Abs.EMinus $1 $3 }
-  | Expr2 { $1 }
-
-Expr2 :: { Jezyk.Abs.Expr }
-Expr2
-  : Expr2 '*' Expr3 { Jezyk.Abs.EMul $1 $3 }
-  | Expr2 '/' Expr3 { Jezyk.Abs.EDiv $1 $3 }
-  | Expr3 { $1 }
+Expr6 :: { Jezyk.Abs.Expr }
+Expr6
+  : 'true' { Jezyk.Abs.ETrue }
+  | 'false' { Jezyk.Abs.EFalse }
+  | Integer { Jezyk.Abs.ENum $1 }
+  | Ident { Jezyk.Abs.EVar $1 }
+  | 'check' Expr 'in' Ident { Jezyk.Abs.ECheck $2 $4 }
+  | '(' Expr ')' { $2 }
 
 Expr3 :: { Jezyk.Abs.Expr }
-Expr3 : '-' Expr4 { Jezyk.Abs.ENeg $2 } | Expr4 { $1 }
+Expr3
+  : Expr3 '+' Expr4 { Jezyk.Abs.EPlus $1 $3 }
+  | Expr3 '-' Expr4 { Jezyk.Abs.EMinus $1 $3 }
+  | Expr4 { $1 }
 
 Expr4 :: { Jezyk.Abs.Expr }
 Expr4
-  : Integer { Jezyk.Abs.ENum $1 }
-  | Ident { Jezyk.Abs.EVar $1 }
-  | '(' Expr ')' { $2 }
+  : Expr4 '*' Expr5 { Jezyk.Abs.EMul $1 $3 }
+  | Expr4 '/' Expr5 { Jezyk.Abs.EDiv $1 $3 }
+  | Expr5 { $1 }
+
+Expr5 :: { Jezyk.Abs.Expr }
+Expr5
+  : '-' Expr5 { Jezyk.Abs.ENeg $2 }
+  | '!' Expr5 { Jezyk.Abs.ENot $2 }
+  | Expr6 { $1 }
+
+Expr2 :: { Jezyk.Abs.Expr }
+Expr2
+  : Expr2 '=' Expr3 { Jezyk.Abs.EEq $1 $3 }
+  | Expr2 '<' Expr3 { Jezyk.Abs.ELt $1 $3 }
+  | Expr2 '>' Expr3 { Jezyk.Abs.EGt $1 $3 }
+  | Expr2 '<=' Expr3 { Jezyk.Abs.ELeq $1 $3 }
+  | Expr2 '>=' Expr3 { Jezyk.Abs.EGeq $1 $3 }
+  | Expr2 '!=' Expr3 { Jezyk.Abs.ENeq $1 $3 }
+  | Expr3 { $1 }
+
+Expr1 :: { Jezyk.Abs.Expr }
+Expr1
+  : Expr1 '&' Expr2 { Jezyk.Abs.EAnd $1 $3 }
+  | Expr1 '|' Expr2 { Jezyk.Abs.EOr $1 $3 }
+  | Expr2 { $1 }
 
 Expr :: { Jezyk.Abs.Expr }
 Expr
-  : BExpr '?' Expr1 ':' Expr1 { Jezyk.Abs.Etern $1 $3 $5 }
+  : Expr1 '?' Expr ':' Expr { Jezyk.Abs.Etern $1 $3 $5 }
   | Expr1 { $1 }
 
 Type :: { Jezyk.Abs.Type }

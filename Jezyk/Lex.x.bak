@@ -28,7 +28,7 @@ $u = [. \n]          -- universal: any character
 
 -- Symbols and non-identifier-like reserved words
 
-@rsyms = \, | \; | \& | \| | \! | \= | \< | \< \= | \> | \> \= | \! \= | \( | \) | \+ | \- | \* | \/ | \? | \:
+@rsyms = \, | \; | \& | \| | \! | \= | \< | \< \= | \> | \> \= | \! \= | \+ | \- | \* | \/ | \? | \: | \( | \)
 
 :-
 
@@ -163,21 +163,20 @@ resWords =
           (b "call" 24
              (b "bool" 23 (b "begin" 22 N N) N)
              (b "check" 26 (b "catch" 25 N N) N))))
-    (b "let" 41
-       (b "for" 34
-          (b "elt" 31
+    (b "let" 40
+       (b "from" 34
+          (b "end" 31
              (b "do" 29 (b "dict" 28 N N) (b "else" 30 N N))
-             (b "false" 33 (b "end" 32 N N) N))
-          (b "in" 38
-             (b "fun" 36 (b "from" 35 N N) (b "if" 37 N N))
-             (b "keys" 40 (b "int" 39 N N) N)))
-       (b "try" 48
-          (b "then" 45
-             (b "print" 43 (b "of" 42 N N) (b "set" 44 N N))
-             (b "true" 47 (b "to" 46 N N) N))
-          (b "while" 51
-             (b "void" 50 (b "values" 49 N N) N)
-             (b "|" 53 (b "with" 52 N N) N))))
+             (b "for" 33 (b "false" 32 N N) N))
+          (b "in" 37
+             (b "if" 36 (b "fun" 35 N N) N) (b "keys" 39 (b "int" 38 N N) N)))
+       (b "try" 47
+          (b "then" 44
+             (b "print" 42 (b "of" 41 N N) (b "set" 43 N N))
+             (b "true" 46 (b "to" 45 N N) N))
+          (b "while" 50
+             (b "void" 49 (b "values" 48 N N) N)
+             (b "|" 52 (b "with" 51 N N) N))))
   where
   b s n = B bs (TS bs n)
     where

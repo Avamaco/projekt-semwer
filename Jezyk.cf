@@ -16,15 +16,14 @@ ASeq. Arg ::= Ident "," Arg;
 SCall.     Stmt ::= "call" Ident;
 SCallA.     Stmt ::= "call" Ident "with" Arg;
 SAssgn.    Stmt1 ::= "set" Var "to" Expr;
-SAssgnB.    Stmt1 ::= "set" Var "to" BExpr;
 SAssgnF.    Stmt1 ::= "set" Var "to call" Ident;
 SAssgnFA.    Stmt1 ::= "set" Var "to call" Ident "with" Arg;
 SDel.     Stmt1 ::= "del" Expr "from" Ident;
 -- We use this to declare a general form of expression, but parse it
 -- differently.
-SIfte. Stmt2 ::= "if" BExpr "then" Stmt "else" Stmt "end";
-SIfend.       Stmt2 ::= "if" BExpr "then" Stmt "end";
-SWhile.    Stmt2 ::= "while" BExpr "do" Stmt1;
+SIfte. Stmt2 ::= "if" Expr "then" Stmt "else" Stmt "end";
+SIfend.       Stmt2 ::= "if" Expr "then" Stmt "end";
+SWhile.    Stmt2 ::= "while" Expr "do" Stmt1;
 SFor.      Stmt2 ::= "for" Ident "from" Expr "to" Expr "do" Stmt "end";
 SForKeys.      Stmt2 ::= "for" Ident "in keys" Ident "do" Stmt "end";
 SForVals.      Stmt2 ::= "for" Ident "in values" Ident "do" Stmt "end";
@@ -37,46 +36,37 @@ SSeq.      Stmt ::= Stmt1 ";" Stmt;
 _. Stmt ::= Stmt1;
 _. Stmt1 ::= Stmt2;
 
--- BNFC expressions that define the part of the grammar for boolean expressions
-
-BAnd.  BExpr ::= BExpr "&" BExpr1;
-BOr.  BExpr ::= BExpr "|" BExpr1;
-BNot.   BExpr1 ::= "!" BExpr3;
-BEq.   BExpr2 ::= Expr1 "=" Expr1;
-BLt.   BExpr2 ::= Expr1 "<" Expr1;
-BLeq.   BExpr2 ::= Expr1 "<=" Expr1;
-BGt.   BExpr2 ::= Expr1 ">" Expr1;
-BGeq.   BExpr2 ::= Expr1 ">=" Expr1;
-BNeq.   BExpr2 ::= Expr1 "!=" Expr1;
-BTrue.  BExpr3 ::= "true";
-BFalse. BExpr3 ::= "false";
-BCheck. BExpr2  ::= "check" Expr "in" Ident;
-
-_.       BExpr3 ::= "(" BExpr ")";
-_.       BExpr2 ::= BExpr3;
-_.       BExpr1 ::= BExpr2;
-_.       BExpr ::= BExpr1;
-
-
 -- BNFC expressions that define the part of the grammar for expressions
 
--- Hierarchy of expressions:
--- Number | Variable | Parentheses
--- Negation
--- Multiplication | Division
--- Addition | Substraction
--- Ternary
+ETrue.  Expr6 ::= "true";
+EFalse. Expr6 ::= "false";
+ENum.    Expr6 ::= Integer;
+EVar.    Expr6 ::= Ident;
 
-EPlus.   Expr1  ::= Expr1 "+" Expr2;
-EMinus.  Expr1  ::= Expr1 "-" Expr2;
-EMul.    Expr2 ::= Expr2 "*" Expr3; 
-EDiv.    Expr2 ::= Expr2 "/" Expr3; 
-ENeg.    Expr3  ::= "-" Expr4;
-ENum.    Expr4 ::= Integer;
-EVar.    Expr4 ::= Ident;
-Etern.   Expr  ::= BExpr "?" Expr1 ":" Expr1;
+EPlus.   Expr3  ::= Expr3 "+" Expr4;
+EMinus.  Expr3  ::= Expr3 "-" Expr4;
+EMul.    Expr4 ::= Expr4 "*" Expr5; 
+EDiv.    Expr4 ::= Expr4 "/" Expr5; 
+ENeg.    Expr5  ::= "-" Expr5;
 
-_.       Expr4 ::= "(" Expr ")"; -- We silently introduce parentheses 
+EEq.   Expr2 ::= Expr2 "=" Expr3;
+ELt.   Expr2 ::= Expr2 "<" Expr3;
+EGt.   Expr2 ::= Expr2 ">" Expr3;
+ELeq.   Expr2 ::= Expr2 "<=" Expr3;
+EGeq.   Expr2 ::= Expr2 ">=" Expr3;
+ENeq.   Expr2 ::= Expr2 "!=" Expr3;
+
+EAnd.  Expr1 ::= Expr1 "&" Expr2;
+EOr.  Expr1 ::= Expr1 "|" Expr2;
+ENot.   Expr5 ::= "!" Expr5;
+
+Etern.   Expr  ::= Expr1 "?" Expr ":" Expr;
+
+ECheck. Expr6  ::= "check" Expr "in" Ident; -- Check surrounds an expression in a "check ... in" clause, so it has a similar effect to parentheses
+
+_.       Expr6 ::= "(" Expr ")"; -- We silently introduce parentheses 
+_.       Expr5  ::= Expr6;       -- We silently make Expr5 and Expr6 equal
+_.       Expr4  ::= Expr5;       -- We silently make Expr4 and Expr5 equal
 _.       Expr3  ::= Expr4;       -- We silently make Expr3 and Expr4 equal
 _.       Expr2  ::= Expr3;       -- We silently make Expr2 and Expr3 equal
 _.       Expr1  ::= Expr2;       -- We silently make Expr1 and Expr2 equal

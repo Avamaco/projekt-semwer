@@ -36,11 +36,11 @@ The reserved words used in Jezyk are the following:
   | ``with`` |  |  |
 
 The symbols used in Jezyk are the following:
-  | , | ; | & | |
-  | ! | = | < | <=
-  | > | >= | != | (
-  | ) | + | - | *
-  | / | ? | : |
+  | , | ; | + | -
+  | * | / | = | <
+  | > | <= | >= | !=
+  | & | | | ! | ?
+  | : | ( | ) |
 
 ===Comments===
 There are no single-line comments in the grammar.There are no multiple-line comments in the grammar.
@@ -63,46 +63,43 @@ All other symbols are terminals.
   |  |  **|**  | //Stmt1// ``;`` //Stmt//
   |  |  **|**  | //Stmt1//
   | //Stmt1// | -> | ``set`` //Var// ``to`` //Expr//
-  |  |  **|**  | ``set`` //Var// ``to`` //BExpr//
   |  |  **|**  | ``set`` //Var// ``to`` ``call`` //Ident//
   |  |  **|**  | ``set`` //Var// ``to`` ``call`` //Ident// ``with`` //Arg//
   |  |  **|**  | ``del`` //Expr// ``from`` //Ident//
   |  |  **|**  | //Stmt2//
-  | //Stmt2// | -> | ``if`` //BExpr// ``then`` //Stmt// ``else`` //Stmt// ``end``
-  |  |  **|**  | ``if`` //BExpr// ``then`` //Stmt// ``end``
-  |  |  **|**  | ``while`` //BExpr// ``do`` //Stmt1//
+  | //Stmt2// | -> | ``if`` //Expr// ``then`` //Stmt// ``else`` //Stmt// ``end``
+  |  |  **|**  | ``if`` //Expr// ``then`` //Stmt// ``end``
+  |  |  **|**  | ``while`` //Expr// ``do`` //Stmt1//
   |  |  **|**  | ``for`` //Ident// ``from`` //Expr// ``to`` //Expr// ``do`` //Stmt// ``end``
   |  |  **|**  | ``for`` //Ident// ``in`` ``keys`` //Ident// ``do`` //Stmt// ``end``
   |  |  **|**  | ``for`` //Ident// ``in`` ``values`` //Ident// ``do`` //Stmt// ``end``
   |  |  **|**  | ``for`` //Ident// ``,`` //Ident// ``in`` //Ident// ``do`` //Stmt// ``end``
-  | //BExpr// | -> | //BExpr// ``&`` //BExpr1//
-  |  |  **|**  | //BExpr// ``|`` //BExpr1//
-  |  |  **|**  | //BExpr1//
-  | //BExpr1// | -> | ``!`` //BExpr3//
-  |  |  **|**  | //BExpr2//
-  | //BExpr2// | -> | //Expr1// ``=`` //Expr1//
-  |  |  **|**  | //Expr1// ``<`` //Expr1//
-  |  |  **|**  | //Expr1// ``<=`` //Expr1//
-  |  |  **|**  | //Expr1// ``>`` //Expr1//
-  |  |  **|**  | //Expr1// ``>=`` //Expr1//
-  |  |  **|**  | //Expr1// ``!=`` //Expr1//
-  |  |  **|**  | ``check`` //Expr// ``in`` //Ident//
-  |  |  **|**  | //BExpr3//
-  | //BExpr3// | -> | ``true``
+  | //Expr6// | -> | ``true``
   |  |  **|**  | ``false``
-  |  |  **|**  | ``(`` //BExpr// ``)``
-  | //Expr1// | -> | //Expr1// ``+`` //Expr2//
-  |  |  **|**  | //Expr1// ``-`` //Expr2//
-  |  |  **|**  | //Expr2//
-  | //Expr2// | -> | //Expr2// ``*`` //Expr3//
-  |  |  **|**  | //Expr2// ``/`` //Expr3//
-  |  |  **|**  | //Expr3//
-  | //Expr3// | -> | ``-`` //Expr4//
-  |  |  **|**  | //Expr4//
-  | //Expr4// | -> | //Integer//
+  |  |  **|**  | //Integer//
   |  |  **|**  | //Ident//
+  |  |  **|**  | ``check`` //Expr// ``in`` //Ident//
   |  |  **|**  | ``(`` //Expr// ``)``
-  | //Expr// | -> | //BExpr// ``?`` //Expr1// ``:`` //Expr1//
+  | //Expr3// | -> | //Expr3// ``+`` //Expr4//
+  |  |  **|**  | //Expr3// ``-`` //Expr4//
+  |  |  **|**  | //Expr4//
+  | //Expr4// | -> | //Expr4// ``*`` //Expr5//
+  |  |  **|**  | //Expr4// ``/`` //Expr5//
+  |  |  **|**  | //Expr5//
+  | //Expr5// | -> | ``-`` //Expr5//
+  |  |  **|**  | ``!`` //Expr5//
+  |  |  **|**  | //Expr6//
+  | //Expr2// | -> | //Expr2// ``=`` //Expr3//
+  |  |  **|**  | //Expr2// ``<`` //Expr3//
+  |  |  **|**  | //Expr2// ``>`` //Expr3//
+  |  |  **|**  | //Expr2// ``<=`` //Expr3//
+  |  |  **|**  | //Expr2// ``>=`` //Expr3//
+  |  |  **|**  | //Expr2// ``!=`` //Expr3//
+  |  |  **|**  | //Expr3//
+  | //Expr1// | -> | //Expr1// ``&`` //Expr2//
+  |  |  **|**  | //Expr1// ``|`` //Expr2//
+  |  |  **|**  | //Expr2//
+  | //Expr// | -> | //Expr1// ``?`` //Expr// ``:`` //Expr//
   |  |  **|**  | //Expr1//
   | //Type// | -> | ``bool``
   |  |  **|**  | ``int``

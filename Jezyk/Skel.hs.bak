@@ -37,9 +37,9 @@ transStmt x = case x of
   Jezyk.Abs.SAssgnF var ident -> failure x
   Jezyk.Abs.SAssgnFA var ident arg -> failure x
   Jezyk.Abs.SDel expr ident -> failure x
-  Jezyk.Abs.SIfte bexpr stmt1 stmt2 -> failure x
-  Jezyk.Abs.SIfend bexpr stmt -> failure x
-  Jezyk.Abs.SWhile bexpr stmt -> failure x
+  Jezyk.Abs.SIfte expr stmt1 stmt2 -> failure x
+  Jezyk.Abs.SIfend expr stmt -> failure x
+  Jezyk.Abs.SWhile expr stmt -> failure x
   Jezyk.Abs.SFor ident expr1 expr2 stmt -> failure x
   Jezyk.Abs.SForKeys ident1 ident2 stmt -> failure x
   Jezyk.Abs.SForVals ident1 ident2 stmt -> failure x
@@ -49,23 +49,20 @@ transStmt x = case x of
   Jezyk.Abs.STry stmt1 stmt2 -> failure x
   Jezyk.Abs.SSeq stmt1 stmt2 -> failure x
 
-transBExpr :: Jezyk.Abs.BExpr -> Result
-transBExpr x = case x of
-  Jezyk.Abs.BAnd bexpr1 bexpr2 -> failure x
-  Jezyk.Abs.BOr bexpr1 bexpr2 -> failure x
-  Jezyk.Abs.BNot bexpr -> failure x
-  Jezyk.Abs.BEq expr1 expr2 -> failure x
-  Jezyk.Abs.BLt expr1 expr2 -> failure x
-  Jezyk.Abs.BLeq expr1 expr2 -> failure x
-  Jezyk.Abs.BGt expr1 expr2 -> failure x
-  Jezyk.Abs.BGeq expr1 expr2 -> failure x
-  Jezyk.Abs.BNeq expr1 expr2 -> failure x
-  Jezyk.Abs.BTrue -> failure x
-  Jezyk.Abs.BFalse -> failure x
-  Jezyk.Abs.BCheck expr ident -> failure x
-
 transExpr :: Jezyk.Abs.Expr -> Result
 transExpr x = case x of
+  Jezyk.Abs.EAnd expr1 expr2 -> failure x
+  Jezyk.Abs.EOr expr1 expr2 -> failure x
+  Jezyk.Abs.ENot expr -> failure x
+  Jezyk.Abs.EEq expr1 expr2 -> failure x
+  Jezyk.Abs.ELt expr1 expr2 -> failure x
+  Jezyk.Abs.ELeq expr1 expr2 -> failure x
+  Jezyk.Abs.EGt expr1 expr2 -> failure x
+  Jezyk.Abs.EGeq expr1 expr2 -> failure x
+  Jezyk.Abs.ENeq expr1 expr2 -> failure x
+  Jezyk.Abs.ETrue -> failure x
+  Jezyk.Abs.EFalse -> failure x
+  Jezyk.Abs.ECheck expr ident -> failure x
   Jezyk.Abs.EPlus expr1 expr2 -> failure x
   Jezyk.Abs.EMinus expr1 expr2 -> failure x
   Jezyk.Abs.EMul expr1 expr2 -> failure x
@@ -73,7 +70,7 @@ transExpr x = case x of
   Jezyk.Abs.ENeg expr -> failure x
   Jezyk.Abs.ENum integer -> failure x
   Jezyk.Abs.EVar ident -> failure x
-  Jezyk.Abs.Etern bexpr expr1 expr2 -> failure x
+  Jezyk.Abs.Etern expr1 expr2 expr3 -> failure x
 
 transType :: Jezyk.Abs.Type -> Result
 transType x = case x of
