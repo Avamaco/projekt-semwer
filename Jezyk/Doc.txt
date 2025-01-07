@@ -28,12 +28,12 @@ The reserved words used in Jezyk are the following:
   | ``array`` | ``at`` | ``be`` | ``begin``
   | ``bool`` | ``call`` | ``catch`` | ``check``
   | ``del`` | ``dict`` | ``do`` | ``else``
-  | ``elt`` | ``end`` | ``false`` | ``for``
-  | ``from`` | ``fun`` | ``if`` | ``in``
-  | ``int`` | ``keys`` | ``let`` | ``of``
-  | ``print`` | ``set`` | ``then`` | ``to``
-  | ``true`` | ``try`` | ``values`` | ``void``
-  | ``while`` | ``with`` |  |
+  | ``end`` | ``false`` | ``for`` | ``from``
+  | ``fun`` | ``if`` | ``in`` | ``int``
+  | ``keys`` | ``let`` | ``of`` | ``print``
+  | ``set`` | ``then`` | ``to`` | ``true``
+  | ``try`` | ``values`` | ``void`` | ``while``
+  | ``with`` |  |  |
 
 The symbols used in Jezyk are the following:
   | , | ; | & | |
@@ -76,29 +76,33 @@ All other symbols are terminals.
   |  |  **|**  | ``for`` //Ident// ``,`` //Ident// ``in`` //Ident// ``do`` //Stmt// ``end``
   | //BExpr// | -> | //BExpr// ``&`` //BExpr1//
   |  |  **|**  | //BExpr// ``|`` //BExpr1//
-  |  |  **|**  | ``check`` //Expr// ``in`` //Ident//
   |  |  **|**  | //BExpr1//
-  | //BExpr1// | -> | ``!`` //BExpr1//
-  |  |  **|**  | //Expr// ``=`` //Expr//
-  |  |  **|**  | //Expr// ``<`` //Expr//
-  |  |  **|**  | //Expr// ``<=`` //Expr//
-  |  |  **|**  | //Expr// ``>`` //Expr//
-  |  |  **|**  | //Expr// ``>=`` //Expr//
-  |  |  **|**  | //Expr// ``!=`` //Expr//
-  |  |  **|**  | ``true``
+  | //BExpr1// | -> | ``!`` //BExpr3//
+  |  |  **|**  | //BExpr2//
+  | //BExpr2// | -> | //Expr1// ``=`` //Expr1//
+  |  |  **|**  | //Expr1// ``<`` //Expr1//
+  |  |  **|**  | //Expr1// ``<=`` //Expr1//
+  |  |  **|**  | //Expr1// ``>`` //Expr1//
+  |  |  **|**  | //Expr1// ``>=`` //Expr1//
+  |  |  **|**  | //Expr1// ``!=`` //Expr1//
+  |  |  **|**  | ``check`` //Expr// ``in`` //Ident//
+  |  |  **|**  | //BExpr3//
+  | //BExpr3// | -> | ``true``
   |  |  **|**  | ``false``
   |  |  **|**  | ``(`` //BExpr// ``)``
-  | //Expr// | -> | //Expr// ``+`` //Expr1//
-  |  |  **|**  | //Expr// ``-`` //Expr1//
-  |  |  **|**  | ``-`` //Expr//
-  |  |  **|**  | //Expr// ``?`` //Expr// ``:`` //Expr//
-  |  |  **|**  | //Expr1//
-  | //Expr1// | -> | //Expr1// ``*`` //Expr2//
-  |  |  **|**  | //Expr1// ``/`` //Expr2//
+  | //Expr1// | -> | //Expr1// ``+`` //Expr2//
+  |  |  **|**  | //Expr1// ``-`` //Expr2//
   |  |  **|**  | //Expr2//
-  | //Expr2// | -> | //Integer//
+  | //Expr2// | -> | //Expr2// ``*`` //Expr3//
+  |  |  **|**  | //Expr2// ``/`` //Expr3//
+  |  |  **|**  | //Expr3//
+  | //Expr3// | -> | ``-`` //Expr4//
+  |  |  **|**  | //Expr4//
+  | //Expr4// | -> | //Integer//
   |  |  **|**  | //Ident//
   |  |  **|**  | ``(`` //Expr// ``)``
+  | //Expr// | -> | //BExpr// ``?`` //Expr1// ``:`` //Expr1//
+  |  |  **|**  | //Expr1//
   | //Type// | -> | ``bool``
   |  |  **|**  | ``int``
   | //CType// | -> | ``array`` ``of`` //Integer// //Type//
@@ -111,8 +115,8 @@ All other symbols are terminals.
   |  |  **|**  | ``fun`` ``from`` //ADecl// ``to`` //Ident// ``of`` //Type//
   | //Decl1// | -> | ``let`` //Ident// ``be`` //Type//
   |  |  **|**  | ``let`` //Ident// ``be`` //CType//
-  |  |  **|**  | ``elt`` //Ident// ``be`` //FDecl// ``do`` //Stmt// ``end``
-  | //Decl// | -> | //Decl1// ``;`` //Decl//
+  |  |  **|**  | ``let`` //Ident// ``be`` //FDecl// ``do`` //Stmt// ``end``
+  | //Decl// | -> | //Decl// ``;`` //Decl1//
   |  |  **|**  | //Decl1//
 
 

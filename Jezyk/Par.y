@@ -15,9 +15,13 @@ module Jezyk.Par
   , pStmt2
   , pBExpr
   , pBExpr1
-  , pExpr
+  , pBExpr2
+  , pBExpr3
   , pExpr1
   , pExpr2
+  , pExpr3
+  , pExpr4
+  , pExpr
   , pType
   , pCType
   , pADecl
@@ -40,9 +44,13 @@ import Jezyk.Lex
 %name pStmt2 Stmt2
 %name pBExpr BExpr
 %name pBExpr1 BExpr1
-%name pExpr Expr
+%name pBExpr2 BExpr2
+%name pBExpr3 BExpr3
 %name pExpr1 Expr1
 %name pExpr2 Expr2
+%name pExpr3 Expr3
+%name pExpr4 Expr4
+%name pExpr Expr
 %name pType Type
 %name pCType CType
 %name pADecl ADecl
@@ -83,29 +91,28 @@ import Jezyk.Lex
   'dict'   { PT _ (TS _ 28) }
   'do'     { PT _ (TS _ 29) }
   'else'   { PT _ (TS _ 30) }
-  'elt'    { PT _ (TS _ 31) }
-  'end'    { PT _ (TS _ 32) }
-  'false'  { PT _ (TS _ 33) }
-  'for'    { PT _ (TS _ 34) }
-  'from'   { PT _ (TS _ 35) }
-  'fun'    { PT _ (TS _ 36) }
-  'if'     { PT _ (TS _ 37) }
-  'in'     { PT _ (TS _ 38) }
-  'int'    { PT _ (TS _ 39) }
-  'keys'   { PT _ (TS _ 40) }
-  'let'    { PT _ (TS _ 41) }
-  'of'     { PT _ (TS _ 42) }
-  'print'  { PT _ (TS _ 43) }
-  'set'    { PT _ (TS _ 44) }
-  'then'   { PT _ (TS _ 45) }
-  'to'     { PT _ (TS _ 46) }
-  'true'   { PT _ (TS _ 47) }
-  'try'    { PT _ (TS _ 48) }
-  'values' { PT _ (TS _ 49) }
-  'void'   { PT _ (TS _ 50) }
-  'while'  { PT _ (TS _ 51) }
-  'with'   { PT _ (TS _ 52) }
-  '|'      { PT _ (TS _ 53) }
+  'end'    { PT _ (TS _ 31) }
+  'false'  { PT _ (TS _ 32) }
+  'for'    { PT _ (TS _ 33) }
+  'from'   { PT _ (TS _ 34) }
+  'fun'    { PT _ (TS _ 35) }
+  'if'     { PT _ (TS _ 36) }
+  'in'     { PT _ (TS _ 37) }
+  'int'    { PT _ (TS _ 38) }
+  'keys'   { PT _ (TS _ 39) }
+  'let'    { PT _ (TS _ 40) }
+  'of'     { PT _ (TS _ 41) }
+  'print'  { PT _ (TS _ 42) }
+  'set'    { PT _ (TS _ 43) }
+  'then'   { PT _ (TS _ 44) }
+  'to'     { PT _ (TS _ 45) }
+  'true'   { PT _ (TS _ 46) }
+  'try'    { PT _ (TS _ 47) }
+  'values' { PT _ (TS _ 48) }
+  'void'   { PT _ (TS _ 49) }
+  'while'  { PT _ (TS _ 50) }
+  'with'   { PT _ (TS _ 51) }
+  '|'      { PT _ (TS _ 52) }
   L_Ident  { PT _ (TV $$)   }
   L_integ  { PT _ (TI $$)   }
 
@@ -159,41 +166,53 @@ BExpr :: { Jezyk.Abs.BExpr }
 BExpr
   : BExpr '&' BExpr1 { Jezyk.Abs.BAnd $1 $3 }
   | BExpr '|' BExpr1 { Jezyk.Abs.BOr $1 $3 }
-  | 'check' Expr 'in' Ident { Jezyk.Abs.BCheck $2 $4 }
   | BExpr1 { $1 }
 
 BExpr1 :: { Jezyk.Abs.BExpr }
-BExpr1
-  : '!' BExpr1 { Jezyk.Abs.BNot $2 }
-  | Expr '=' Expr { Jezyk.Abs.BEq $1 $3 }
-  | Expr '<' Expr { Jezyk.Abs.BLt $1 $3 }
-  | Expr '<=' Expr { Jezyk.Abs.BLeq $1 $3 }
-  | Expr '>' Expr { Jezyk.Abs.BGt $1 $3 }
-  | Expr '>=' Expr { Jezyk.Abs.BGeq $1 $3 }
-  | Expr '!=' Expr { Jezyk.Abs.BNeq $1 $3 }
-  | 'true' { Jezyk.Abs.BTrue }
+BExpr1 : '!' BExpr3 { Jezyk.Abs.BNot $2 } | BExpr2 { $1 }
+
+BExpr2 :: { Jezyk.Abs.BExpr }
+BExpr2
+  : Expr1 '=' Expr1 { Jezyk.Abs.BEq $1 $3 }
+  | Expr1 '<' Expr1 { Jezyk.Abs.BLt $1 $3 }
+  | Expr1 '<=' Expr1 { Jezyk.Abs.BLeq $1 $3 }
+  | Expr1 '>' Expr1 { Jezyk.Abs.BGt $1 $3 }
+  | Expr1 '>=' Expr1 { Jezyk.Abs.BGeq $1 $3 }
+  | Expr1 '!=' Expr1 { Jezyk.Abs.BNeq $1 $3 }
+  | 'check' Expr 'in' Ident { Jezyk.Abs.BCheck $2 $4 }
+  | BExpr3 { $1 }
+
+BExpr3 :: { Jezyk.Abs.BExpr }
+BExpr3
+  : 'true' { Jezyk.Abs.BTrue }
   | 'false' { Jezyk.Abs.BFalse }
   | '(' BExpr ')' { $2 }
 
-Expr :: { Jezyk.Abs.Expr }
-Expr
-  : Expr '+' Expr1 { Jezyk.Abs.EPlus $1 $3 }
-  | Expr '-' Expr1 { Jezyk.Abs.EMinus $1 $3 }
-  | '-' Expr { Jezyk.Abs.ENeg $2 }
-  | Expr '?' Expr ':' Expr { Jezyk.Abs.Etern $1 $3 $5 }
-  | Expr1 { $1 }
-
 Expr1 :: { Jezyk.Abs.Expr }
 Expr1
-  : Expr1 '*' Expr2 { Jezyk.Abs.EMul $1 $3 }
-  | Expr1 '/' Expr2 { Jezyk.Abs.EDiv $1 $3 }
+  : Expr1 '+' Expr2 { Jezyk.Abs.EPlus $1 $3 }
+  | Expr1 '-' Expr2 { Jezyk.Abs.EMinus $1 $3 }
   | Expr2 { $1 }
 
 Expr2 :: { Jezyk.Abs.Expr }
 Expr2
+  : Expr2 '*' Expr3 { Jezyk.Abs.EMul $1 $3 }
+  | Expr2 '/' Expr3 { Jezyk.Abs.EDiv $1 $3 }
+  | Expr3 { $1 }
+
+Expr3 :: { Jezyk.Abs.Expr }
+Expr3 : '-' Expr4 { Jezyk.Abs.ENeg $2 } | Expr4 { $1 }
+
+Expr4 :: { Jezyk.Abs.Expr }
+Expr4
   : Integer { Jezyk.Abs.ENum $1 }
   | Ident { Jezyk.Abs.EVar $1 }
   | '(' Expr ')' { $2 }
+
+Expr :: { Jezyk.Abs.Expr }
+Expr
+  : BExpr '?' Expr1 ':' Expr1 { Jezyk.Abs.Etern $1 $3 $5 }
+  | Expr1 { $1 }
 
 Type :: { Jezyk.Abs.Type }
 Type : 'bool' { Jezyk.Abs.TBool } | 'int' { Jezyk.Abs.TInt }
@@ -219,10 +238,10 @@ Decl1 :: { Jezyk.Abs.Decl }
 Decl1
   : 'let' Ident 'be' Type { Jezyk.Abs.DSimple $2 $4 }
   | 'let' Ident 'be' CType { Jezyk.Abs.DComplex $2 $4 }
-  | 'elt' Ident 'be' FDecl 'do' Stmt 'end' { Jezyk.Abs.DFunction $2 $4 $6 }
+  | 'let' Ident 'be' FDecl 'do' Stmt 'end' { Jezyk.Abs.DFunction $2 $4 $6 }
 
 Decl :: { Jezyk.Abs.Decl }
-Decl : Decl1 ';' Decl { Jezyk.Abs.DSeq $1 $3 } | Decl1 { $1 }
+Decl : Decl ';' Decl1 { Jezyk.Abs.DSeq $1 $3 } | Decl1 { $1 }
 
 {
 

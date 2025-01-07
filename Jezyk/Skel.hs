@@ -73,7 +73,7 @@ transExpr x = case x of
   Jezyk.Abs.ENeg expr -> failure x
   Jezyk.Abs.ENum integer -> failure x
   Jezyk.Abs.EVar ident -> failure x
-  Jezyk.Abs.Etern expr1 expr2 expr3 -> failure x
+  Jezyk.Abs.Etern bexpr expr1 expr2 -> failure x
 
 transType :: Jezyk.Abs.Type -> Result
 transType x = case x of

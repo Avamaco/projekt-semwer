@@ -173,27 +173,27 @@ instance Print Jezyk.Abs.BExpr where
   prt i = \case
     Jezyk.Abs.BAnd bexpr1 bexpr2 -> prPrec i 0 (concatD [prt 0 bexpr1, doc (showString "&"), prt 1 bexpr2])
     Jezyk.Abs.BOr bexpr1 bexpr2 -> prPrec i 0 (concatD [prt 0 bexpr1, doc (showString "|"), prt 1 bexpr2])
-    Jezyk.Abs.BNot bexpr -> prPrec i 1 (concatD [doc (showString "!"), prt 1 bexpr])
-    Jezyk.Abs.BEq expr1 expr2 -> prPrec i 1 (concatD [prt 0 expr1, doc (showString "="), prt 0 expr2])
-    Jezyk.Abs.BLt expr1 expr2 -> prPrec i 1 (concatD [prt 0 expr1, doc (showString "<"), prt 0 expr2])
-    Jezyk.Abs.BLeq expr1 expr2 -> prPrec i 1 (concatD [prt 0 expr1, doc (showString "<="), prt 0 expr2])
-    Jezyk.Abs.BGt expr1 expr2 -> prPrec i 1 (concatD [prt 0 expr1, doc (showString ">"), prt 0 expr2])
-    Jezyk.Abs.BGeq expr1 expr2 -> prPrec i 1 (concatD [prt 0 expr1, doc (showString ">="), prt 0 expr2])
-    Jezyk.Abs.BNeq expr1 expr2 -> prPrec i 1 (concatD [prt 0 expr1, doc (showString "!="), prt 0 expr2])
-    Jezyk.Abs.BTrue -> prPrec i 1 (concatD [doc (showString "true")])
-    Jezyk.Abs.BFalse -> prPrec i 1 (concatD [doc (showString "false")])
-    Jezyk.Abs.BCheck expr id_ -> prPrec i 0 (concatD [doc (showString "check"), prt 0 expr, doc (showString "in"), prt 0 id_])
+    Jezyk.Abs.BNot bexpr -> prPrec i 1 (concatD [doc (showString "!"), prt 3 bexpr])
+    Jezyk.Abs.BEq expr1 expr2 -> prPrec i 2 (concatD [prt 1 expr1, doc (showString "="), prt 1 expr2])
+    Jezyk.Abs.BLt expr1 expr2 -> prPrec i 2 (concatD [prt 1 expr1, doc (showString "<"), prt 1 expr2])
+    Jezyk.Abs.BLeq expr1 expr2 -> prPrec i 2 (concatD [prt 1 expr1, doc (showString "<="), prt 1 expr2])
+    Jezyk.Abs.BGt expr1 expr2 -> prPrec i 2 (concatD [prt 1 expr1, doc (showString ">"), prt 1 expr2])
+    Jezyk.Abs.BGeq expr1 expr2 -> prPrec i 2 (concatD [prt 1 expr1, doc (showString ">="), prt 1 expr2])
+    Jezyk.Abs.BNeq expr1 expr2 -> prPrec i 2 (concatD [prt 1 expr1, doc (showString "!="), prt 1 expr2])
+    Jezyk.Abs.BTrue -> prPrec i 3 (concatD [doc (showString "true")])
+    Jezyk.Abs.BFalse -> prPrec i 3 (concatD [doc (showString "false")])
+    Jezyk.Abs.BCheck expr id_ -> prPrec i 2 (concatD [doc (showString "check"), prt 0 expr, doc (showString "in"), prt 0 id_])
 
 instance Print Jezyk.Abs.Expr where
   prt i = \case
-    Jezyk.Abs.EPlus expr1 expr2 -> prPrec i 0 (concatD [prt 0 expr1, doc (showString "+"), prt 1 expr2])
-    Jezyk.Abs.EMinus expr1 expr2 -> prPrec i 0 (concatD [prt 0 expr1, doc (showString "-"), prt 1 expr2])
-    Jezyk.Abs.EMul expr1 expr2 -> prPrec i 1 (concatD [prt 1 expr1, doc (showString "*"), prt 2 expr2])
-    Jezyk.Abs.EDiv expr1 expr2 -> prPrec i 1 (concatD [prt 1 expr1, doc (showString "/"), prt 2 expr2])
-    Jezyk.Abs.ENeg expr -> prPrec i 0 (concatD [doc (showString "-"), prt 0 expr])
-    Jezyk.Abs.ENum n -> prPrec i 2 (concatD [prt 0 n])
-    Jezyk.Abs.EVar id_ -> prPrec i 2 (concatD [prt 0 id_])
-    Jezyk.Abs.Etern expr1 expr2 expr3 -> prPrec i 0 (concatD [prt 0 expr1, doc (showString "?"), prt 0 expr2, doc (showString ":"), prt 0 expr3])
+    Jezyk.Abs.EPlus expr1 expr2 -> prPrec i 1 (concatD [prt 1 expr1, doc (showString "+"), prt 2 expr2])
+    Jezyk.Abs.EMinus expr1 expr2 -> prPrec i 1 (concatD [prt 1 expr1, doc (showString "-"), prt 2 expr2])
+    Jezyk.Abs.EMul expr1 expr2 -> prPrec i 2 (concatD [prt 2 expr1, doc (showString "*"), prt 3 expr2])
+    Jezyk.Abs.EDiv expr1 expr2 -> prPrec i 2 (concatD [prt 2 expr1, doc (showString "/"), prt 3 expr2])
+    Jezyk.Abs.ENeg expr -> prPrec i 3 (concatD [doc (showString "-"), prt 4 expr])
+    Jezyk.Abs.ENum n -> prPrec i 4 (concatD [prt 0 n])
+    Jezyk.Abs.EVar id_ -> prPrec i 4 (concatD [prt 0 id_])
+    Jezyk.Abs.Etern bexpr expr1 expr2 -> prPrec i 0 (concatD [prt 0 bexpr, doc (showString "?"), prt 1 expr1, doc (showString ":"), prt 1 expr2])
 
 instance Print Jezyk.Abs.Type where
   prt i = \case
@@ -221,5 +221,5 @@ instance Print Jezyk.Abs.Decl where
   prt i = \case
     Jezyk.Abs.DSimple id_ type_ -> prPrec i 1 (concatD [doc (showString "let"), prt 0 id_, doc (showString "be"), prt 0 type_])
     Jezyk.Abs.DComplex id_ ctype -> prPrec i 1 (concatD [doc (showString "let"), prt 0 id_, doc (showString "be"), prt 0 ctype])
-    Jezyk.Abs.DFunction id_ fdecl stmt -> prPrec i 1 (concatD [doc (showString "elt"), prt 0 id_, doc (showString "be"), prt 0 fdecl, doc (showString "do"), prt 0 stmt, doc (showString "end")])
-    Jezyk.Abs.DSeq decl1 decl2 -> prPrec i 0 (concatD [prt 1 decl1, doc (showString ";"), prt 0 decl2])
+    Jezyk.Abs.DFunction id_ fdecl stmt -> prPrec i 1 (concatD [doc (showString "let"), prt 0 id_, doc (showString "be"), prt 0 fdecl, doc (showString "do"), prt 0 stmt, doc (showString "end")])
+    Jezyk.Abs.DSeq decl1 decl2 -> prPrec i 0 (concatD [prt 0 decl1, doc (showString ";"), prt 1 decl2])

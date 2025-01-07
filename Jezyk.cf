@@ -40,33 +40,44 @@ _. Stmt1 ::= Stmt2;
 
 BAnd.  BExpr ::= BExpr "&" BExpr1;
 BOr.  BExpr ::= BExpr "|" BExpr1;
-BNot.   BExpr1 ::= "!" BExpr1;
-BEq.   BExpr1 ::= Expr "=" Expr;
-BLt.   BExpr1 ::= Expr "<" Expr;
-BLeq.   BExpr1 ::= Expr "<=" Expr;
-BGt.   BExpr1 ::= Expr ">" Expr;
-BGeq.   BExpr1 ::= Expr ">=" Expr;
-BNeq.   BExpr1 ::= Expr "!=" Expr;
-BTrue.  BExpr1 ::= "true";
-BFalse. BExpr1 ::= "false";
-BCheck. BExpr  ::= "check" Expr "in" Ident;
+BNot.   BExpr1 ::= "!" BExpr3;
+BEq.   BExpr2 ::= Expr1 "=" Expr1;
+BLt.   BExpr2 ::= Expr1 "<" Expr1;
+BLeq.   BExpr2 ::= Expr1 "<=" Expr1;
+BGt.   BExpr2 ::= Expr1 ">" Expr1;
+BGeq.   BExpr2 ::= Expr1 ">=" Expr1;
+BNeq.   BExpr2 ::= Expr1 "!=" Expr1;
+BTrue.  BExpr3 ::= "true";
+BFalse. BExpr3 ::= "false";
+BCheck. BExpr2  ::= "check" Expr "in" Ident;
 
-_.       BExpr1 ::= "(" BExpr ")";
+_.       BExpr3 ::= "(" BExpr ")";
+_.       BExpr2 ::= BExpr3;
+_.       BExpr1 ::= BExpr2;
 _.       BExpr ::= BExpr1;
 
 
 -- BNFC expressions that define the part of the grammar for expressions
 
-EPlus.   Expr  ::= Expr "+" Expr1;
-EMinus.  Expr  ::= Expr "-" Expr1;
-EMul.    Expr1 ::= Expr1 "*" Expr2; 
-EDiv.    Expr1 ::= Expr1 "/" Expr2; 
-ENeg.    Expr  ::= "-" Expr;
-ENum.    Expr2 ::= Integer;
-EVar.    Expr2 ::= Ident;
-Etern.   Expr  ::= Expr "?" Expr ":" Expr;
+-- Hierarchy of expressions:
+-- Number | Variable | Parentheses
+-- Negation
+-- Multiplication | Division
+-- Addition | Substraction
+-- Ternary
 
-_.       Expr2 ::= "(" Expr ")"; -- We silently introduce parentheses 
+EPlus.   Expr1  ::= Expr1 "+" Expr2;
+EMinus.  Expr1  ::= Expr1 "-" Expr2;
+EMul.    Expr2 ::= Expr2 "*" Expr3; 
+EDiv.    Expr2 ::= Expr2 "/" Expr3; 
+ENeg.    Expr3  ::= "-" Expr4;
+ENum.    Expr4 ::= Integer;
+EVar.    Expr4 ::= Ident;
+Etern.   Expr  ::= BExpr "?" Expr1 ":" Expr1;
+
+_.       Expr4 ::= "(" Expr ")"; -- We silently introduce parentheses 
+_.       Expr3  ::= Expr4;       -- We silently make Expr3 and Expr4 equal
+_.       Expr2  ::= Expr3;       -- We silently make Expr2 and Expr3 equal
 _.       Expr1  ::= Expr2;       -- We silently make Expr1 and Expr2 equal
 _.       Expr ::= Expr1;         -- We silently make Expr and Expr1 equal
 
@@ -90,7 +101,7 @@ FDFull. FDecl ::= "fun from" ADecl "to" Ident "of" Type;
 
 DSimple. Decl1 ::= "let" Ident "be" Type;
 DComplex. Decl1 ::= "let" Ident "be" CType;
-DFunction. Decl1 ::= "elt" Ident "be" FDecl "do" Stmt "end";
-DSeq. Decl ::= Decl1 ";" Decl;
+DFunction. Decl1 ::= "let" Ident "be" FDecl "do" Stmt "end";
+DSeq. Decl ::= Decl ";" Decl1;
 
 _. Decl ::= Decl1;
