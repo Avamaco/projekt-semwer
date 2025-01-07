@@ -79,12 +79,12 @@ All other symbols are terminals.
   |  |  **|**  | //BExpr1//
   | //BExpr1// | -> | ``!`` //BExpr3//
   |  |  **|**  | //BExpr2//
-  | //BExpr2// | -> | //Expr// ``=`` //Expr//
-  |  |  **|**  | //Expr// ``<`` //Expr//
-  |  |  **|**  | //Expr// ``<=`` //Expr//
-  |  |  **|**  | //Expr// ``>`` //Expr//
-  |  |  **|**  | //Expr// ``>=`` //Expr//
-  |  |  **|**  | //Expr// ``!=`` //Expr//
+  | //BExpr2// | -> | //Expr1// ``=`` //Expr1//
+  |  |  **|**  | //Expr1// ``<`` //Expr1//
+  |  |  **|**  | //Expr1// ``<=`` //Expr1//
+  |  |  **|**  | //Expr1// ``>`` //Expr1//
+  |  |  **|**  | //Expr1// ``>=`` //Expr1//
+  |  |  **|**  | //Expr1// ``!=`` //Expr1//
   |  |  **|**  | ``check`` //Expr// ``in`` //Ident//
   |  |  **|**  | //BExpr3//
   | //BExpr3// | -> | ``true``

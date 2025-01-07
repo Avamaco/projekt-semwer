@@ -16,6 +16,7 @@ ASeq. Arg ::= Ident "," Arg;
 SCall.     Stmt ::= "call" Ident;
 SCallA.     Stmt ::= "call" Ident "with" Arg;
 SAssgn.    Stmt1 ::= "set" Var "to" Expr;
+SAssgnB.    Stmt1 ::= "set" Var "to" BExpr;
 SAssgnF.    Stmt1 ::= "set" Var "to call" Ident;
 SAssgnFA.    Stmt1 ::= "set" Var "to call" Ident "with" Arg;
 SDel.     Stmt1 ::= "del" Expr "from" Ident;

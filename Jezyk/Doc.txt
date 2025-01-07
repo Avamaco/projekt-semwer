@@ -63,6 +63,7 @@ All other symbols are terminals.
   |  |  **|**  | //Stmt1// ``;`` //Stmt//
   |  |  **|**  | //Stmt1//
   | //Stmt1// | -> | ``set`` //Var// ``to`` //Expr//
+  |  |  **|**  | ``set`` //Var// ``to`` //BExpr//
   |  |  **|**  | ``set`` //Var// ``to`` ``call`` //Ident//
   |  |  **|**  | ``set`` //Var// ``to`` ``call`` //Ident// ``with`` //Arg//
   |  |  **|**  | ``del`` //Expr// ``from`` //Ident//

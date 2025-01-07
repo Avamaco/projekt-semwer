@@ -40,61 +40,62 @@ Grammar
 	Stmt -> Stmt1 ';' Stmt                             (31)
 	Stmt -> Stmt1                                      (32)
 	Stmt1 -> 'set' Var 'to' Expr                       (33)
-	Stmt1 -> 'set' Var 'to' 'call' Ident               (34)
-	Stmt1 -> 'set' Var 'to' 'call' Ident 'with' Arg    (35)
-	Stmt1 -> 'del' Expr 'from' Ident                   (36)
-	Stmt1 -> Stmt2                                     (37)
-	Stmt2 -> 'if' BExpr 'then' Stmt 'else' Stmt 'end'   (38)
-	Stmt2 -> 'if' BExpr 'then' Stmt 'end'              (39)
-	Stmt2 -> 'while' BExpr 'do' Stmt1                  (40)
-	Stmt2 -> 'for' Ident 'from' Expr 'to' Expr 'do' Stmt 'end'   (41)
-	Stmt2 -> 'for' Ident 'in' 'keys' Ident 'do' Stmt 'end'   (42)
-	Stmt2 -> 'for' Ident 'in' 'values' Ident 'do' Stmt 'end'   (43)
-	Stmt2 -> 'for' Ident ',' Ident 'in' Ident 'do' Stmt 'end'   (44)
-	BExpr -> BExpr '&' BExpr1                          (45)
-	BExpr -> BExpr '|' BExpr1                          (46)
-	BExpr -> BExpr1                                    (47)
-	BExpr1 -> '!' BExpr3                               (48)
-	BExpr1 -> BExpr2                                   (49)
-	BExpr2 -> Expr1 '=' Expr1                          (50)
-	BExpr2 -> Expr1 '<' Expr1                          (51)
-	BExpr2 -> Expr1 '<=' Expr1                         (52)
-	BExpr2 -> Expr1 '>' Expr1                          (53)
-	BExpr2 -> Expr1 '>=' Expr1                         (54)
-	BExpr2 -> Expr1 '!=' Expr1                         (55)
-	BExpr2 -> 'check' Expr 'in' Ident                  (56)
-	BExpr2 -> BExpr3                                   (57)
-	BExpr3 -> 'true'                                   (58)
-	BExpr3 -> 'false'                                  (59)
-	BExpr3 -> '(' BExpr ')'                            (60)
-	Expr1 -> Expr1 '+' Expr2                           (61)
-	Expr1 -> Expr1 '-' Expr2                           (62)
-	Expr1 -> Expr2                                     (63)
-	Expr2 -> Expr2 '*' Expr3                           (64)
-	Expr2 -> Expr2 '/' Expr3                           (65)
-	Expr2 -> Expr3                                     (66)
-	Expr3 -> '-' Expr4                                 (67)
-	Expr3 -> Expr4                                     (68)
-	Expr4 -> Integer                                   (69)
-	Expr4 -> Ident                                     (70)
-	Expr4 -> '(' Expr ')'                              (71)
-	Expr -> BExpr '?' Expr1 ':' Expr1                  (72)
-	Expr -> Expr1                                      (73)
-	Type -> 'bool'                                     (74)
-	Type -> 'int'                                      (75)
-	CType -> 'array' 'of' Integer Type                 (76)
-	CType -> 'dict' 'of' Type                          (77)
-	ADecl -> Ident 'of' Type                           (78)
-	ADecl -> Ident 'of' Type ',' ADecl                 (79)
-	FDecl -> 'fun' 'to' 'void'                         (80)
-	FDecl -> 'fun' 'to' Ident 'of' Type                (81)
-	FDecl -> 'fun' 'from' ADecl 'to' 'void'            (82)
-	FDecl -> 'fun' 'from' ADecl 'to' Ident 'of' Type   (83)
-	Decl1 -> 'let' Ident 'be' Type                     (84)
-	Decl1 -> 'let' Ident 'be' CType                    (85)
-	Decl1 -> 'let' Ident 'be' FDecl 'do' Stmt 'end'    (86)
-	Decl -> Decl ';' Decl1                             (87)
-	Decl -> Decl1                                      (88)
+	Stmt1 -> 'set' Var 'to' BExpr                      (34)
+	Stmt1 -> 'set' Var 'to' 'call' Ident               (35)
+	Stmt1 -> 'set' Var 'to' 'call' Ident 'with' Arg    (36)
+	Stmt1 -> 'del' Expr 'from' Ident                   (37)
+	Stmt1 -> Stmt2                                     (38)
+	Stmt2 -> 'if' BExpr 'then' Stmt 'else' Stmt 'end'   (39)
+	Stmt2 -> 'if' BExpr 'then' Stmt 'end'              (40)
+	Stmt2 -> 'while' BExpr 'do' Stmt1                  (41)
+	Stmt2 -> 'for' Ident 'from' Expr 'to' Expr 'do' Stmt 'end'   (42)
+	Stmt2 -> 'for' Ident 'in' 'keys' Ident 'do' Stmt 'end'   (43)
+	Stmt2 -> 'for' Ident 'in' 'values' Ident 'do' Stmt 'end'   (44)
+	Stmt2 -> 'for' Ident ',' Ident 'in' Ident 'do' Stmt 'end'   (45)
+	BExpr -> BExpr '&' BExpr1                          (46)
+	BExpr -> BExpr '|' BExpr1                          (47)
+	BExpr -> BExpr1                                    (48)
+	BExpr1 -> '!' BExpr3                               (49)
+	BExpr1 -> BExpr2                                   (50)
+	BExpr2 -> Expr1 '=' Expr1                          (51)
+	BExpr2 -> Expr1 '<' Expr1                          (52)
+	BExpr2 -> Expr1 '<=' Expr1                         (53)
+	BExpr2 -> Expr1 '>' Expr1                          (54)
+	BExpr2 -> Expr1 '>=' Expr1                         (55)
+	BExpr2 -> Expr1 '!=' Expr1                         (56)
+	BExpr2 -> 'check' Expr 'in' Ident                  (57)
+	BExpr2 -> BExpr3                                   (58)
+	BExpr3 -> 'true'                                   (59)
+	BExpr3 -> 'false'                                  (60)
+	BExpr3 -> '(' BExpr ')'                            (61)
+	Expr1 -> Expr1 '+' Expr2                           (62)
+	Expr1 -> Expr1 '-' Expr2                           (63)
+	Expr1 -> Expr2                                     (64)
+	Expr2 -> Expr2 '*' Expr3                           (65)
+	Expr2 -> Expr2 '/' Expr3                           (66)
+	Expr2 -> Expr3                                     (67)
+	Expr3 -> '-' Expr4                                 (68)
+	Expr3 -> Expr4                                     (69)
+	Expr4 -> Integer                                   (70)
+	Expr4 -> Ident                                     (71)
+	Expr4 -> '(' Expr ')'                              (72)
+	Expr -> BExpr '?' Expr1 ':' Expr1                  (73)
+	Expr -> Expr1                                      (74)
+	Type -> 'bool'                                     (75)
+	Type -> 'int'                                      (76)
+	CType -> 'array' 'of' Integer Type                 (77)
+	CType -> 'dict' 'of' Type                          (78)
+	ADecl -> Ident 'of' Type                           (79)
+	ADecl -> Ident 'of' Type ',' ADecl                 (80)
+	FDecl -> 'fun' 'to' 'void'                         (81)
+	FDecl -> 'fun' 'to' Ident 'of' Type                (82)
+	FDecl -> 'fun' 'from' ADecl 'to' 'void'            (83)
+	FDecl -> 'fun' 'from' ADecl 'to' Ident 'of' Type   (84)
+	Decl1 -> 'let' Ident 'be' Type                     (85)
+	Decl1 -> 'let' Ident 'be' CType                    (86)
+	Decl1 -> 'let' Ident 'be' FDecl 'do' Stmt 'end'    (87)
+	Decl -> Decl ';' Decl1                             (88)
+	Decl -> Decl1                                      (89)
 
 -----------------------------------------------------------------------------
 Terminals
@@ -182,23 +183,23 @@ Non-terminals
 	Var             rules 22, 23
 	Arg             rules 24, 25
 	Stmt            rules 26, 27, 28, 29, 30, 31, 32
-	Stmt1           rules 33, 34, 35, 36, 37
-	Stmt2           rules 38, 39, 40, 41, 42, 43, 44
-	BExpr           rules 45, 46, 47
-	BExpr1          rules 48, 49
-	BExpr2          rules 50, 51, 52, 53, 54, 55, 56, 57
-	BExpr3          rules 58, 59, 60
-	Expr1           rules 61, 62, 63
-	Expr2           rules 64, 65, 66
-	Expr3           rules 67, 68
-	Expr4           rules 69, 70, 71
-	Expr            rules 72, 73
-	Type            rules 74, 75
-	CType           rules 76, 77
-	ADecl           rules 78, 79
-	FDecl           rules 80, 81, 82, 83
-	Decl1           rules 84, 85, 86
-	Decl            rules 87, 88
+	Stmt1           rules 33, 34, 35, 36, 37, 38
+	Stmt2           rules 39, 40, 41, 42, 43, 44, 45
+	BExpr           rules 46, 47, 48
+	BExpr1          rules 49, 50
+	BExpr2          rules 51, 52, 53, 54, 55, 56, 57, 58
+	BExpr3          rules 59, 60, 61
+	Expr1           rules 62, 63, 64
+	Expr2           rules 65, 66, 67
+	Expr3           rules 68, 69
+	Expr4           rules 70, 71, 72
+	Expr            rules 73, 74
+	Type            rules 75, 76
+	CType           rules 77, 78
+	ADecl           rules 79, 80
+	FDecl           rules 81, 82, 83, 84
+	Decl1           rules 85, 86, 87
+	Decl            rules 88, 89
 
 -----------------------------------------------------------------------------
 States
@@ -519,16 +520,16 @@ State 21
 
 State 22
 
-	Decl -> Decl1 .                                     (rule 88)
+	Decl -> Decl1 .                                     (rule 89)
 
-	';'            reduce using rule 88
-	%eof           reduce using rule 88
+	';'            reduce using rule 89
+	%eof           reduce using rule 89
 
 
 State 23
 
 	%start_pDecl -> Decl .                              (rule 19)
-	Decl -> Decl . ';' Decl1                            (rule 87)
+	Decl -> Decl . ';' Decl1                            (rule 88)
 
 	';'            shift, and enter state 120
 	%eof           accept
@@ -536,9 +537,9 @@ State 23
 
 State 24
 
-	Decl1 -> 'let' . Ident 'be' Type                    (rule 84)
-	Decl1 -> 'let' . Ident 'be' CType                   (rule 85)
-	Decl1 -> 'let' . Ident 'be' FDecl 'do' Stmt 'end'    (rule 86)
+	Decl1 -> 'let' . Ident 'be' Type                    (rule 85)
+	Decl1 -> 'let' . Ident 'be' CType                   (rule 86)
+	Decl1 -> 'let' . Ident 'be' FDecl 'do' Stmt 'end'    (rule 87)
 
 	L_Ident        shift, and enter state 21
 
@@ -560,10 +561,10 @@ State 26
 
 State 27
 
-	FDecl -> 'fun' . 'to' 'void'                        (rule 80)
-	FDecl -> 'fun' . 'to' Ident 'of' Type               (rule 81)
-	FDecl -> 'fun' . 'from' ADecl 'to' 'void'           (rule 82)
-	FDecl -> 'fun' . 'from' ADecl 'to' Ident 'of' Type    (rule 83)
+	FDecl -> 'fun' . 'to' 'void'                        (rule 81)
+	FDecl -> 'fun' . 'to' Ident 'of' Type               (rule 82)
+	FDecl -> 'fun' . 'from' ADecl 'to' 'void'           (rule 83)
+	FDecl -> 'fun' . 'from' ADecl 'to' Ident 'of' Type    (rule 84)
 
 	'from'         shift, and enter state 117
 	'to'           shift, and enter state 118
@@ -571,8 +572,8 @@ State 27
 
 State 28
 
-	ADecl -> Ident . 'of' Type                          (rule 78)
-	ADecl -> Ident . 'of' Type ',' ADecl                (rule 79)
+	ADecl -> Ident . 'of' Type                          (rule 79)
+	ADecl -> Ident . 'of' Type ',' ADecl                (rule 80)
 
 	'of'           shift, and enter state 116
 
@@ -593,14 +594,14 @@ State 30
 
 State 31
 
-	CType -> 'array' . 'of' Integer Type                (rule 76)
+	CType -> 'array' . 'of' Integer Type                (rule 77)
 
 	'of'           shift, and enter state 115
 
 
 State 32
 
-	CType -> 'dict' . 'of' Type                         (rule 77)
+	CType -> 'dict' . 'of' Type                         (rule 78)
 
 	'of'           shift, and enter state 114
 
@@ -614,18 +615,7 @@ State 33
 
 State 34
 
-	Type -> 'bool' .                                    (rule 74)
-
-	','            reduce using rule 74
-	';'            reduce using rule 74
-	'do'           reduce using rule 74
-	'to'           reduce using rule 74
-	%eof           reduce using rule 74
-
-
-State 35
-
-	Type -> 'int' .                                     (rule 75)
+	Type -> 'bool' .                                    (rule 75)
 
 	','            reduce using rule 75
 	';'            reduce using rule 75
@@ -634,9 +624,51 @@ State 35
 	%eof           reduce using rule 75
 
 
+State 35
+
+	Type -> 'int' .                                     (rule 76)
+
+	','            reduce using rule 76
+	';'            reduce using rule 76
+	'do'           reduce using rule 76
+	'to'           reduce using rule 76
+	%eof           reduce using rule 76
+
+
 State 36
 
-	Expr4 -> Ident .                                    (rule 70)
+	Expr4 -> Ident .                                    (rule 71)
+
+	'!='           reduce using rule 71
+	'&'            reduce using rule 71
+	')'            reduce using rule 71
+	'*'            reduce using rule 71
+	'+'            reduce using rule 71
+	'-'            reduce using rule 71
+	'/'            reduce using rule 71
+	':'            reduce using rule 71
+	';'            reduce using rule 71
+	'<'            reduce using rule 71
+	'<='           reduce using rule 71
+	'='            reduce using rule 71
+	'>'            reduce using rule 71
+	'>='           reduce using rule 71
+	'?'            reduce using rule 71
+	'catch'        reduce using rule 71
+	'do'           reduce using rule 71
+	'else'         reduce using rule 71
+	'end'          reduce using rule 71
+	'from'         reduce using rule 71
+	'in'           reduce using rule 71
+	'then'         reduce using rule 71
+	'to'           reduce using rule 71
+	'|'            reduce using rule 71
+	%eof           reduce using rule 71
+
+
+State 37
+
+	Expr4 -> Integer .                                  (rule 70)
 
 	'!='           reduce using rule 70
 	'&'            reduce using rule 70
@@ -665,9 +697,167 @@ State 36
 	%eof           reduce using rule 70
 
 
-State 37
+State 38
 
-	Expr4 -> Integer .                                  (rule 69)
+	BExpr -> BExpr . '&' BExpr1                         (rule 46)
+	BExpr -> BExpr . '|' BExpr1                         (rule 47)
+	Expr -> BExpr . '?' Expr1 ':' Expr1                 (rule 73)
+
+	'&'            shift, and enter state 95
+	'?'            shift, and enter state 113
+	'|'            shift, and enter state 96
+
+
+State 39
+
+	BExpr -> BExpr1 .                                   (rule 48)
+
+	'&'            reduce using rule 48
+	')'            reduce using rule 48
+	';'            reduce using rule 48
+	'?'            reduce using rule 48
+	'catch'        reduce using rule 48
+	'do'           reduce using rule 48
+	'else'         reduce using rule 48
+	'end'          reduce using rule 48
+	'then'         reduce using rule 48
+	'|'            reduce using rule 48
+	%eof           reduce using rule 48
+
+
+State 40
+
+	BExpr1 -> BExpr2 .                                  (rule 50)
+
+	'&'            reduce using rule 50
+	')'            reduce using rule 50
+	';'            reduce using rule 50
+	'?'            reduce using rule 50
+	'catch'        reduce using rule 50
+	'do'           reduce using rule 50
+	'else'         reduce using rule 50
+	'end'          reduce using rule 50
+	'then'         reduce using rule 50
+	'|'            reduce using rule 50
+	%eof           reduce using rule 50
+
+
+State 41
+
+	BExpr2 -> BExpr3 .                                  (rule 58)
+
+	'&'            reduce using rule 58
+	')'            reduce using rule 58
+	';'            reduce using rule 58
+	'?'            reduce using rule 58
+	'catch'        reduce using rule 58
+	'do'           reduce using rule 58
+	'else'         reduce using rule 58
+	'end'          reduce using rule 58
+	'then'         reduce using rule 58
+	'|'            reduce using rule 58
+	%eof           reduce using rule 58
+
+
+State 42
+
+	BExpr2 -> Expr1 . '=' Expr1                         (rule 51)
+	BExpr2 -> Expr1 . '<' Expr1                         (rule 52)
+	BExpr2 -> Expr1 . '<=' Expr1                        (rule 53)
+	BExpr2 -> Expr1 . '>' Expr1                         (rule 54)
+	BExpr2 -> Expr1 . '>=' Expr1                        (rule 55)
+	BExpr2 -> Expr1 . '!=' Expr1                        (rule 56)
+	Expr1 -> Expr1 . '+' Expr2                          (rule 62)
+	Expr1 -> Expr1 . '-' Expr2                          (rule 63)
+	Expr -> Expr1 .                                     (rule 74)
+
+	'!='           shift, and enter state 97
+	')'            reduce using rule 74
+	'+'            shift, and enter state 98
+	'-'            shift, and enter state 99
+	';'            reduce using rule 74
+	'<'            shift, and enter state 100
+	'<='           shift, and enter state 101
+	'='            shift, and enter state 102
+	'>'            shift, and enter state 103
+	'>='           shift, and enter state 104
+	'catch'        reduce using rule 74
+	'do'           reduce using rule 74
+	'else'         reduce using rule 74
+	'end'          reduce using rule 74
+	'from'         reduce using rule 74
+	'in'           reduce using rule 74
+	'to'           reduce using rule 74
+	%eof           reduce using rule 74
+
+
+State 43
+
+	Expr1 -> Expr2 .                                    (rule 64)
+	Expr2 -> Expr2 . '*' Expr3                          (rule 65)
+	Expr2 -> Expr2 . '/' Expr3                          (rule 66)
+
+	'!='           reduce using rule 64
+	'&'            reduce using rule 64
+	')'            reduce using rule 64
+	'*'            shift, and enter state 106
+	'+'            reduce using rule 64
+	'-'            reduce using rule 64
+	'/'            shift, and enter state 107
+	':'            reduce using rule 64
+	';'            reduce using rule 64
+	'<'            reduce using rule 64
+	'<='           reduce using rule 64
+	'='            reduce using rule 64
+	'>'            reduce using rule 64
+	'>='           reduce using rule 64
+	'?'            reduce using rule 64
+	'catch'        reduce using rule 64
+	'do'           reduce using rule 64
+	'else'         reduce using rule 64
+	'end'          reduce using rule 64
+	'from'         reduce using rule 64
+	'in'           reduce using rule 64
+	'then'         reduce using rule 64
+	'to'           reduce using rule 64
+	'|'            reduce using rule 64
+	%eof           reduce using rule 64
+
+
+State 44
+
+	Expr2 -> Expr3 .                                    (rule 67)
+
+	'!='           reduce using rule 67
+	'&'            reduce using rule 67
+	')'            reduce using rule 67
+	'*'            reduce using rule 67
+	'+'            reduce using rule 67
+	'-'            reduce using rule 67
+	'/'            reduce using rule 67
+	':'            reduce using rule 67
+	';'            reduce using rule 67
+	'<'            reduce using rule 67
+	'<='           reduce using rule 67
+	'='            reduce using rule 67
+	'>'            reduce using rule 67
+	'>='           reduce using rule 67
+	'?'            reduce using rule 67
+	'catch'        reduce using rule 67
+	'do'           reduce using rule 67
+	'else'         reduce using rule 67
+	'end'          reduce using rule 67
+	'from'         reduce using rule 67
+	'in'           reduce using rule 67
+	'then'         reduce using rule 67
+	'to'           reduce using rule 67
+	'|'            reduce using rule 67
+	%eof           reduce using rule 67
+
+
+State 45
+
+	Expr3 -> Expr4 .                                    (rule 69)
 
 	'!='           reduce using rule 69
 	'&'            reduce using rule 69
@@ -696,183 +886,6 @@ State 37
 	%eof           reduce using rule 69
 
 
-State 38
-
-	BExpr -> BExpr . '&' BExpr1                         (rule 45)
-	BExpr -> BExpr . '|' BExpr1                         (rule 46)
-	Expr -> BExpr . '?' Expr1 ':' Expr1                 (rule 72)
-
-	'&'            shift, and enter state 95
-	'?'            shift, and enter state 113
-	'|'            shift, and enter state 96
-
-
-State 39
-
-	BExpr -> BExpr1 .                                   (rule 47)
-
-	'&'            reduce using rule 47
-	')'            reduce using rule 47
-	'?'            reduce using rule 47
-	'do'           reduce using rule 47
-	'then'         reduce using rule 47
-	'|'            reduce using rule 47
-	%eof           reduce using rule 47
-
-
-State 40
-
-	BExpr1 -> BExpr2 .                                  (rule 49)
-
-	'&'            reduce using rule 49
-	')'            reduce using rule 49
-	'?'            reduce using rule 49
-	'do'           reduce using rule 49
-	'then'         reduce using rule 49
-	'|'            reduce using rule 49
-	%eof           reduce using rule 49
-
-
-State 41
-
-	BExpr2 -> BExpr3 .                                  (rule 57)
-
-	'&'            reduce using rule 57
-	')'            reduce using rule 57
-	'?'            reduce using rule 57
-	'do'           reduce using rule 57
-	'then'         reduce using rule 57
-	'|'            reduce using rule 57
-	%eof           reduce using rule 57
-
-
-State 42
-
-	BExpr2 -> Expr1 . '=' Expr1                         (rule 50)
-	BExpr2 -> Expr1 . '<' Expr1                         (rule 51)
-	BExpr2 -> Expr1 . '<=' Expr1                        (rule 52)
-	BExpr2 -> Expr1 . '>' Expr1                         (rule 53)
-	BExpr2 -> Expr1 . '>=' Expr1                        (rule 54)
-	BExpr2 -> Expr1 . '!=' Expr1                        (rule 55)
-	Expr1 -> Expr1 . '+' Expr2                          (rule 61)
-	Expr1 -> Expr1 . '-' Expr2                          (rule 62)
-	Expr -> Expr1 .                                     (rule 73)
-
-	'!='           shift, and enter state 97
-	')'            reduce using rule 73
-	'+'            shift, and enter state 98
-	'-'            shift, and enter state 99
-	';'            reduce using rule 73
-	'<'            shift, and enter state 100
-	'<='           shift, and enter state 101
-	'='            shift, and enter state 102
-	'>'            shift, and enter state 103
-	'>='           shift, and enter state 104
-	'catch'        reduce using rule 73
-	'do'           reduce using rule 73
-	'else'         reduce using rule 73
-	'end'          reduce using rule 73
-	'from'         reduce using rule 73
-	'in'           reduce using rule 73
-	'to'           reduce using rule 73
-	%eof           reduce using rule 73
-
-
-State 43
-
-	Expr1 -> Expr2 .                                    (rule 63)
-	Expr2 -> Expr2 . '*' Expr3                          (rule 64)
-	Expr2 -> Expr2 . '/' Expr3                          (rule 65)
-
-	'!='           reduce using rule 63
-	'&'            reduce using rule 63
-	')'            reduce using rule 63
-	'*'            shift, and enter state 106
-	'+'            reduce using rule 63
-	'-'            reduce using rule 63
-	'/'            shift, and enter state 107
-	':'            reduce using rule 63
-	';'            reduce using rule 63
-	'<'            reduce using rule 63
-	'<='           reduce using rule 63
-	'='            reduce using rule 63
-	'>'            reduce using rule 63
-	'>='           reduce using rule 63
-	'?'            reduce using rule 63
-	'catch'        reduce using rule 63
-	'do'           reduce using rule 63
-	'else'         reduce using rule 63
-	'end'          reduce using rule 63
-	'from'         reduce using rule 63
-	'in'           reduce using rule 63
-	'then'         reduce using rule 63
-	'to'           reduce using rule 63
-	'|'            reduce using rule 63
-	%eof           reduce using rule 63
-
-
-State 44
-
-	Expr2 -> Expr3 .                                    (rule 66)
-
-	'!='           reduce using rule 66
-	'&'            reduce using rule 66
-	')'            reduce using rule 66
-	'*'            reduce using rule 66
-	'+'            reduce using rule 66
-	'-'            reduce using rule 66
-	'/'            reduce using rule 66
-	':'            reduce using rule 66
-	';'            reduce using rule 66
-	'<'            reduce using rule 66
-	'<='           reduce using rule 66
-	'='            reduce using rule 66
-	'>'            reduce using rule 66
-	'>='           reduce using rule 66
-	'?'            reduce using rule 66
-	'catch'        reduce using rule 66
-	'do'           reduce using rule 66
-	'else'         reduce using rule 66
-	'end'          reduce using rule 66
-	'from'         reduce using rule 66
-	'in'           reduce using rule 66
-	'then'         reduce using rule 66
-	'to'           reduce using rule 66
-	'|'            reduce using rule 66
-	%eof           reduce using rule 66
-
-
-State 45
-
-	Expr3 -> Expr4 .                                    (rule 68)
-
-	'!='           reduce using rule 68
-	'&'            reduce using rule 68
-	')'            reduce using rule 68
-	'*'            reduce using rule 68
-	'+'            reduce using rule 68
-	'-'            reduce using rule 68
-	'/'            reduce using rule 68
-	':'            reduce using rule 68
-	';'            reduce using rule 68
-	'<'            reduce using rule 68
-	'<='           reduce using rule 68
-	'='            reduce using rule 68
-	'>'            reduce using rule 68
-	'>='           reduce using rule 68
-	'?'            reduce using rule 68
-	'catch'        reduce using rule 68
-	'do'           reduce using rule 68
-	'else'         reduce using rule 68
-	'end'          reduce using rule 68
-	'from'         reduce using rule 68
-	'in'           reduce using rule 68
-	'then'         reduce using rule 68
-	'to'           reduce using rule 68
-	'|'            reduce using rule 68
-	%eof           reduce using rule 68
-
-
 State 46
 
 	%start_pExpr -> Expr .                              (rule 13)
@@ -882,7 +895,7 @@ State 46
 
 State 47
 
-	BExpr1 -> '!' . BExpr3                              (rule 48)
+	BExpr1 -> '!' . BExpr3                              (rule 49)
 
 	'('            shift, and enter state 60
 	'false'        shift, and enter state 51
@@ -892,8 +905,8 @@ State 47
 
 State 48
 
-	BExpr3 -> '(' . BExpr ')'                           (rule 60)
-	Expr4 -> '(' . Expr ')'                             (rule 71)
+	BExpr3 -> '(' . BExpr ')'                           (rule 61)
+	Expr4 -> '(' . Expr ')'                             (rule 72)
 
 	'!'            shift, and enter state 47
 	'('            shift, and enter state 48
@@ -918,7 +931,7 @@ State 48
 
 State 49
 
-	Expr3 -> '-' . Expr4                                (rule 67)
+	Expr3 -> '-' . Expr4                                (rule 68)
 
 	'('            shift, and enter state 55
 	L_Ident        shift, and enter state 21
@@ -930,7 +943,7 @@ State 49
 
 State 50
 
-	BExpr2 -> 'check' . Expr 'in' Ident                 (rule 56)
+	BExpr2 -> 'check' . Expr 'in' Ident                 (rule 57)
 
 	'!'            shift, and enter state 47
 	'('            shift, and enter state 48
@@ -955,28 +968,36 @@ State 50
 
 State 51
 
-	BExpr3 -> 'false' .                                 (rule 59)
+	BExpr3 -> 'false' .                                 (rule 60)
 
-	'&'            reduce using rule 59
-	')'            reduce using rule 59
-	'?'            reduce using rule 59
-	'do'           reduce using rule 59
-	'then'         reduce using rule 59
-	'|'            reduce using rule 59
-	%eof           reduce using rule 59
+	'&'            reduce using rule 60
+	')'            reduce using rule 60
+	';'            reduce using rule 60
+	'?'            reduce using rule 60
+	'catch'        reduce using rule 60
+	'do'           reduce using rule 60
+	'else'         reduce using rule 60
+	'end'          reduce using rule 60
+	'then'         reduce using rule 60
+	'|'            reduce using rule 60
+	%eof           reduce using rule 60
 
 
 State 52
 
-	BExpr3 -> 'true' .                                  (rule 58)
+	BExpr3 -> 'true' .                                  (rule 59)
 
-	'&'            reduce using rule 58
-	')'            reduce using rule 58
-	'?'            reduce using rule 58
-	'do'           reduce using rule 58
-	'then'         reduce using rule 58
-	'|'            reduce using rule 58
-	%eof           reduce using rule 58
+	'&'            reduce using rule 59
+	')'            reduce using rule 59
+	';'            reduce using rule 59
+	'?'            reduce using rule 59
+	'catch'        reduce using rule 59
+	'do'           reduce using rule 59
+	'else'         reduce using rule 59
+	'end'          reduce using rule 59
+	'then'         reduce using rule 59
+	'|'            reduce using rule 59
+	%eof           reduce using rule 59
 
 
 State 53
@@ -1021,7 +1042,7 @@ State 54
 
 State 55
 
-	Expr4 -> '(' . Expr ')'                             (rule 71)
+	Expr4 -> '(' . Expr ')'                             (rule 72)
 
 	'!'            shift, and enter state 47
 	'('            shift, and enter state 48
@@ -1054,8 +1075,8 @@ State 56
 State 57
 
 	%start_pExpr2 -> Expr2 .                            (rule 10)
-	Expr2 -> Expr2 . '*' Expr3                          (rule 64)
-	Expr2 -> Expr2 . '/' Expr3                          (rule 65)
+	Expr2 -> Expr2 . '*' Expr3                          (rule 65)
+	Expr2 -> Expr2 . '/' Expr3                          (rule 66)
 
 	'*'            shift, and enter state 106
 	'/'            shift, and enter state 107
@@ -1065,8 +1086,8 @@ State 57
 State 58
 
 	%start_pExpr1 -> Expr1 .                            (rule 9)
-	Expr1 -> Expr1 . '+' Expr2                          (rule 61)
-	Expr1 -> Expr1 . '-' Expr2                          (rule 62)
+	Expr1 -> Expr1 . '+' Expr2                          (rule 62)
+	Expr1 -> Expr1 . '-' Expr2                          (rule 63)
 
 	'+'            shift, and enter state 98
 	'-'            shift, and enter state 99
@@ -1082,7 +1103,7 @@ State 59
 
 State 60
 
-	BExpr3 -> '(' . BExpr ')'                           (rule 60)
+	BExpr3 -> '(' . BExpr ')'                           (rule 61)
 
 	'!'            shift, and enter state 47
 	'('            shift, and enter state 48
@@ -1113,14 +1134,14 @@ State 61
 
 State 62
 
-	BExpr2 -> Expr1 . '=' Expr1                         (rule 50)
-	BExpr2 -> Expr1 . '<' Expr1                         (rule 51)
-	BExpr2 -> Expr1 . '<=' Expr1                        (rule 52)
-	BExpr2 -> Expr1 . '>' Expr1                         (rule 53)
-	BExpr2 -> Expr1 . '>=' Expr1                        (rule 54)
-	BExpr2 -> Expr1 . '!=' Expr1                        (rule 55)
-	Expr1 -> Expr1 . '+' Expr2                          (rule 61)
-	Expr1 -> Expr1 . '-' Expr2                          (rule 62)
+	BExpr2 -> Expr1 . '=' Expr1                         (rule 51)
+	BExpr2 -> Expr1 . '<' Expr1                         (rule 52)
+	BExpr2 -> Expr1 . '<=' Expr1                        (rule 53)
+	BExpr2 -> Expr1 . '>' Expr1                         (rule 54)
+	BExpr2 -> Expr1 . '>=' Expr1                        (rule 55)
+	BExpr2 -> Expr1 . '!=' Expr1                        (rule 56)
+	Expr1 -> Expr1 . '+' Expr2                          (rule 62)
+	Expr1 -> Expr1 . '-' Expr2                          (rule 63)
 
 	'!='           shift, and enter state 97
 	'+'            shift, and enter state 98
@@ -1142,8 +1163,8 @@ State 63
 State 64
 
 	%start_pBExpr -> BExpr .                            (rule 5)
-	BExpr -> BExpr . '&' BExpr1                         (rule 45)
-	BExpr -> BExpr . '|' BExpr1                         (rule 46)
+	BExpr -> BExpr . '&' BExpr1                         (rule 46)
+	BExpr -> BExpr . '|' BExpr1                         (rule 47)
 
 	'&'            shift, and enter state 95
 	'|'            shift, and enter state 96
@@ -1159,10 +1180,10 @@ State 65
 
 State 66
 
-	Stmt2 -> 'for' . Ident 'from' Expr 'to' Expr 'do' Stmt 'end'    (rule 41)
-	Stmt2 -> 'for' . Ident 'in' 'keys' Ident 'do' Stmt 'end'    (rule 42)
-	Stmt2 -> 'for' . Ident 'in' 'values' Ident 'do' Stmt 'end'    (rule 43)
-	Stmt2 -> 'for' . Ident ',' Ident 'in' Ident 'do' Stmt 'end'    (rule 44)
+	Stmt2 -> 'for' . Ident 'from' Expr 'to' Expr 'do' Stmt 'end'    (rule 42)
+	Stmt2 -> 'for' . Ident 'in' 'keys' Ident 'do' Stmt 'end'    (rule 43)
+	Stmt2 -> 'for' . Ident 'in' 'values' Ident 'do' Stmt 'end'    (rule 44)
+	Stmt2 -> 'for' . Ident ',' Ident 'in' Ident 'do' Stmt 'end'    (rule 45)
 
 	L_Ident        shift, and enter state 21
 
@@ -1170,8 +1191,8 @@ State 66
 
 State 67
 
-	Stmt2 -> 'if' . BExpr 'then' Stmt 'else' Stmt 'end'    (rule 38)
-	Stmt2 -> 'if' . BExpr 'then' Stmt 'end'             (rule 39)
+	Stmt2 -> 'if' . BExpr 'then' Stmt 'else' Stmt 'end'    (rule 39)
+	Stmt2 -> 'if' . BExpr 'then' Stmt 'end'             (rule 40)
 
 	'!'            shift, and enter state 47
 	'('            shift, and enter state 48
@@ -1195,7 +1216,7 @@ State 67
 
 State 68
 
-	Stmt2 -> 'while' . BExpr 'do' Stmt1                 (rule 40)
+	Stmt2 -> 'while' . BExpr 'do' Stmt1                 (rule 41)
 
 	'!'            shift, and enter state 47
 	'('            shift, and enter state 48
@@ -1226,18 +1247,18 @@ State 69
 
 State 70
 
-	Stmt1 -> Stmt2 .                                    (rule 37)
+	Stmt1 -> Stmt2 .                                    (rule 38)
 
-	';'            reduce using rule 37
-	'catch'        reduce using rule 37
-	'else'         reduce using rule 37
-	'end'          reduce using rule 37
-	%eof           reduce using rule 37
+	';'            reduce using rule 38
+	'catch'        reduce using rule 38
+	'else'         reduce using rule 38
+	'end'          reduce using rule 38
+	%eof           reduce using rule 38
 
 
 State 71
 
-	Stmt1 -> 'del' . Expr 'from' Ident                  (rule 36)
+	Stmt1 -> 'del' . Expr 'from' Ident                  (rule 37)
 
 	'!'            shift, and enter state 47
 	'('            shift, and enter state 48
@@ -1263,8 +1284,9 @@ State 71
 State 72
 
 	Stmt1 -> 'set' . Var 'to' Expr                      (rule 33)
-	Stmt1 -> 'set' . Var 'to' 'call' Ident              (rule 34)
-	Stmt1 -> 'set' . Var 'to' 'call' Ident 'with' Arg    (rule 35)
+	Stmt1 -> 'set' . Var 'to' BExpr                     (rule 34)
+	Stmt1 -> 'set' . Var 'to' 'call' Ident              (rule 35)
+	Stmt1 -> 'set' . Var 'to' 'call' Ident 'with' Arg    (rule 36)
 
 	L_Ident        shift, and enter state 21
 
@@ -1437,7 +1459,7 @@ State 87
 State 88
 
 	Stmt -> 'begin' Decl . ';' Stmt 'end'               (rule 29)
-	Decl -> Decl . ';' Decl1                            (rule 87)
+	Decl -> Decl . ';' Decl1                            (rule 88)
 
 	';'            shift, and enter state 153
 
@@ -1463,24 +1485,25 @@ State 89
 State 90
 
 	Stmt1 -> 'set' Var . 'to' Expr                      (rule 33)
-	Stmt1 -> 'set' Var . 'to' 'call' Ident              (rule 34)
-	Stmt1 -> 'set' Var . 'to' 'call' Ident 'with' Arg    (rule 35)
+	Stmt1 -> 'set' Var . 'to' BExpr                     (rule 34)
+	Stmt1 -> 'set' Var . 'to' 'call' Ident              (rule 35)
+	Stmt1 -> 'set' Var . 'to' 'call' Ident 'with' Arg    (rule 36)
 
 	'to'           shift, and enter state 151
 
 
 State 91
 
-	Stmt1 -> 'del' Expr . 'from' Ident                  (rule 36)
+	Stmt1 -> 'del' Expr . 'from' Ident                  (rule 37)
 
 	'from'         shift, and enter state 150
 
 
 State 92
 
-	Stmt2 -> 'while' BExpr . 'do' Stmt1                 (rule 40)
-	BExpr -> BExpr . '&' BExpr1                         (rule 45)
-	BExpr -> BExpr . '|' BExpr1                         (rule 46)
+	Stmt2 -> 'while' BExpr . 'do' Stmt1                 (rule 41)
+	BExpr -> BExpr . '&' BExpr1                         (rule 46)
+	BExpr -> BExpr . '|' BExpr1                         (rule 47)
 
 	'&'            shift, and enter state 95
 	'do'           shift, and enter state 149
@@ -1489,10 +1512,10 @@ State 92
 
 State 93
 
-	Stmt2 -> 'if' BExpr . 'then' Stmt 'else' Stmt 'end'    (rule 38)
-	Stmt2 -> 'if' BExpr . 'then' Stmt 'end'             (rule 39)
-	BExpr -> BExpr . '&' BExpr1                         (rule 45)
-	BExpr -> BExpr . '|' BExpr1                         (rule 46)
+	Stmt2 -> 'if' BExpr . 'then' Stmt 'else' Stmt 'end'    (rule 39)
+	Stmt2 -> 'if' BExpr . 'then' Stmt 'end'             (rule 40)
+	BExpr -> BExpr . '&' BExpr1                         (rule 46)
+	BExpr -> BExpr . '|' BExpr1                         (rule 47)
 
 	'&'            shift, and enter state 95
 	'then'         shift, and enter state 148
@@ -1501,10 +1524,10 @@ State 93
 
 State 94
 
-	Stmt2 -> 'for' Ident . 'from' Expr 'to' Expr 'do' Stmt 'end'    (rule 41)
-	Stmt2 -> 'for' Ident . 'in' 'keys' Ident 'do' Stmt 'end'    (rule 42)
-	Stmt2 -> 'for' Ident . 'in' 'values' Ident 'do' Stmt 'end'    (rule 43)
-	Stmt2 -> 'for' Ident . ',' Ident 'in' Ident 'do' Stmt 'end'    (rule 44)
+	Stmt2 -> 'for' Ident . 'from' Expr 'to' Expr 'do' Stmt 'end'    (rule 42)
+	Stmt2 -> 'for' Ident . 'in' 'keys' Ident 'do' Stmt 'end'    (rule 43)
+	Stmt2 -> 'for' Ident . 'in' 'values' Ident 'do' Stmt 'end'    (rule 44)
+	Stmt2 -> 'for' Ident . ',' Ident 'in' Ident 'do' Stmt 'end'    (rule 45)
 
 	','            shift, and enter state 145
 	'from'         shift, and enter state 146
@@ -1513,7 +1536,7 @@ State 94
 
 State 95
 
-	BExpr -> BExpr '&' . BExpr1                         (rule 45)
+	BExpr -> BExpr '&' . BExpr1                         (rule 46)
 
 	'!'            shift, and enter state 47
 	'('            shift, and enter state 48
@@ -1536,7 +1559,7 @@ State 95
 
 State 96
 
-	BExpr -> BExpr '|' . BExpr1                         (rule 46)
+	BExpr -> BExpr '|' . BExpr1                         (rule 47)
 
 	'!'            shift, and enter state 47
 	'('            shift, and enter state 48
@@ -1559,7 +1582,7 @@ State 96
 
 State 97
 
-	BExpr2 -> Expr1 '!=' . Expr1                        (rule 55)
+	BExpr2 -> Expr1 '!=' . Expr1                        (rule 56)
 
 	'('            shift, and enter state 55
 	'-'            shift, and enter state 49
@@ -1575,7 +1598,7 @@ State 97
 
 State 98
 
-	Expr1 -> Expr1 '+' . Expr2                          (rule 61)
+	Expr1 -> Expr1 '+' . Expr2                          (rule 62)
 
 	'('            shift, and enter state 55
 	'-'            shift, and enter state 49
@@ -1590,7 +1613,7 @@ State 98
 
 State 99
 
-	Expr1 -> Expr1 '-' . Expr2                          (rule 62)
+	Expr1 -> Expr1 '-' . Expr2                          (rule 63)
 
 	'('            shift, and enter state 55
 	'-'            shift, and enter state 49
@@ -1605,7 +1628,7 @@ State 99
 
 State 100
 
-	BExpr2 -> Expr1 '<' . Expr1                         (rule 51)
+	BExpr2 -> Expr1 '<' . Expr1                         (rule 52)
 
 	'('            shift, and enter state 55
 	'-'            shift, and enter state 49
@@ -1621,7 +1644,7 @@ State 100
 
 State 101
 
-	BExpr2 -> Expr1 '<=' . Expr1                        (rule 52)
+	BExpr2 -> Expr1 '<=' . Expr1                        (rule 53)
 
 	'('            shift, and enter state 55
 	'-'            shift, and enter state 49
@@ -1637,7 +1660,7 @@ State 101
 
 State 102
 
-	BExpr2 -> Expr1 '=' . Expr1                         (rule 50)
+	BExpr2 -> Expr1 '=' . Expr1                         (rule 51)
 
 	'('            shift, and enter state 55
 	'-'            shift, and enter state 49
@@ -1653,7 +1676,7 @@ State 102
 
 State 103
 
-	BExpr2 -> Expr1 '>' . Expr1                         (rule 53)
+	BExpr2 -> Expr1 '>' . Expr1                         (rule 54)
 
 	'('            shift, and enter state 55
 	'-'            shift, and enter state 49
@@ -1669,7 +1692,7 @@ State 103
 
 State 104
 
-	BExpr2 -> Expr1 '>=' . Expr1                        (rule 54)
+	BExpr2 -> Expr1 '>=' . Expr1                        (rule 55)
 
 	'('            shift, and enter state 55
 	'-'            shift, and enter state 49
@@ -1685,9 +1708,9 @@ State 104
 
 State 105
 
-	BExpr -> BExpr . '&' BExpr1                         (rule 45)
-	BExpr -> BExpr . '|' BExpr1                         (rule 46)
-	BExpr3 -> '(' BExpr . ')'                           (rule 60)
+	BExpr -> BExpr . '&' BExpr1                         (rule 46)
+	BExpr -> BExpr . '|' BExpr1                         (rule 47)
+	BExpr3 -> '(' BExpr . ')'                           (rule 61)
 
 	'&'            shift, and enter state 95
 	')'            shift, and enter state 130
@@ -1696,7 +1719,7 @@ State 105
 
 State 106
 
-	Expr2 -> Expr2 '*' . Expr3                          (rule 64)
+	Expr2 -> Expr2 '*' . Expr3                          (rule 65)
 
 	'('            shift, and enter state 55
 	'-'            shift, and enter state 49
@@ -1710,7 +1733,7 @@ State 106
 
 State 107
 
-	Expr2 -> Expr2 '/' . Expr3                          (rule 65)
+	Expr2 -> Expr2 '/' . Expr3                          (rule 66)
 
 	'('            shift, and enter state 55
 	'-'            shift, and enter state 49
@@ -1724,55 +1747,55 @@ State 107
 
 State 108
 
-	Expr4 -> '(' Expr . ')'                             (rule 71)
+	Expr4 -> '(' Expr . ')'                             (rule 72)
 
 	')'            shift, and enter state 132
 
 
 State 109
 
-	BExpr2 -> 'check' Expr . 'in' Ident                 (rule 56)
+	BExpr2 -> 'check' Expr . 'in' Ident                 (rule 57)
 
 	'in'           shift, and enter state 131
 
 
 State 110
 
-	Expr3 -> '-' Expr4 .                                (rule 67)
+	Expr3 -> '-' Expr4 .                                (rule 68)
 
-	'!='           reduce using rule 67
-	'&'            reduce using rule 67
-	')'            reduce using rule 67
-	'*'            reduce using rule 67
-	'+'            reduce using rule 67
-	'-'            reduce using rule 67
-	'/'            reduce using rule 67
-	':'            reduce using rule 67
-	';'            reduce using rule 67
-	'<'            reduce using rule 67
-	'<='           reduce using rule 67
-	'='            reduce using rule 67
-	'>'            reduce using rule 67
-	'>='           reduce using rule 67
-	'?'            reduce using rule 67
-	'catch'        reduce using rule 67
-	'do'           reduce using rule 67
-	'else'         reduce using rule 67
-	'end'          reduce using rule 67
-	'from'         reduce using rule 67
-	'in'           reduce using rule 67
-	'then'         reduce using rule 67
-	'to'           reduce using rule 67
-	'|'            reduce using rule 67
-	%eof           reduce using rule 67
+	'!='           reduce using rule 68
+	'&'            reduce using rule 68
+	')'            reduce using rule 68
+	'*'            reduce using rule 68
+	'+'            reduce using rule 68
+	'-'            reduce using rule 68
+	'/'            reduce using rule 68
+	':'            reduce using rule 68
+	';'            reduce using rule 68
+	'<'            reduce using rule 68
+	'<='           reduce using rule 68
+	'='            reduce using rule 68
+	'>'            reduce using rule 68
+	'>='           reduce using rule 68
+	'?'            reduce using rule 68
+	'catch'        reduce using rule 68
+	'do'           reduce using rule 68
+	'else'         reduce using rule 68
+	'end'          reduce using rule 68
+	'from'         reduce using rule 68
+	'in'           reduce using rule 68
+	'then'         reduce using rule 68
+	'to'           reduce using rule 68
+	'|'            reduce using rule 68
+	%eof           reduce using rule 68
 
 
 State 111
 
-	BExpr -> BExpr . '&' BExpr1                         (rule 45)
-	BExpr -> BExpr . '|' BExpr1                         (rule 46)
-	BExpr3 -> '(' BExpr . ')'                           (rule 60)
-	Expr -> BExpr . '?' Expr1 ':' Expr1                 (rule 72)
+	BExpr -> BExpr . '&' BExpr1                         (rule 46)
+	BExpr -> BExpr . '|' BExpr1                         (rule 47)
+	BExpr3 -> '(' BExpr . ')'                           (rule 61)
+	Expr -> BExpr . '?' Expr1 ':' Expr1                 (rule 73)
 
 	'&'            shift, and enter state 95
 	')'            shift, and enter state 130
@@ -1782,20 +1805,24 @@ State 111
 
 State 112
 
-	BExpr1 -> '!' BExpr3 .                              (rule 48)
+	BExpr1 -> '!' BExpr3 .                              (rule 49)
 
-	'&'            reduce using rule 48
-	')'            reduce using rule 48
-	'?'            reduce using rule 48
-	'do'           reduce using rule 48
-	'then'         reduce using rule 48
-	'|'            reduce using rule 48
-	%eof           reduce using rule 48
+	'&'            reduce using rule 49
+	')'            reduce using rule 49
+	';'            reduce using rule 49
+	'?'            reduce using rule 49
+	'catch'        reduce using rule 49
+	'do'           reduce using rule 49
+	'else'         reduce using rule 49
+	'end'          reduce using rule 49
+	'then'         reduce using rule 49
+	'|'            reduce using rule 49
+	%eof           reduce using rule 49
 
 
 State 113
 
-	Expr -> BExpr '?' . Expr1 ':' Expr1                 (rule 72)
+	Expr -> BExpr '?' . Expr1 ':' Expr1                 (rule 73)
 
 	'('            shift, and enter state 55
 	'-'            shift, and enter state 49
@@ -1811,7 +1838,7 @@ State 113
 
 State 114
 
-	CType -> 'dict' 'of' . Type                         (rule 77)
+	CType -> 'dict' 'of' . Type                         (rule 78)
 
 	'bool'         shift, and enter state 34
 	'int'          shift, and enter state 35
@@ -1820,7 +1847,7 @@ State 114
 
 State 115
 
-	CType -> 'array' 'of' . Integer Type                (rule 76)
+	CType -> 'array' 'of' . Integer Type                (rule 77)
 
 	L_integ        shift, and enter state 53
 
@@ -1828,8 +1855,8 @@ State 115
 
 State 116
 
-	ADecl -> Ident 'of' . Type                          (rule 78)
-	ADecl -> Ident 'of' . Type ',' ADecl                (rule 79)
+	ADecl -> Ident 'of' . Type                          (rule 79)
+	ADecl -> Ident 'of' . Type ',' ADecl                (rule 80)
 
 	'bool'         shift, and enter state 34
 	'int'          shift, and enter state 35
@@ -1838,8 +1865,8 @@ State 116
 
 State 117
 
-	FDecl -> 'fun' 'from' . ADecl 'to' 'void'           (rule 82)
-	FDecl -> 'fun' 'from' . ADecl 'to' Ident 'of' Type    (rule 83)
+	FDecl -> 'fun' 'from' . ADecl 'to' 'void'           (rule 83)
+	FDecl -> 'fun' 'from' . ADecl 'to' Ident 'of' Type    (rule 84)
 
 	L_Ident        shift, and enter state 21
 
@@ -1848,8 +1875,8 @@ State 117
 
 State 118
 
-	FDecl -> 'fun' 'to' . 'void'                        (rule 80)
-	FDecl -> 'fun' 'to' . Ident 'of' Type               (rule 81)
+	FDecl -> 'fun' 'to' . 'void'                        (rule 81)
+	FDecl -> 'fun' 'to' . Ident 'of' Type               (rule 82)
 
 	'void'         shift, and enter state 124
 	L_Ident        shift, and enter state 21
@@ -1858,16 +1885,16 @@ State 118
 
 State 119
 
-	Decl1 -> 'let' Ident . 'be' Type                    (rule 84)
-	Decl1 -> 'let' Ident . 'be' CType                   (rule 85)
-	Decl1 -> 'let' Ident . 'be' FDecl 'do' Stmt 'end'    (rule 86)
+	Decl1 -> 'let' Ident . 'be' Type                    (rule 85)
+	Decl1 -> 'let' Ident . 'be' CType                   (rule 86)
+	Decl1 -> 'let' Ident . 'be' FDecl 'do' Stmt 'end'    (rule 87)
 
 	'be'           shift, and enter state 122
 
 
 State 120
 
-	Decl -> Decl ';' . Decl1                            (rule 87)
+	Decl -> Decl ';' . Decl1                            (rule 88)
 
 	'let'          shift, and enter state 24
 
@@ -1875,17 +1902,17 @@ State 120
 
 State 121
 
-	Decl -> Decl ';' Decl1 .                            (rule 87)
+	Decl -> Decl ';' Decl1 .                            (rule 88)
 
-	';'            reduce using rule 87
-	%eof           reduce using rule 87
+	';'            reduce using rule 88
+	%eof           reduce using rule 88
 
 
 State 122
 
-	Decl1 -> 'let' Ident 'be' . Type                    (rule 84)
-	Decl1 -> 'let' Ident 'be' . CType                   (rule 85)
-	Decl1 -> 'let' Ident 'be' . FDecl 'do' Stmt 'end'    (rule 86)
+	Decl1 -> 'let' Ident 'be' . Type                    (rule 85)
+	Decl1 -> 'let' Ident 'be' . CType                   (rule 86)
+	Decl1 -> 'let' Ident 'be' . FDecl 'do' Stmt 'end'    (rule 87)
 
 	'array'        shift, and enter state 31
 	'bool'         shift, and enter state 34
@@ -1893,126 +1920,161 @@ State 122
 	'fun'          shift, and enter state 27
 	'int'          shift, and enter state 35
 
-	Type           goto state 176
-	CType          goto state 177
-	FDecl          goto state 178
+	Type           goto state 177
+	CType          goto state 178
+	FDecl          goto state 179
 
 State 123
 
-	FDecl -> 'fun' 'to' Ident . 'of' Type               (rule 81)
+	FDecl -> 'fun' 'to' Ident . 'of' Type               (rule 82)
 
-	'of'           shift, and enter state 175
+	'of'           shift, and enter state 176
 
 
 State 124
 
-	FDecl -> 'fun' 'to' 'void' .                        (rule 80)
+	FDecl -> 'fun' 'to' 'void' .                        (rule 81)
 
-	'do'           reduce using rule 80
-	%eof           reduce using rule 80
+	'do'           reduce using rule 81
+	%eof           reduce using rule 81
 
 
 State 125
 
-	FDecl -> 'fun' 'from' ADecl . 'to' 'void'           (rule 82)
-	FDecl -> 'fun' 'from' ADecl . 'to' Ident 'of' Type    (rule 83)
+	FDecl -> 'fun' 'from' ADecl . 'to' 'void'           (rule 83)
+	FDecl -> 'fun' 'from' ADecl . 'to' Ident 'of' Type    (rule 84)
 
-	'to'           shift, and enter state 174
+	'to'           shift, and enter state 175
 
 
 State 126
 
-	ADecl -> Ident 'of' Type .                          (rule 78)
-	ADecl -> Ident 'of' Type . ',' ADecl                (rule 79)
+	ADecl -> Ident 'of' Type .                          (rule 79)
+	ADecl -> Ident 'of' Type . ',' ADecl                (rule 80)
 
-	','            shift, and enter state 173
-	'to'           reduce using rule 78
-	%eof           reduce using rule 78
+	','            shift, and enter state 174
+	'to'           reduce using rule 79
+	%eof           reduce using rule 79
 
 
 State 127
 
-	CType -> 'array' 'of' Integer . Type                (rule 76)
+	CType -> 'array' 'of' Integer . Type                (rule 77)
 
 	'bool'         shift, and enter state 34
 	'int'          shift, and enter state 35
 
-	Type           goto state 172
+	Type           goto state 173
 
 State 128
 
-	CType -> 'dict' 'of' Type .                         (rule 77)
+	CType -> 'dict' 'of' Type .                         (rule 78)
 
-	';'            reduce using rule 77
-	%eof           reduce using rule 77
+	';'            reduce using rule 78
+	%eof           reduce using rule 78
 
 
 State 129
 
-	Expr1 -> Expr1 . '+' Expr2                          (rule 61)
-	Expr1 -> Expr1 . '-' Expr2                          (rule 62)
-	Expr -> BExpr '?' Expr1 . ':' Expr1                 (rule 72)
+	Expr1 -> Expr1 . '+' Expr2                          (rule 62)
+	Expr1 -> Expr1 . '-' Expr2                          (rule 63)
+	Expr -> BExpr '?' Expr1 . ':' Expr1                 (rule 73)
 
 	'+'            shift, and enter state 98
 	'-'            shift, and enter state 99
-	':'            shift, and enter state 171
+	':'            shift, and enter state 172
 
 
 State 130
 
-	BExpr3 -> '(' BExpr ')' .                           (rule 60)
+	BExpr3 -> '(' BExpr ')' .                           (rule 61)
 
-	'&'            reduce using rule 60
-	')'            reduce using rule 60
-	'?'            reduce using rule 60
-	'do'           reduce using rule 60
-	'then'         reduce using rule 60
-	'|'            reduce using rule 60
-	%eof           reduce using rule 60
+	'&'            reduce using rule 61
+	')'            reduce using rule 61
+	';'            reduce using rule 61
+	'?'            reduce using rule 61
+	'catch'        reduce using rule 61
+	'do'           reduce using rule 61
+	'else'         reduce using rule 61
+	'end'          reduce using rule 61
+	'then'         reduce using rule 61
+	'|'            reduce using rule 61
+	%eof           reduce using rule 61
 
 
 State 131
 
-	BExpr2 -> 'check' Expr 'in' . Ident                 (rule 56)
+	BExpr2 -> 'check' Expr 'in' . Ident                 (rule 57)
 
 	L_Ident        shift, and enter state 21
 
-	Ident          goto state 170
+	Ident          goto state 171
 
 State 132
 
-	Expr4 -> '(' Expr ')' .                             (rule 71)
+	Expr4 -> '(' Expr ')' .                             (rule 72)
 
-	'!='           reduce using rule 71
-	'&'            reduce using rule 71
-	')'            reduce using rule 71
-	'*'            reduce using rule 71
-	'+'            reduce using rule 71
-	'-'            reduce using rule 71
-	'/'            reduce using rule 71
-	':'            reduce using rule 71
-	';'            reduce using rule 71
-	'<'            reduce using rule 71
-	'<='           reduce using rule 71
-	'='            reduce using rule 71
-	'>'            reduce using rule 71
-	'>='           reduce using rule 71
-	'?'            reduce using rule 71
-	'catch'        reduce using rule 71
-	'do'           reduce using rule 71
-	'else'         reduce using rule 71
-	'end'          reduce using rule 71
-	'from'         reduce using rule 71
-	'in'           reduce using rule 71
-	'then'         reduce using rule 71
-	'to'           reduce using rule 71
-	'|'            reduce using rule 71
-	%eof           reduce using rule 71
+	'!='           reduce using rule 72
+	'&'            reduce using rule 72
+	')'            reduce using rule 72
+	'*'            reduce using rule 72
+	'+'            reduce using rule 72
+	'-'            reduce using rule 72
+	'/'            reduce using rule 72
+	':'            reduce using rule 72
+	';'            reduce using rule 72
+	'<'            reduce using rule 72
+	'<='           reduce using rule 72
+	'='            reduce using rule 72
+	'>'            reduce using rule 72
+	'>='           reduce using rule 72
+	'?'            reduce using rule 72
+	'catch'        reduce using rule 72
+	'do'           reduce using rule 72
+	'else'         reduce using rule 72
+	'end'          reduce using rule 72
+	'from'         reduce using rule 72
+	'in'           reduce using rule 72
+	'then'         reduce using rule 72
+	'to'           reduce using rule 72
+	'|'            reduce using rule 72
+	%eof           reduce using rule 72
 
 
 State 133
 
-	Expr2 -> Expr2 '/' Expr3 .                          (rule 65)
+	Expr2 -> Expr2 '/' Expr3 .                          (rule 66)
+
+	'!='           reduce using rule 66
+	'&'            reduce using rule 66
+	')'            reduce using rule 66
+	'*'            reduce using rule 66
+	'+'            reduce using rule 66
+	'-'            reduce using rule 66
+	'/'            reduce using rule 66
+	':'            reduce using rule 66
+	';'            reduce using rule 66
+	'<'            reduce using rule 66
+	'<='           reduce using rule 66
+	'='            reduce using rule 66
+	'>'            reduce using rule 66
+	'>='           reduce using rule 66
+	'?'            reduce using rule 66
+	'catch'        reduce using rule 66
+	'do'           reduce using rule 66
+	'else'         reduce using rule 66
+	'end'          reduce using rule 66
+	'from'         reduce using rule 66
+	'in'           reduce using rule 66
+	'then'         reduce using rule 66
+	'to'           reduce using rule 66
+	'|'            reduce using rule 66
+	%eof           reduce using rule 66
+
+
+State 134
+
+	Expr2 -> Expr2 '*' Expr3 .                          (rule 65)
 
 	'!='           reduce using rule 65
 	'&'            reduce using rule 65
@@ -2041,127 +2103,149 @@ State 133
 	%eof           reduce using rule 65
 
 
-State 134
-
-	Expr2 -> Expr2 '*' Expr3 .                          (rule 64)
-
-	'!='           reduce using rule 64
-	'&'            reduce using rule 64
-	')'            reduce using rule 64
-	'*'            reduce using rule 64
-	'+'            reduce using rule 64
-	'-'            reduce using rule 64
-	'/'            reduce using rule 64
-	':'            reduce using rule 64
-	';'            reduce using rule 64
-	'<'            reduce using rule 64
-	'<='           reduce using rule 64
-	'='            reduce using rule 64
-	'>'            reduce using rule 64
-	'>='           reduce using rule 64
-	'?'            reduce using rule 64
-	'catch'        reduce using rule 64
-	'do'           reduce using rule 64
-	'else'         reduce using rule 64
-	'end'          reduce using rule 64
-	'from'         reduce using rule 64
-	'in'           reduce using rule 64
-	'then'         reduce using rule 64
-	'to'           reduce using rule 64
-	'|'            reduce using rule 64
-	%eof           reduce using rule 64
-
-
 State 135
 
-	BExpr2 -> Expr1 '>=' Expr1 .                        (rule 54)
-	Expr1 -> Expr1 . '+' Expr2                          (rule 61)
-	Expr1 -> Expr1 . '-' Expr2                          (rule 62)
+	BExpr2 -> Expr1 '>=' Expr1 .                        (rule 55)
+	Expr1 -> Expr1 . '+' Expr2                          (rule 62)
+	Expr1 -> Expr1 . '-' Expr2                          (rule 63)
+
+	'&'            reduce using rule 55
+	')'            reduce using rule 55
+	'+'            shift, and enter state 98
+	'-'            shift, and enter state 99
+	';'            reduce using rule 55
+	'?'            reduce using rule 55
+	'catch'        reduce using rule 55
+	'do'           reduce using rule 55
+	'else'         reduce using rule 55
+	'end'          reduce using rule 55
+	'then'         reduce using rule 55
+	'|'            reduce using rule 55
+	%eof           reduce using rule 55
+
+
+State 136
+
+	BExpr2 -> Expr1 '>' Expr1 .                         (rule 54)
+	Expr1 -> Expr1 . '+' Expr2                          (rule 62)
+	Expr1 -> Expr1 . '-' Expr2                          (rule 63)
 
 	'&'            reduce using rule 54
 	')'            reduce using rule 54
 	'+'            shift, and enter state 98
 	'-'            shift, and enter state 99
+	';'            reduce using rule 54
 	'?'            reduce using rule 54
+	'catch'        reduce using rule 54
 	'do'           reduce using rule 54
+	'else'         reduce using rule 54
+	'end'          reduce using rule 54
 	'then'         reduce using rule 54
 	'|'            reduce using rule 54
 	%eof           reduce using rule 54
 
 
-State 136
-
-	BExpr2 -> Expr1 '>' Expr1 .                         (rule 53)
-	Expr1 -> Expr1 . '+' Expr2                          (rule 61)
-	Expr1 -> Expr1 . '-' Expr2                          (rule 62)
-
-	'&'            reduce using rule 53
-	')'            reduce using rule 53
-	'+'            shift, and enter state 98
-	'-'            shift, and enter state 99
-	'?'            reduce using rule 53
-	'do'           reduce using rule 53
-	'then'         reduce using rule 53
-	'|'            reduce using rule 53
-	%eof           reduce using rule 53
-
-
 State 137
 
-	BExpr2 -> Expr1 '=' Expr1 .                         (rule 50)
-	Expr1 -> Expr1 . '+' Expr2                          (rule 61)
-	Expr1 -> Expr1 . '-' Expr2                          (rule 62)
-
-	'&'            reduce using rule 50
-	')'            reduce using rule 50
-	'+'            shift, and enter state 98
-	'-'            shift, and enter state 99
-	'?'            reduce using rule 50
-	'do'           reduce using rule 50
-	'then'         reduce using rule 50
-	'|'            reduce using rule 50
-	%eof           reduce using rule 50
-
-
-State 138
-
-	BExpr2 -> Expr1 '<=' Expr1 .                        (rule 52)
-	Expr1 -> Expr1 . '+' Expr2                          (rule 61)
-	Expr1 -> Expr1 . '-' Expr2                          (rule 62)
-
-	'&'            reduce using rule 52
-	')'            reduce using rule 52
-	'+'            shift, and enter state 98
-	'-'            shift, and enter state 99
-	'?'            reduce using rule 52
-	'do'           reduce using rule 52
-	'then'         reduce using rule 52
-	'|'            reduce using rule 52
-	%eof           reduce using rule 52
-
-
-State 139
-
-	BExpr2 -> Expr1 '<' Expr1 .                         (rule 51)
-	Expr1 -> Expr1 . '+' Expr2                          (rule 61)
-	Expr1 -> Expr1 . '-' Expr2                          (rule 62)
+	BExpr2 -> Expr1 '=' Expr1 .                         (rule 51)
+	Expr1 -> Expr1 . '+' Expr2                          (rule 62)
+	Expr1 -> Expr1 . '-' Expr2                          (rule 63)
 
 	'&'            reduce using rule 51
 	')'            reduce using rule 51
 	'+'            shift, and enter state 98
 	'-'            shift, and enter state 99
+	';'            reduce using rule 51
 	'?'            reduce using rule 51
+	'catch'        reduce using rule 51
 	'do'           reduce using rule 51
+	'else'         reduce using rule 51
+	'end'          reduce using rule 51
 	'then'         reduce using rule 51
 	'|'            reduce using rule 51
 	%eof           reduce using rule 51
 
 
+State 138
+
+	BExpr2 -> Expr1 '<=' Expr1 .                        (rule 53)
+	Expr1 -> Expr1 . '+' Expr2                          (rule 62)
+	Expr1 -> Expr1 . '-' Expr2                          (rule 63)
+
+	'&'            reduce using rule 53
+	')'            reduce using rule 53
+	'+'            shift, and enter state 98
+	'-'            shift, and enter state 99
+	';'            reduce using rule 53
+	'?'            reduce using rule 53
+	'catch'        reduce using rule 53
+	'do'           reduce using rule 53
+	'else'         reduce using rule 53
+	'end'          reduce using rule 53
+	'then'         reduce using rule 53
+	'|'            reduce using rule 53
+	%eof           reduce using rule 53
+
+
+State 139
+
+	BExpr2 -> Expr1 '<' Expr1 .                         (rule 52)
+	Expr1 -> Expr1 . '+' Expr2                          (rule 62)
+	Expr1 -> Expr1 . '-' Expr2                          (rule 63)
+
+	'&'            reduce using rule 52
+	')'            reduce using rule 52
+	'+'            shift, and enter state 98
+	'-'            shift, and enter state 99
+	';'            reduce using rule 52
+	'?'            reduce using rule 52
+	'catch'        reduce using rule 52
+	'do'           reduce using rule 52
+	'else'         reduce using rule 52
+	'end'          reduce using rule 52
+	'then'         reduce using rule 52
+	'|'            reduce using rule 52
+	%eof           reduce using rule 52
+
+
 State 140
 
-	Expr1 -> Expr1 '-' Expr2 .                          (rule 62)
-	Expr2 -> Expr2 . '*' Expr3                          (rule 64)
-	Expr2 -> Expr2 . '/' Expr3                          (rule 65)
+	Expr1 -> Expr1 '-' Expr2 .                          (rule 63)
+	Expr2 -> Expr2 . '*' Expr3                          (rule 65)
+	Expr2 -> Expr2 . '/' Expr3                          (rule 66)
+
+	'!='           reduce using rule 63
+	'&'            reduce using rule 63
+	')'            reduce using rule 63
+	'*'            shift, and enter state 106
+	'+'            reduce using rule 63
+	'-'            reduce using rule 63
+	'/'            shift, and enter state 107
+	':'            reduce using rule 63
+	';'            reduce using rule 63
+	'<'            reduce using rule 63
+	'<='           reduce using rule 63
+	'='            reduce using rule 63
+	'>'            reduce using rule 63
+	'>='           reduce using rule 63
+	'?'            reduce using rule 63
+	'catch'        reduce using rule 63
+	'do'           reduce using rule 63
+	'else'         reduce using rule 63
+	'end'          reduce using rule 63
+	'from'         reduce using rule 63
+	'in'           reduce using rule 63
+	'then'         reduce using rule 63
+	'to'           reduce using rule 63
+	'|'            reduce using rule 63
+	%eof           reduce using rule 63
+
+
+State 141
+
+	Expr1 -> Expr1 '+' Expr2 .                          (rule 62)
+	Expr2 -> Expr2 . '*' Expr3                          (rule 65)
+	Expr2 -> Expr2 . '/' Expr3                          (rule 66)
 
 	'!='           reduce using rule 62
 	'&'            reduce using rule 62
@@ -2190,93 +2274,72 @@ State 140
 	%eof           reduce using rule 62
 
 
-State 141
-
-	Expr1 -> Expr1 '+' Expr2 .                          (rule 61)
-	Expr2 -> Expr2 . '*' Expr3                          (rule 64)
-	Expr2 -> Expr2 . '/' Expr3                          (rule 65)
-
-	'!='           reduce using rule 61
-	'&'            reduce using rule 61
-	')'            reduce using rule 61
-	'*'            shift, and enter state 106
-	'+'            reduce using rule 61
-	'-'            reduce using rule 61
-	'/'            shift, and enter state 107
-	':'            reduce using rule 61
-	';'            reduce using rule 61
-	'<'            reduce using rule 61
-	'<='           reduce using rule 61
-	'='            reduce using rule 61
-	'>'            reduce using rule 61
-	'>='           reduce using rule 61
-	'?'            reduce using rule 61
-	'catch'        reduce using rule 61
-	'do'           reduce using rule 61
-	'else'         reduce using rule 61
-	'end'          reduce using rule 61
-	'from'         reduce using rule 61
-	'in'           reduce using rule 61
-	'then'         reduce using rule 61
-	'to'           reduce using rule 61
-	'|'            reduce using rule 61
-	%eof           reduce using rule 61
-
-
 State 142
 
-	BExpr2 -> Expr1 '!=' Expr1 .                        (rule 55)
-	Expr1 -> Expr1 . '+' Expr2                          (rule 61)
-	Expr1 -> Expr1 . '-' Expr2                          (rule 62)
+	BExpr2 -> Expr1 '!=' Expr1 .                        (rule 56)
+	Expr1 -> Expr1 . '+' Expr2                          (rule 62)
+	Expr1 -> Expr1 . '-' Expr2                          (rule 63)
 
-	'&'            reduce using rule 55
-	')'            reduce using rule 55
+	'&'            reduce using rule 56
+	')'            reduce using rule 56
 	'+'            shift, and enter state 98
 	'-'            shift, and enter state 99
-	'?'            reduce using rule 55
-	'do'           reduce using rule 55
-	'then'         reduce using rule 55
-	'|'            reduce using rule 55
-	%eof           reduce using rule 55
+	';'            reduce using rule 56
+	'?'            reduce using rule 56
+	'catch'        reduce using rule 56
+	'do'           reduce using rule 56
+	'else'         reduce using rule 56
+	'end'          reduce using rule 56
+	'then'         reduce using rule 56
+	'|'            reduce using rule 56
+	%eof           reduce using rule 56
 
 
 State 143
 
-	BExpr -> BExpr '|' BExpr1 .                         (rule 46)
+	BExpr -> BExpr '|' BExpr1 .                         (rule 47)
+
+	'&'            reduce using rule 47
+	')'            reduce using rule 47
+	';'            reduce using rule 47
+	'?'            reduce using rule 47
+	'catch'        reduce using rule 47
+	'do'           reduce using rule 47
+	'else'         reduce using rule 47
+	'end'          reduce using rule 47
+	'then'         reduce using rule 47
+	'|'            reduce using rule 47
+	%eof           reduce using rule 47
+
+
+State 144
+
+	BExpr -> BExpr '&' BExpr1 .                         (rule 46)
 
 	'&'            reduce using rule 46
 	')'            reduce using rule 46
+	';'            reduce using rule 46
 	'?'            reduce using rule 46
+	'catch'        reduce using rule 46
 	'do'           reduce using rule 46
+	'else'         reduce using rule 46
+	'end'          reduce using rule 46
 	'then'         reduce using rule 46
 	'|'            reduce using rule 46
 	%eof           reduce using rule 46
 
 
-State 144
-
-	BExpr -> BExpr '&' BExpr1 .                         (rule 45)
-
-	'&'            reduce using rule 45
-	')'            reduce using rule 45
-	'?'            reduce using rule 45
-	'do'           reduce using rule 45
-	'then'         reduce using rule 45
-	'|'            reduce using rule 45
-	%eof           reduce using rule 45
-
-
 State 145
 
-	Stmt2 -> 'for' Ident ',' . Ident 'in' Ident 'do' Stmt 'end'    (rule 44)
+	Stmt2 -> 'for' Ident ',' . Ident 'in' Ident 'do' Stmt 'end'    (rule 45)
 
 	L_Ident        shift, and enter state 21
 
-	Ident          goto state 169
+	Ident          goto state 170
 
 State 146
 
-	Stmt2 -> 'for' Ident 'from' . Expr 'to' Expr 'do' Stmt 'end'    (rule 41)
+	Stmt2 -> 'for' Ident 'from' . Expr 'to' Expr 'do' Stmt 'end'    (rule 42)
 
 	'!'            shift, and enter state 47
 	'('            shift, and enter state 48
@@ -2297,21 +2360,21 @@ State 146
 	Expr2          goto state 43
 	Expr3          goto state 44
 	Expr4          goto state 45
-	Expr           goto state 168
+	Expr           goto state 169
 
 State 147
 
-	Stmt2 -> 'for' Ident 'in' . 'keys' Ident 'do' Stmt 'end'    (rule 42)
-	Stmt2 -> 'for' Ident 'in' . 'values' Ident 'do' Stmt 'end'    (rule 43)
+	Stmt2 -> 'for' Ident 'in' . 'keys' Ident 'do' Stmt 'end'    (rule 43)
+	Stmt2 -> 'for' Ident 'in' . 'values' Ident 'do' Stmt 'end'    (rule 44)
 
-	'keys'         shift, and enter state 166
-	'values'       shift, and enter state 167
+	'keys'         shift, and enter state 167
+	'values'       shift, and enter state 168
 
 
 State 148
 
-	Stmt2 -> 'if' BExpr 'then' . Stmt 'else' Stmt 'end'    (rule 38)
-	Stmt2 -> 'if' BExpr 'then' . Stmt 'end'             (rule 39)
+	Stmt2 -> 'if' BExpr 'then' . Stmt 'else' Stmt 'end'    (rule 39)
+	Stmt2 -> 'if' BExpr 'then' . Stmt 'end'             (rule 40)
 
 	'begin'        shift, and enter state 75
 	'call'         shift, and enter state 76
@@ -2323,13 +2386,13 @@ State 148
 	'try'          shift, and enter state 78
 	'while'        shift, and enter state 68
 
-	Stmt           goto state 165
+	Stmt           goto state 166
 	Stmt1          goto state 74
 	Stmt2          goto state 70
 
 State 149
 
-	Stmt2 -> 'while' BExpr 'do' . Stmt1                 (rule 40)
+	Stmt2 -> 'while' BExpr 'do' . Stmt1                 (rule 41)
 
 	'del'          shift, and enter state 71
 	'for'          shift, and enter state 66
@@ -2337,27 +2400,28 @@ State 149
 	'set'          shift, and enter state 72
 	'while'        shift, and enter state 68
 
-	Stmt1          goto state 164
+	Stmt1          goto state 165
 	Stmt2          goto state 70
 
 State 150
 
-	Stmt1 -> 'del' Expr 'from' . Ident                  (rule 36)
+	Stmt1 -> 'del' Expr 'from' . Ident                  (rule 37)
 
 	L_Ident        shift, and enter state 21
 
-	Ident          goto state 163
+	Ident          goto state 164
 
 State 151
 
 	Stmt1 -> 'set' Var 'to' . Expr                      (rule 33)
-	Stmt1 -> 'set' Var 'to' . 'call' Ident              (rule 34)
-	Stmt1 -> 'set' Var 'to' . 'call' Ident 'with' Arg    (rule 35)
+	Stmt1 -> 'set' Var 'to' . BExpr                     (rule 34)
+	Stmt1 -> 'set' Var 'to' . 'call' Ident              (rule 35)
+	Stmt1 -> 'set' Var 'to' . 'call' Ident 'with' Arg    (rule 36)
 
 	'!'            shift, and enter state 47
 	'('            shift, and enter state 48
 	'-'            shift, and enter state 49
-	'call'         shift, and enter state 162
+	'call'         shift, and enter state 163
 	'check'        shift, and enter state 50
 	'false'        shift, and enter state 51
 	'true'         shift, and enter state 52
@@ -2366,7 +2430,7 @@ State 151
 
 	Ident          goto state 36
 	Integer        goto state 37
-	BExpr          goto state 38
+	BExpr          goto state 161
 	BExpr1         goto state 39
 	BExpr2         goto state 40
 	BExpr3         goto state 41
@@ -2374,7 +2438,7 @@ State 151
 	Expr2          goto state 43
 	Expr3          goto state 44
 	Expr4          goto state 45
-	Expr           goto state 161
+	Expr           goto state 162
 
 State 152
 
@@ -2389,7 +2453,7 @@ State 152
 State 153
 
 	Stmt -> 'begin' Decl ';' . Stmt 'end'               (rule 29)
-	Decl -> Decl ';' . Decl1                            (rule 87)
+	Decl -> Decl ';' . Decl1                            (rule 88)
 
 	'begin'        shift, and enter state 75
 	'call'         shift, and enter state 76
@@ -2457,7 +2521,7 @@ State 158
 
 	Stmt -> 'try' Stmt 'catch' Stmt . 'end'             (rule 30)
 
-	'end'          shift, and enter state 193
+	'end'          shift, and enter state 194
 
 
 State 159
@@ -2474,10 +2538,27 @@ State 160
 
 	Stmt -> 'begin' Decl ';' Stmt . 'end'               (rule 29)
 
-	'end'          shift, and enter state 192
+	'end'          shift, and enter state 193
 
 
 State 161
+
+	Stmt1 -> 'set' Var 'to' BExpr .                     (rule 34)
+	BExpr -> BExpr . '&' BExpr1                         (rule 46)
+	BExpr -> BExpr . '|' BExpr1                         (rule 47)
+	Expr -> BExpr . '?' Expr1 ':' Expr1                 (rule 73)
+
+	'&'            shift, and enter state 95
+	';'            reduce using rule 34
+	'?'            shift, and enter state 113
+	'catch'        reduce using rule 34
+	'else'         reduce using rule 34
+	'end'          reduce using rule 34
+	'|'            shift, and enter state 96
+	%eof           reduce using rule 34
+
+
+State 162
 
 	Stmt1 -> 'set' Var 'to' Expr .                      (rule 33)
 
@@ -2488,92 +2569,96 @@ State 161
 	%eof           reduce using rule 33
 
 
-State 162
+State 163
 
-	Stmt1 -> 'set' Var 'to' 'call' . Ident              (rule 34)
-	Stmt1 -> 'set' Var 'to' 'call' . Ident 'with' Arg    (rule 35)
+	Stmt1 -> 'set' Var 'to' 'call' . Ident              (rule 35)
+	Stmt1 -> 'set' Var 'to' 'call' . Ident 'with' Arg    (rule 36)
 
 	L_Ident        shift, and enter state 21
 
-	Ident          goto state 191
-
-State 163
-
-	Stmt1 -> 'del' Expr 'from' Ident .                  (rule 36)
-
-	';'            reduce using rule 36
-	'catch'        reduce using rule 36
-	'else'         reduce using rule 36
-	'end'          reduce using rule 36
-	%eof           reduce using rule 36
-
+	Ident          goto state 192
 
 State 164
 
-	Stmt2 -> 'while' BExpr 'do' Stmt1 .                 (rule 40)
+	Stmt1 -> 'del' Expr 'from' Ident .                  (rule 37)
 
-	';'            reduce using rule 40
-	'catch'        reduce using rule 40
-	'else'         reduce using rule 40
-	'end'          reduce using rule 40
-	%eof           reduce using rule 40
+	';'            reduce using rule 37
+	'catch'        reduce using rule 37
+	'else'         reduce using rule 37
+	'end'          reduce using rule 37
+	%eof           reduce using rule 37
 
 
 State 165
 
-	Stmt2 -> 'if' BExpr 'then' Stmt . 'else' Stmt 'end'    (rule 38)
-	Stmt2 -> 'if' BExpr 'then' Stmt . 'end'             (rule 39)
+	Stmt2 -> 'while' BExpr 'do' Stmt1 .                 (rule 41)
 
-	'else'         shift, and enter state 189
-	'end'          shift, and enter state 190
+	';'            reduce using rule 41
+	'catch'        reduce using rule 41
+	'else'         reduce using rule 41
+	'end'          reduce using rule 41
+	%eof           reduce using rule 41
 
 
 State 166
 
-	Stmt2 -> 'for' Ident 'in' 'keys' . Ident 'do' Stmt 'end'    (rule 42)
+	Stmt2 -> 'if' BExpr 'then' Stmt . 'else' Stmt 'end'    (rule 39)
+	Stmt2 -> 'if' BExpr 'then' Stmt . 'end'             (rule 40)
+
+	'else'         shift, and enter state 190
+	'end'          shift, and enter state 191
+
+
+State 167
+
+	Stmt2 -> 'for' Ident 'in' 'keys' . Ident 'do' Stmt 'end'    (rule 43)
+
+	L_Ident        shift, and enter state 21
+
+	Ident          goto state 189
+
+State 168
+
+	Stmt2 -> 'for' Ident 'in' 'values' . Ident 'do' Stmt 'end'    (rule 44)
 
 	L_Ident        shift, and enter state 21
 
 	Ident          goto state 188
 
-State 167
-
-	Stmt2 -> 'for' Ident 'in' 'values' . Ident 'do' Stmt 'end'    (rule 43)
-
-	L_Ident        shift, and enter state 21
-
-	Ident          goto state 187
-
-State 168
-
-	Stmt2 -> 'for' Ident 'from' Expr . 'to' Expr 'do' Stmt 'end'    (rule 41)
-
-	'to'           shift, and enter state 186
-
-
 State 169
 
-	Stmt2 -> 'for' Ident ',' Ident . 'in' Ident 'do' Stmt 'end'    (rule 44)
+	Stmt2 -> 'for' Ident 'from' Expr . 'to' Expr 'do' Stmt 'end'    (rule 42)
 
-	'in'           shift, and enter state 185
+	'to'           shift, and enter state 187
 
 
 State 170
 
-	BExpr2 -> 'check' Expr 'in' Ident .                 (rule 56)
+	Stmt2 -> 'for' Ident ',' Ident . 'in' Ident 'do' Stmt 'end'    (rule 45)
 
-	'&'            reduce using rule 56
-	')'            reduce using rule 56
-	'?'            reduce using rule 56
-	'do'           reduce using rule 56
-	'then'         reduce using rule 56
-	'|'            reduce using rule 56
-	%eof           reduce using rule 56
+	'in'           shift, and enter state 186
 
 
 State 171
 
-	Expr -> BExpr '?' Expr1 ':' . Expr1                 (rule 72)
+	BExpr2 -> 'check' Expr 'in' Ident .                 (rule 57)
+
+	'&'            reduce using rule 57
+	')'            reduce using rule 57
+	';'            reduce using rule 57
+	'?'            reduce using rule 57
+	'catch'        reduce using rule 57
+	'do'           reduce using rule 57
+	'else'         reduce using rule 57
+	'end'          reduce using rule 57
+	'then'         reduce using rule 57
+	'|'            reduce using rule 57
+	%eof           reduce using rule 57
+
+
+State 172
+
+	Expr -> BExpr '?' Expr1 ':' . Expr1                 (rule 73)
 
 	'('            shift, and enter state 55
 	'-'            shift, and enter state 49
@@ -2582,58 +2667,50 @@ State 171
 
 	Ident          goto state 36
 	Integer        goto state 37
-	Expr1          goto state 184
+	Expr1          goto state 185
 	Expr2          goto state 43
 	Expr3          goto state 44
 	Expr4          goto state 45
 
-State 172
-
-	CType -> 'array' 'of' Integer Type .                (rule 76)
-
-	';'            reduce using rule 76
-	%eof           reduce using rule 76
-
-
 State 173
 
-	ADecl -> Ident 'of' Type ',' . ADecl                (rule 79)
+	CType -> 'array' 'of' Integer Type .                (rule 77)
+
+	';'            reduce using rule 77
+	%eof           reduce using rule 77
+
+
+State 174
+
+	ADecl -> Ident 'of' Type ',' . ADecl                (rule 80)
 
 	L_Ident        shift, and enter state 21
 
 	Ident          goto state 28
-	ADecl          goto state 183
-
-State 174
-
-	FDecl -> 'fun' 'from' ADecl 'to' . 'void'           (rule 82)
-	FDecl -> 'fun' 'from' ADecl 'to' . Ident 'of' Type    (rule 83)
-
-	'void'         shift, and enter state 182
-	L_Ident        shift, and enter state 21
-
-	Ident          goto state 181
+	ADecl          goto state 184
 
 State 175
 
-	FDecl -> 'fun' 'to' Ident 'of' . Type               (rule 81)
+	FDecl -> 'fun' 'from' ADecl 'to' . 'void'           (rule 83)
+	FDecl -> 'fun' 'from' ADecl 'to' . Ident 'of' Type    (rule 84)
+
+	'void'         shift, and enter state 183
+	L_Ident        shift, and enter state 21
+
+	Ident          goto state 182
+
+State 176
+
+	FDecl -> 'fun' 'to' Ident 'of' . Type               (rule 82)
 
 	'bool'         shift, and enter state 34
 	'int'          shift, and enter state 35
 
-	Type           goto state 180
-
-State 176
-
-	Decl1 -> 'let' Ident 'be' Type .                    (rule 84)
-
-	';'            reduce using rule 84
-	%eof           reduce using rule 84
-
+	Type           goto state 181
 
 State 177
 
-	Decl1 -> 'let' Ident 'be' CType .                   (rule 85)
+	Decl1 -> 'let' Ident 'be' Type .                    (rule 85)
 
 	';'            reduce using rule 85
 	%eof           reduce using rule 85
@@ -2641,14 +2718,22 @@ State 177
 
 State 178
 
-	Decl1 -> 'let' Ident 'be' FDecl . 'do' Stmt 'end'    (rule 86)
+	Decl1 -> 'let' Ident 'be' CType .                   (rule 86)
 
-	'do'           shift, and enter state 179
+	';'            reduce using rule 86
+	%eof           reduce using rule 86
 
 
 State 179
 
-	Decl1 -> 'let' Ident 'be' FDecl 'do' . Stmt 'end'    (rule 86)
+	Decl1 -> 'let' Ident 'be' FDecl . 'do' Stmt 'end'    (rule 87)
+
+	'do'           shift, and enter state 180
+
+
+State 180
+
+	Decl1 -> 'let' Ident 'be' FDecl 'do' . Stmt 'end'    (rule 87)
 
 	'begin'        shift, and enter state 75
 	'call'         shift, and enter state 76
@@ -2660,72 +2745,72 @@ State 179
 	'try'          shift, and enter state 78
 	'while'        shift, and enter state 68
 
-	Stmt           goto state 201
+	Stmt           goto state 202
 	Stmt1          goto state 74
 	Stmt2          goto state 70
 
-State 180
-
-	FDecl -> 'fun' 'to' Ident 'of' Type .               (rule 81)
-
-	'do'           reduce using rule 81
-	%eof           reduce using rule 81
-
-
 State 181
 
-	FDecl -> 'fun' 'from' ADecl 'to' Ident . 'of' Type    (rule 83)
-
-	'of'           shift, and enter state 200
-
-
-State 182
-
-	FDecl -> 'fun' 'from' ADecl 'to' 'void' .           (rule 82)
+	FDecl -> 'fun' 'to' Ident 'of' Type .               (rule 82)
 
 	'do'           reduce using rule 82
 	%eof           reduce using rule 82
 
 
+State 182
+
+	FDecl -> 'fun' 'from' ADecl 'to' Ident . 'of' Type    (rule 84)
+
+	'of'           shift, and enter state 201
+
+
 State 183
 
-	ADecl -> Ident 'of' Type ',' ADecl .                (rule 79)
+	FDecl -> 'fun' 'from' ADecl 'to' 'void' .           (rule 83)
 
-	'to'           reduce using rule 79
-	%eof           reduce using rule 79
+	'do'           reduce using rule 83
+	%eof           reduce using rule 83
 
 
 State 184
 
-	Expr1 -> Expr1 . '+' Expr2                          (rule 61)
-	Expr1 -> Expr1 . '-' Expr2                          (rule 62)
-	Expr -> BExpr '?' Expr1 ':' Expr1 .                 (rule 72)
+	ADecl -> Ident 'of' Type ',' ADecl .                (rule 80)
 
-	')'            reduce using rule 72
-	'+'            shift, and enter state 98
-	'-'            shift, and enter state 99
-	';'            reduce using rule 72
-	'catch'        reduce using rule 72
-	'do'           reduce using rule 72
-	'else'         reduce using rule 72
-	'end'          reduce using rule 72
-	'from'         reduce using rule 72
-	'in'           reduce using rule 72
-	'to'           reduce using rule 72
-	%eof           reduce using rule 72
+	'to'           reduce using rule 80
+	%eof           reduce using rule 80
 
 
 State 185
 
-	Stmt2 -> 'for' Ident ',' Ident 'in' . Ident 'do' Stmt 'end'    (rule 44)
+	Expr1 -> Expr1 . '+' Expr2                          (rule 62)
+	Expr1 -> Expr1 . '-' Expr2                          (rule 63)
+	Expr -> BExpr '?' Expr1 ':' Expr1 .                 (rule 73)
 
-	L_Ident        shift, and enter state 21
+	')'            reduce using rule 73
+	'+'            shift, and enter state 98
+	'-'            shift, and enter state 99
+	';'            reduce using rule 73
+	'catch'        reduce using rule 73
+	'do'           reduce using rule 73
+	'else'         reduce using rule 73
+	'end'          reduce using rule 73
+	'from'         reduce using rule 73
+	'in'           reduce using rule 73
+	'to'           reduce using rule 73
+	%eof           reduce using rule 73
 
-	Ident          goto state 199
 
 State 186
 
-	Stmt2 -> 'for' Ident 'from' Expr 'to' . Expr 'do' Stmt 'end'    (rule 41)
+	Stmt2 -> 'for' Ident ',' Ident 'in' . Ident 'do' Stmt 'end'    (rule 45)
+
+	L_Ident        shift, and enter state 21
+
+	Ident          goto state 200
+
+State 187
+
+	Stmt2 -> 'for' Ident 'from' Expr 'to' . Expr 'do' Stmt 'end'    (rule 42)
 
 	'!'            shift, and enter state 47
 	'('            shift, and enter state 48
@@ -2746,25 +2831,25 @@ State 186
 	Expr2          goto state 43
 	Expr3          goto state 44
 	Expr4          goto state 45
-	Expr           goto state 198
-
-State 187
-
-	Stmt2 -> 'for' Ident 'in' 'values' Ident . 'do' Stmt 'end'    (rule 43)
-
-	'do'           shift, and enter state 197
-
+	Expr           goto state 199
 
 State 188
 
-	Stmt2 -> 'for' Ident 'in' 'keys' Ident . 'do' Stmt 'end'    (rule 42)
+	Stmt2 -> 'for' Ident 'in' 'values' Ident . 'do' Stmt 'end'    (rule 44)
 
-	'do'           shift, and enter state 196
+	'do'           shift, and enter state 198
 
 
 State 189
 
-	Stmt2 -> 'if' BExpr 'then' Stmt 'else' . Stmt 'end'    (rule 38)
+	Stmt2 -> 'for' Ident 'in' 'keys' Ident . 'do' Stmt 'end'    (rule 43)
+
+	'do'           shift, and enter state 197
+
+
+State 190
+
+	Stmt2 -> 'if' BExpr 'then' Stmt 'else' . Stmt 'end'    (rule 39)
 
 	'begin'        shift, and enter state 75
 	'call'         shift, and enter state 76
@@ -2776,35 +2861,35 @@ State 189
 	'try'          shift, and enter state 78
 	'while'        shift, and enter state 68
 
-	Stmt           goto state 195
+	Stmt           goto state 196
 	Stmt1          goto state 74
 	Stmt2          goto state 70
 
-State 190
-
-	Stmt2 -> 'if' BExpr 'then' Stmt 'end' .             (rule 39)
-
-	';'            reduce using rule 39
-	'catch'        reduce using rule 39
-	'else'         reduce using rule 39
-	'end'          reduce using rule 39
-	%eof           reduce using rule 39
-
-
 State 191
 
-	Stmt1 -> 'set' Var 'to' 'call' Ident .              (rule 34)
-	Stmt1 -> 'set' Var 'to' 'call' Ident . 'with' Arg    (rule 35)
+	Stmt2 -> 'if' BExpr 'then' Stmt 'end' .             (rule 40)
 
-	';'            reduce using rule 34
-	'catch'        reduce using rule 34
-	'else'         reduce using rule 34
-	'end'          reduce using rule 34
-	'with'         shift, and enter state 194
-	%eof           reduce using rule 34
+	';'            reduce using rule 40
+	'catch'        reduce using rule 40
+	'else'         reduce using rule 40
+	'end'          reduce using rule 40
+	%eof           reduce using rule 40
 
 
 State 192
+
+	Stmt1 -> 'set' Var 'to' 'call' Ident .              (rule 35)
+	Stmt1 -> 'set' Var 'to' 'call' Ident . 'with' Arg    (rule 36)
+
+	';'            reduce using rule 35
+	'catch'        reduce using rule 35
+	'else'         reduce using rule 35
+	'end'          reduce using rule 35
+	'with'         shift, and enter state 195
+	%eof           reduce using rule 35
+
+
+State 193
 
 	Stmt -> 'begin' Decl ';' Stmt 'end' .               (rule 29)
 
@@ -2814,7 +2899,7 @@ State 192
 	%eof           reduce using rule 29
 
 
-State 193
+State 194
 
 	Stmt -> 'try' Stmt 'catch' Stmt 'end' .             (rule 30)
 
@@ -2824,25 +2909,43 @@ State 193
 	%eof           reduce using rule 30
 
 
-State 194
+State 195
 
-	Stmt1 -> 'set' Var 'to' 'call' Ident 'with' . Arg    (rule 35)
+	Stmt1 -> 'set' Var 'to' 'call' Ident 'with' . Arg    (rule 36)
 
 	L_Ident        shift, and enter state 21
 
 	Ident          goto state 79
-	Arg            goto state 209
-
-State 195
-
-	Stmt2 -> 'if' BExpr 'then' Stmt 'else' Stmt . 'end'    (rule 38)
-
-	'end'          shift, and enter state 208
-
+	Arg            goto state 210
 
 State 196
 
-	Stmt2 -> 'for' Ident 'in' 'keys' Ident 'do' . Stmt 'end'    (rule 42)
+	Stmt2 -> 'if' BExpr 'then' Stmt 'else' Stmt . 'end'    (rule 39)
+
+	'end'          shift, and enter state 209
+
+
+State 197
+
+	Stmt2 -> 'for' Ident 'in' 'keys' Ident 'do' . Stmt 'end'    (rule 43)
+
+	'begin'        shift, and enter state 75
+	'call'         shift, and enter state 76
+	'del'          shift, and enter state 71
+	'for'          shift, and enter state 66
+	'if'           shift, and enter state 67
+	'print'        shift, and enter state 77
+	'set'          shift, and enter state 72
+	'try'          shift, and enter state 78
+	'while'        shift, and enter state 68
+
+	Stmt           goto state 208
+	Stmt1          goto state 74
+	Stmt2          goto state 70
+
+State 198
+
+	Stmt2 -> 'for' Ident 'in' 'values' Ident 'do' . Stmt 'end'    (rule 44)
 
 	'begin'        shift, and enter state 75
 	'call'         shift, and enter state 76
@@ -2858,9 +2961,55 @@ State 196
 	Stmt1          goto state 74
 	Stmt2          goto state 70
 
-State 197
+State 199
 
-	Stmt2 -> 'for' Ident 'in' 'values' Ident 'do' . Stmt 'end'    (rule 43)
+	Stmt2 -> 'for' Ident 'from' Expr 'to' Expr . 'do' Stmt 'end'    (rule 42)
+
+	'do'           shift, and enter state 206
+
+
+State 200
+
+	Stmt2 -> 'for' Ident ',' Ident 'in' Ident . 'do' Stmt 'end'    (rule 45)
+
+	'do'           shift, and enter state 205
+
+
+State 201
+
+	FDecl -> 'fun' 'from' ADecl 'to' Ident 'of' . Type    (rule 84)
+
+	'bool'         shift, and enter state 34
+	'int'          shift, and enter state 35
+
+	Type           goto state 204
+
+State 202
+
+	Decl1 -> 'let' Ident 'be' FDecl 'do' Stmt . 'end'    (rule 87)
+
+	'end'          shift, and enter state 203
+
+
+State 203
+
+	Decl1 -> 'let' Ident 'be' FDecl 'do' Stmt 'end' .    (rule 87)
+
+	';'            reduce using rule 87
+	%eof           reduce using rule 87
+
+
+State 204
+
+	FDecl -> 'fun' 'from' ADecl 'to' Ident 'of' Type .    (rule 84)
+
+	'do'           reduce using rule 84
+	%eof           reduce using rule 84
+
+
+State 205
+
+	Stmt2 -> 'for' Ident ',' Ident 'in' Ident 'do' . Stmt 'end'    (rule 45)
 
 	'begin'        shift, and enter state 75
 	'call'         shift, and enter state 76
@@ -2872,59 +3021,13 @@ State 197
 	'try'          shift, and enter state 78
 	'while'        shift, and enter state 68
 
-	Stmt           goto state 206
+	Stmt           goto state 214
 	Stmt1          goto state 74
 	Stmt2          goto state 70
 
-State 198
+State 206
 
-	Stmt2 -> 'for' Ident 'from' Expr 'to' Expr . 'do' Stmt 'end'    (rule 41)
-
-	'do'           shift, and enter state 205
-
-
-State 199
-
-	Stmt2 -> 'for' Ident ',' Ident 'in' Ident . 'do' Stmt 'end'    (rule 44)
-
-	'do'           shift, and enter state 204
-
-
-State 200
-
-	FDecl -> 'fun' 'from' ADecl 'to' Ident 'of' . Type    (rule 83)
-
-	'bool'         shift, and enter state 34
-	'int'          shift, and enter state 35
-
-	Type           goto state 203
-
-State 201
-
-	Decl1 -> 'let' Ident 'be' FDecl 'do' Stmt . 'end'    (rule 86)
-
-	'end'          shift, and enter state 202
-
-
-State 202
-
-	Decl1 -> 'let' Ident 'be' FDecl 'do' Stmt 'end' .    (rule 86)
-
-	';'            reduce using rule 86
-	%eof           reduce using rule 86
-
-
-State 203
-
-	FDecl -> 'fun' 'from' ADecl 'to' Ident 'of' Type .    (rule 83)
-
-	'do'           reduce using rule 83
-	%eof           reduce using rule 83
-
-
-State 204
-
-	Stmt2 -> 'for' Ident ',' Ident 'in' Ident 'do' . Stmt 'end'    (rule 44)
+	Stmt2 -> 'for' Ident 'from' Expr 'to' Expr 'do' . Stmt 'end'    (rule 42)
 
 	'begin'        shift, and enter state 75
 	'call'         shift, and enter state 76
@@ -2940,74 +3043,45 @@ State 204
 	Stmt1          goto state 74
 	Stmt2          goto state 70
 
-State 205
-
-	Stmt2 -> 'for' Ident 'from' Expr 'to' Expr 'do' . Stmt 'end'    (rule 41)
-
-	'begin'        shift, and enter state 75
-	'call'         shift, and enter state 76
-	'del'          shift, and enter state 71
-	'for'          shift, and enter state 66
-	'if'           shift, and enter state 67
-	'print'        shift, and enter state 77
-	'set'          shift, and enter state 72
-	'try'          shift, and enter state 78
-	'while'        shift, and enter state 68
-
-	Stmt           goto state 212
-	Stmt1          goto state 74
-	Stmt2          goto state 70
-
-State 206
-
-	Stmt2 -> 'for' Ident 'in' 'values' Ident 'do' Stmt . 'end'    (rule 43)
-
-	'end'          shift, and enter state 211
-
-
 State 207
 
-	Stmt2 -> 'for' Ident 'in' 'keys' Ident 'do' Stmt . 'end'    (rule 42)
+	Stmt2 -> 'for' Ident 'in' 'values' Ident 'do' Stmt . 'end'    (rule 44)
 
-	'end'          shift, and enter state 210
+	'end'          shift, and enter state 212
 
 
 State 208
 
-	Stmt2 -> 'if' BExpr 'then' Stmt 'else' Stmt 'end' .    (rule 38)
+	Stmt2 -> 'for' Ident 'in' 'keys' Ident 'do' Stmt . 'end'    (rule 43)
 
-	';'            reduce using rule 38
-	'catch'        reduce using rule 38
-	'else'         reduce using rule 38
-	'end'          reduce using rule 38
-	%eof           reduce using rule 38
+	'end'          shift, and enter state 211
 
 
 State 209
 
-	Stmt1 -> 'set' Var 'to' 'call' Ident 'with' Arg .    (rule 35)
+	Stmt2 -> 'if' BExpr 'then' Stmt 'else' Stmt 'end' .    (rule 39)
 
-	';'            reduce using rule 35
-	'catch'        reduce using rule 35
-	'else'         reduce using rule 35
-	'end'          reduce using rule 35
-	%eof           reduce using rule 35
+	';'            reduce using rule 39
+	'catch'        reduce using rule 39
+	'else'         reduce using rule 39
+	'end'          reduce using rule 39
+	%eof           reduce using rule 39
 
 
 State 210
 
-	Stmt2 -> 'for' Ident 'in' 'keys' Ident 'do' Stmt 'end' .    (rule 42)
+	Stmt1 -> 'set' Var 'to' 'call' Ident 'with' Arg .    (rule 36)
 
-	';'            reduce using rule 42
-	'catch'        reduce using rule 42
-	'else'         reduce using rule 42
-	'end'          reduce using rule 42
-	%eof           reduce using rule 42
+	';'            reduce using rule 36
+	'catch'        reduce using rule 36
+	'else'         reduce using rule 36
+	'end'          reduce using rule 36
+	%eof           reduce using rule 36
 
 
 State 211
 
-	Stmt2 -> 'for' Ident 'in' 'values' Ident 'do' Stmt 'end' .    (rule 43)
+	Stmt2 -> 'for' Ident 'in' 'keys' Ident 'do' Stmt 'end' .    (rule 43)
 
 	';'            reduce using rule 43
 	'catch'        reduce using rule 43
@@ -3018,21 +3092,7 @@ State 211
 
 State 212
 
-	Stmt2 -> 'for' Ident 'from' Expr 'to' Expr 'do' Stmt . 'end'    (rule 41)
-
-	'end'          shift, and enter state 215
-
-
-State 213
-
-	Stmt2 -> 'for' Ident ',' Ident 'in' Ident 'do' Stmt . 'end'    (rule 44)
-
-	'end'          shift, and enter state 214
-
-
-State 214
-
-	Stmt2 -> 'for' Ident ',' Ident 'in' Ident 'do' Stmt 'end' .    (rule 44)
+	Stmt2 -> 'for' Ident 'in' 'values' Ident 'do' Stmt 'end' .    (rule 44)
 
 	';'            reduce using rule 44
 	'catch'        reduce using rule 44
@@ -3041,21 +3101,46 @@ State 214
 	%eof           reduce using rule 44
 
 
+State 213
+
+	Stmt2 -> 'for' Ident 'from' Expr 'to' Expr 'do' Stmt . 'end'    (rule 42)
+
+	'end'          shift, and enter state 216
+
+
+State 214
+
+	Stmt2 -> 'for' Ident ',' Ident 'in' Ident 'do' Stmt . 'end'    (rule 45)
+
+	'end'          shift, and enter state 215
+
+
 State 215
 
-	Stmt2 -> 'for' Ident 'from' Expr 'to' Expr 'do' Stmt 'end' .    (rule 41)
+	Stmt2 -> 'for' Ident ',' Ident 'in' Ident 'do' Stmt 'end' .    (rule 45)
 
-	';'            reduce using rule 41
-	'catch'        reduce using rule 41
-	'else'         reduce using rule 41
-	'end'          reduce using rule 41
-	%eof           reduce using rule 41
+	';'            reduce using rule 45
+	'catch'        reduce using rule 45
+	'else'         reduce using rule 45
+	'end'          reduce using rule 45
+	%eof           reduce using rule 45
+
+
+State 216
+
+	Stmt2 -> 'for' Ident 'from' Expr 'to' Expr 'do' Stmt 'end' .    (rule 42)
+
+	';'            reduce using rule 42
+	'catch'        reduce using rule 42
+	'else'         reduce using rule 42
+	'end'          reduce using rule 42
+	%eof           reduce using rule 42
 
 
 -----------------------------------------------------------------------------
 Grammar Totals
 -----------------------------------------------------------------------------
-Number of rules: 89
+Number of rules: 90
 Number of terminals: 54
 Number of non-terminals: 42
-Number of states: 216
+Number of states: 217

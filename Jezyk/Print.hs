@@ -154,6 +154,7 @@ instance Print Jezyk.Abs.Stmt where
     Jezyk.Abs.SCall id_ -> prPrec i 0 (concatD [doc (showString "call"), prt 0 id_])
     Jezyk.Abs.SCallA id_ arg -> prPrec i 0 (concatD [doc (showString "call"), prt 0 id_, doc (showString "with"), prt 0 arg])
     Jezyk.Abs.SAssgn var expr -> prPrec i 1 (concatD [doc (showString "set"), prt 0 var, doc (showString "to"), prt 0 expr])
+    Jezyk.Abs.SAssgnB var bexpr -> prPrec i 1 (concatD [doc (showString "set"), prt 0 var, doc (showString "to"), prt 0 bexpr])
     Jezyk.Abs.SAssgnF var id_ -> prPrec i 1 (concatD [doc (showString "set"), prt 0 var, doc (showString "to"), doc (showString "call"), prt 0 id_])
     Jezyk.Abs.SAssgnFA var id_ arg -> prPrec i 1 (concatD [doc (showString "set"), prt 0 var, doc (showString "to"), doc (showString "call"), prt 0 id_, doc (showString "with"), prt 0 arg])
     Jezyk.Abs.SDel expr id_ -> prPrec i 1 (concatD [doc (showString "del"), prt 0 expr, doc (showString "from"), prt 0 id_])

@@ -34,6 +34,7 @@ transStmt x = case x of
   Jezyk.Abs.SCall ident -> failure x
   Jezyk.Abs.SCallA ident arg -> failure x
   Jezyk.Abs.SAssgn var expr -> failure x
+  Jezyk.Abs.SAssgnB var bexpr -> failure x
   Jezyk.Abs.SAssgnF var ident -> failure x
   Jezyk.Abs.SAssgnFA var ident arg -> failure x
   Jezyk.Abs.SDel expr ident -> failure x

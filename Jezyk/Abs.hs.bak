@@ -59,7 +59,7 @@ data Expr
     | ENeg Expr
     | ENum Integer
     | EVar Ident
-    | Etern Expr Expr Expr
+    | Etern BExpr Expr Expr
   deriving (C.Eq, C.Ord, C.Show, C.Read)
 
 data Type = TBool | TInt

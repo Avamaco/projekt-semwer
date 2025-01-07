@@ -20,6 +20,7 @@ data Stmt
     = SCall Ident
     | SCallA Ident Arg
     | SAssgn Var Expr
+    | SAssgnB Var BExpr
     | SAssgnF Var Ident
     | SAssgnFA Var Ident Arg
     | SDel Expr Ident

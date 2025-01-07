@@ -173,12 +173,12 @@ BExpr1 : '!' BExpr3 { Jezyk.Abs.BNot $2 } | BExpr2 { $1 }
 
 BExpr2 :: { Jezyk.Abs.BExpr }
 BExpr2
-  : Expr '=' Expr { Jezyk.Abs.BEq $1 $3 }
-  | Expr '<' Expr { Jezyk.Abs.BLt $1 $3 }
-  | Expr '<=' Expr { Jezyk.Abs.BLeq $1 $3 }
-  | Expr '>' Expr { Jezyk.Abs.BGt $1 $3 }
-  | Expr '>=' Expr { Jezyk.Abs.BGeq $1 $3 }
-  | Expr '!=' Expr { Jezyk.Abs.BNeq $1 $3 }
+  : Expr1 '=' Expr1 { Jezyk.Abs.BEq $1 $3 }
+  | Expr1 '<' Expr1 { Jezyk.Abs.BLt $1 $3 }
+  | Expr1 '<=' Expr1 { Jezyk.Abs.BLeq $1 $3 }
+  | Expr1 '>' Expr1 { Jezyk.Abs.BGt $1 $3 }
+  | Expr1 '>=' Expr1 { Jezyk.Abs.BGeq $1 $3 }
+  | Expr1 '!=' Expr1 { Jezyk.Abs.BNeq $1 $3 }
   | 'check' Expr 'in' Ident { Jezyk.Abs.BCheck $2 $4 }
   | BExpr3 { $1 }
 

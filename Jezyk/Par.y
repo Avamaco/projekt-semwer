@@ -147,6 +147,7 @@ Stmt
 Stmt1 :: { Jezyk.Abs.Stmt }
 Stmt1
   : 'set' Var 'to' Expr { Jezyk.Abs.SAssgn $2 $4 }
+  | 'set' Var 'to' BExpr { Jezyk.Abs.SAssgnB $2 $4 }
   | 'set' Var 'to' 'call' Ident { Jezyk.Abs.SAssgnF $2 $5 }
   | 'set' Var 'to' 'call' Ident 'with' Arg { Jezyk.Abs.SAssgnFA $2 $5 $7 }
   | 'del' Expr 'from' Ident { Jezyk.Abs.SDel $2 $4 }
