@@ -5,94 +5,93 @@ in BNFC.
 
 -}
 
-VId. Var ::= Ident;
-VAt. Var ::= Ident "at" Expr;
+Prog. Prog ::= Stmt;
 
-AId. Arg ::= Ident;
+VId. Var ::= Ident;
+VAt. Var ::= Ident "at" Expr5;
+
+AId.  Arg ::= Ident;
 ASeq. Arg ::= Ident "," Arg;
 
 -- BNFC expressions that define the part of the grammar for statements
 
-SCall.     Stmt ::= "call" Ident;
-SCallA.     Stmt ::= "call" Ident "with" Arg;
+SCall.     Stmt1 ::= "call" Ident;
+SCallA.    Stmt1 ::= "call" Ident "with" Arg;
 SAssgn.    Stmt1 ::= "set" Var "to" Expr;
-SAssgnF.    Stmt1 ::= "set" Var "to call" Ident;
-SAssgnFA.    Stmt1 ::= "set" Var "to call" Ident "with" Arg;
-SDel.     Stmt1 ::= "del" Expr "from" Ident;
--- We use this to declare a general form of expression, but parse it
--- differently.
-SIfte. Stmt2 ::= "if" Expr "then" Stmt "else" Stmt "end";
-SIfend.       Stmt2 ::= "if" Expr "then" Stmt "end";
-SWhile.    Stmt2 ::= "while" Expr "do" Stmt1;
+SAssgnF.   Stmt1 ::= "set" Var "to" "call" Ident;
+SAssgnFA.  Stmt1 ::= "set" Var "to" "call" Ident "with" Arg;
+SDel.      Stmt1 ::= "del" Expr "from" Ident;
+SIfte.     Stmt2 ::= "if" Expr "then" Stmt "else" Stmt "end";
+SIfend.    Stmt2 ::= "if" Expr "then" Stmt "end";
+SWhile.    Stmt2 ::= "while" Expr "do" Stmt "end";
 SFor.      Stmt2 ::= "for" Ident "from" Expr "to" Expr "do" Stmt "end";
-SForKeys.      Stmt2 ::= "for" Ident "in keys" Ident "do" Stmt "end";
-SForVals.      Stmt2 ::= "for" Ident "in values" Ident "do" Stmt "end";
-SForPairs.      Stmt2 ::= "for" Ident "," Ident "in" Ident "do" Stmt "end";
-SPrint.     Stmt ::= "print" Ident;
-SBlock.     Stmt ::= "begin" Decl ";" Stmt "end";
-STry.       Stmt ::= "try" Stmt "catch" Stmt "end";
-SSeq.      Stmt ::= Stmt1 ";" Stmt; 
+SForKeys.  Stmt2 ::= "for" Ident "in" "keys" Ident "do" Stmt "end";
+SForVals.  Stmt2 ::= "for" Ident "in" "values" Ident "do" Stmt "end";
+SForPairs. Stmt2 ::= "for" Ident "," Ident "in" Ident "do" Stmt "end";
+SPrint.    Stmt1 ::= "print" Ident;
+SBlock.    Stmt1 ::= "begin" Decl ";" Stmt "end";
+STry.      Stmt1 ::= "try" Stmt "catch" Stmt "end";
+SSeq.      Stmt  ::= Stmt1 ";" Stmt;
 
-_. Stmt ::= Stmt1;
+_. Stmt  ::= Stmt1;
 _. Stmt1 ::= Stmt2;
 
 -- BNFC expressions that define the part of the grammar for expressions
 
 ETrue.  Expr6 ::= "true";
 EFalse. Expr6 ::= "false";
-ENum.    Expr6 ::= Integer;
-EVar.    Expr6 ::= Ident;
+ENum.   Expr6 ::= Integer;
+EVar.   Expr6 ::= Var;
 
-EPlus.   Expr3  ::= Expr3 "+" Expr4;
-EMinus.  Expr3  ::= Expr3 "-" Expr4;
-EMul.    Expr4 ::= Expr4 "*" Expr5; 
-EDiv.    Expr4 ::= Expr4 "/" Expr5; 
-ENeg.    Expr5  ::= "-" Expr5;
+EPlus.  Expr3 ::= Expr3 "+" Expr4;
+EMinus. Expr3 ::= Expr3 "-" Expr4;
+EMul.   Expr4 ::= Expr4 "*" Expr5;
+EDiv.   Expr4 ::= Expr4 "/" Expr5;
+ENeg.   Expr5 ::= "-" Expr5;
 
-EEq.   Expr2 ::= Expr2 "=" Expr3;
-ELt.   Expr2 ::= Expr2 "<" Expr3;
-EGt.   Expr2 ::= Expr2 ">" Expr3;
-ELeq.   Expr2 ::= Expr2 "<=" Expr3;
-EGeq.   Expr2 ::= Expr2 ">=" Expr3;
-ENeq.   Expr2 ::= Expr2 "!=" Expr3;
+EEq.  Expr2 ::= Expr2 "=" Expr3;
+ELt.  Expr2 ::= Expr2 "<" Expr3;
+EGt.  Expr2 ::= Expr2 ">" Expr3;
+ELeq. Expr2 ::= Expr2 "<=" Expr3;
+EGeq. Expr2 ::= Expr2 ">=" Expr3;
+ENeq. Expr2 ::= Expr2 "!=" Expr3;
 
-EAnd.  Expr1 ::= Expr1 "&" Expr2;
+EAnd. Expr1 ::= Expr1 "&" Expr2;
 EOr.  Expr1 ::= Expr1 "|" Expr2;
-ENot.   Expr5 ::= "!" Expr5;
+ENot. Expr5 ::= "!" Expr5;
 
-Etern.   Expr  ::= Expr1 "?" Expr ":" Expr;
+ETern. Expr  ::= Expr1 "?" Expr ":" Expr;
 
 ECheck. Expr6  ::= "check" Expr "in" Ident; -- Check surrounds an expression in a "check ... in" clause, so it has a similar effect to parentheses
 
-_.       Expr6 ::= "(" Expr ")"; -- We silently introduce parentheses 
-_.       Expr5  ::= Expr6;       -- We silently make Expr5 and Expr6 equal
-_.       Expr4  ::= Expr5;       -- We silently make Expr4 and Expr5 equal
-_.       Expr3  ::= Expr4;       -- We silently make Expr3 and Expr4 equal
-_.       Expr2  ::= Expr3;       -- We silently make Expr2 and Expr3 equal
-_.       Expr1  ::= Expr2;       -- We silently make Expr1 and Expr2 equal
-_.       Expr ::= Expr1;         -- We silently make Expr and Expr1 equal
-
+_. Expr6 ::= "(" Expr ")"; -- We silently introduce parentheses
+_. Expr5 ::= Expr6;        -- We silently make Expr5 and Expr6 equal
+_. Expr4 ::= Expr5;        -- We silently make Expr4 and Expr5 equal
+_. Expr3 ::= Expr4;        -- We silently make Expr3 and Expr4 equal
+_. Expr2 ::= Expr3;        -- We silently make Expr2 and Expr3 equal
+_. Expr1 ::= Expr2;        -- We silently make Expr1 and Expr2 equal
+_. Expr  ::= Expr1;        -- We silently make Expr and Expr1 equal
 
 -- BNFC expressions that define the part of the grammar for types
 
-TBool. Type ::= "bool";
-TInt. Type ::= "int";
+TBool.   Type  ::= "bool";
+TInt.    Type  ::= "int";
 CTArray. CType ::= "array of" Integer Type;
-CTDict. CType ::= "dict of" Type;
+CTDict.  CType ::= "dict of" Type;
 
 -- BNFC expressions that define the part of the grammar for declarations
 
-ADId. ADecl ::= Ident "of" Type;
+ADId.  ADecl ::= Ident "of" Type;
 ADSeq. ADecl ::= Ident "of" Type "," ADecl;
 
-FDVoid. FDecl ::= "fun to void";
-FDRet. FDecl ::= "fun to" Ident "of" Type;
-FDArg. FDecl ::= "fun from" ADecl "to void";
-FDFull. FDecl ::= "fun from" ADecl "to" Ident "of" Type;
+FDVoid. FDecl ::= "fun" "to" "void";
+FDRet.  FDecl ::= "fun" "to" Ident "of" Type;
+FDArg.  FDecl ::= "fun" "from" ADecl "to" "void";
+FDFull. FDecl ::= "fun" "from" ADecl "to" Ident "of" Type;
 
-DSimple. Decl1 ::= "let" Ident "be" Type;
-DComplex. Decl1 ::= "let" Ident "be" CType;
+DSimple.   Decl1 ::= "let" Ident "be" Type;
+DComplex.  Decl1 ::= "let" Ident "be" CType;
 DFunction. Decl1 ::= "let" Ident "be" FDecl "do" Stmt "end";
-DSeq. Decl ::= Decl ";" Decl1;
+DSeq.      Decl  ::= Decl ";" Decl1;
 
 _. Decl ::= Decl1;
