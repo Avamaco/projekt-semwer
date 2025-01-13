@@ -35,7 +35,7 @@ Jezyk/Test : Jezyk/Abs.hs Jezyk/Lex.hs Jezyk/Par.hs Jezyk/Print.hs Jezyk/Test.hs
 	${GHC} ${GHC_OPTS} $@
 
 
-Interpreter : Jezyk/Abs.hs Jezyk/Lex.hs Jezyk/Par.hs Jezyk/Print.hs Interpreter.hs
+Interpreter : Jezyk/Abs.hs Jezyk/Lex.hs Jezyk/Par.hs Jezyk/Print.hs TypeCheck.hs Interpreter.hs
 	${GHC} ${GHC_OPTS} $@
 
 

@@ -1,2 +1,5 @@
 Jezyk
+Interpreter
+*.hi
+*.o
 .vscode
