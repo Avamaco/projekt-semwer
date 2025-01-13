@@ -2,8 +2,8 @@ module TypeCheck where
 
 import Data.Map (Map)
 import Data.Map qualified as Map
-import Jezyk.Abs (Ident (..))
-import Jezyk.Abs qualified as Abs (CType (..), Expr (..), Type (..), Var (..))
+import Jezyk.Abs (Expr (..), Ident (..), Prog (..), Stmt (..), Var (..))
+import Jezyk.Abs qualified as Abs (CType (..), Type (..))
 
 data SType = Bool | Int deriving (Eq, Show)
 
@@ -32,57 +32,96 @@ underType (CType (Array t)) = SType t
 underType (CType (Dict t)) = SType t
 underType _ = Error
 
-assertType :: Abs.Expr -> Abs.Expr -> VEnv -> Type -> Type -> Type
+assertType :: Expr -> Expr -> VEnv -> Type -> Type -> Type
 assertType e1 e2 venv t rt =
   let t1 = exprType e1 venv
       t2 = exprType e2 venv
    in if t1 == t && t2 == t then rt else Error
 
-varType :: Abs.Var -> VEnv -> Type
-varType (Abs.VId i) venv = Map.findWithDefault Error i venv
-varType (Abs.VAt i e) venv =
+varType :: Var -> VEnv -> Type
+varType (VId i) venv = Map.findWithDefault Error i venv
+varType (VAt i e) venv =
   let t = Map.findWithDefault Error i venv
       et = exprType e venv
       ut = underType t
    in if et == SType Int then ut else Error
 
-exprType :: Abs.Expr -> VEnv -> Type
-exprType Abs.ETrue _ = SType Bool
-exprType Abs.EFalse _ = SType Bool
-exprType (Abs.ENum _) _ = SType Int
-exprType (Abs.EVar (Abs.VId i)) venv = Map.findWithDefault Error i venv
-exprType (Abs.EVar (Abs.VAt i e)) venv =
-  let t = Map.findWithDefault Error i venv
-      et = exprType e venv
-      ut = underType t
-   in if et == SType Int then ut else Error
-exprType (Abs.EPlus e1 e2) venv = assertType e1 e2 venv (SType Int) (SType Int)
-exprType (Abs.EMinus e1 e2) venv = assertType e1 e2 venv (SType Int) (SType Int)
-exprType (Abs.EMul e1 e2) venv = assertType e1 e2 venv (SType Int) (SType Int)
-exprType (Abs.EDiv e1 e2) venv = assertType e1 e2 venv (SType Int) (SType Int)
-exprType (Abs.ENeg e) venv = assertType e e venv (SType Int) (SType Int)
-exprType (Abs.EEq e1 e2) venv = assertType e1 e2 venv (SType Int) (SType Bool)
-exprType (Abs.ELt e1 e2) venv = assertType e1 e2 venv (SType Int) (SType Bool)
-exprType (Abs.EGt e1 e2) venv = assertType e1 e2 venv (SType Int) (SType Bool)
-exprType (Abs.ELeq e1 e2) venv = assertType e1 e2 venv (SType Int) (SType Bool)
-exprType (Abs.EGeq e1 e2) venv = assertType e1 e2 venv (SType Int) (SType Bool)
-exprType (Abs.ENeq e1 e2) venv = assertType e1 e2 venv (SType Int) (SType Bool)
-exprType (Abs.EAnd e1 e2) venv = assertType e1 e2 venv (SType Bool) (SType Bool)
-exprType (Abs.EOr e1 e2) venv = assertType e1 e2 venv (SType Bool) (SType Bool)
-exprType (Abs.ENot e) venv = assertType e e venv (SType Bool) (SType Bool)
-exprType (Abs.ETern e e1 e2) venv =
+exprType :: Expr -> VEnv -> Type
+exprType ETrue _ = SType Bool
+exprType EFalse _ = SType Bool
+exprType (ENum _) _ = SType Int
+exprType (EVar v) venv = varType v venv
+exprType (EPlus e1 e2) venv = assertType e1 e2 venv (SType Int) (SType Int)
+exprType (EMinus e1 e2) venv = assertType e1 e2 venv (SType Int) (SType Int)
+exprType (EMul e1 e2) venv = assertType e1 e2 venv (SType Int) (SType Int)
+exprType (EDiv e1 e2) venv = assertType e1 e2 venv (SType Int) (SType Int)
+exprType (ENeg e) venv = assertType e e venv (SType Int) (SType Int)
+exprType (EEq e1 e2) venv = assertType e1 e2 venv (SType Int) (SType Bool)
+exprType (ELt e1 e2) venv = assertType e1 e2 venv (SType Int) (SType Bool)
+exprType (EGt e1 e2) venv = assertType e1 e2 venv (SType Int) (SType Bool)
+exprType (ELeq e1 e2) venv = assertType e1 e2 venv (SType Int) (SType Bool)
+exprType (EGeq e1 e2) venv = assertType e1 e2 venv (SType Int) (SType Bool)
+exprType (ENeq e1 e2) venv = assertType e1 e2 venv (SType Int) (SType Bool)
+exprType (EAnd e1 e2) venv = assertType e1 e2 venv (SType Bool) (SType Bool)
+exprType (EOr e1 e2) venv = assertType e1 e2 venv (SType Bool) (SType Bool)
+exprType (ENot e) venv = assertType e e venv (SType Bool) (SType Bool)
+exprType (ETern e e1 e2) venv =
   let t = exprType e venv
       t1 = exprType e1 venv
       t2 = exprType e2 venv
    in if t == SType Bool && t1 == t2 then t1 else Error
-exprType (Abs.ECheck e (Ident i)) venv =
+exprType (ECheck e i) venv =
   let et = exprType e venv
-      t = Map.findWithDefault Error (Ident i) venv
+      t = varType (VId i) venv
    in case (et, t) of
         (SType Int, CType _) -> SType Bool
         _ -> Error
 
-venv0 = Map.fromList [(Ident "x", SType Int), (Ident "y", CType (Array Bool))]
+checkStmt :: Stmt -> VEnv -> Bool
+-- checkStmt (SCall {}) venv =
+-- checkStmt (SCallA {}) venv =
+checkStmt (SAssgn v e) venv =
+  let t = varType v venv
+      et = exprType e venv
+   in t == et && t /= Error
+-- checkStmt (SAssgnF {}) venv = False
+-- checkStmt (SAssgnFA {}) venv = False
+checkStmt (SDel e i) venv =
+  let et = exprType e venv
+      t = varType (VId i) venv
+   in case (et, t) of
+        (SType Int, CType (Dict _)) -> True
+        _ -> False
+checkStmt (SIfte e s1 s2) venv =
+  exprType e venv == SType Bool && checkStmt s1 venv && checkStmt s2 venv
+checkStmt (SIfend e s) venv =
+  exprType e venv == SType Bool && checkStmt s venv
+checkStmt (SWhile e s) venv =
+  exprType e venv == SType Bool && checkStmt s venv
+checkStmt (SFor i e1 e2 s) venv =
+  let t1 = exprType e1 venv
+      t2 = exprType e2 venv
+      venv' = Map.insert i (SType Int) venv
+   in t1 == SType Int && t2 == SType Int && checkStmt s venv'
+checkStmt (SForKeys i i' s) venv =
+  let t = underType (varType (VId i') venv)
+      venv' = Map.insert i (SType Int) venv
+   in t /= Error && checkStmt s venv'
+checkStmt (SForVals i i' s) venv =
+  let t = underType (varType (VId i') venv)
+      venv' = Map.insert i t venv
+   in t /= Error && checkStmt s venv'
+checkStmt (SForPairs i1 i2 i' s) venv =
+  let t = underType (varType (VId i') venv)
+      venv' = Map.insert i1 (SType Int) (Map.insert i2 t venv)
+   in t /= Error && checkStmt s venv'
+checkStmt (SPrint i) venv = varType (VId i) venv /= Error
+-- checkStmt (SBlock {}) venv =
+checkStmt (STry s1 s2) venv = checkStmt s1 venv && checkStmt s2 venv
+checkStmt (SSeq s1 s2) venv = checkStmt s1 venv && checkStmt s2 venv
 
-typifyExpr :: Abs.Expr -> Type
-typifyExpr expr = exprType expr venv0
+venv0 :: VEnv
+venv0 = Map.fromList [(Ident "x", SType Int), (Ident "y", CType (Dict Bool))]
+
+checkProg :: Prog -> Bool
+checkProg (Prog stmt) = checkStmt stmt venv0

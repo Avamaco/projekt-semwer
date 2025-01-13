@@ -1,8 +1,8 @@
 module Main where
 
-import Jezyk.Par (myLexer, pExpr)
+import Jezyk.Par (myLexer, pProg)
 import System.Exit (exitFailure)
-import TypeCheck (typifyExpr)
+import TypeCheck (checkProg)
 
 main :: IO ()
 main = do
@@ -11,6 +11,6 @@ main = do
 
 compute :: String -> IO ()
 compute str =
-  case pExpr (myLexer str) of
+  case pProg (myLexer str) of
     Left err -> do putStrLn err; exitFailure
-    Right expr -> print (typifyExpr expr)
+    Right prog -> print (checkProg prog)
