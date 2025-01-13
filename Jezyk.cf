@@ -15,22 +15,22 @@ ASeq. Arg ::= Ident "," Arg;
 
 -- BNFC expressions that define the part of the grammar for statements
 
-SCall.     Stmt  ::= "call" Ident;
-SCallA.    Stmt  ::= "call" Ident "with" Arg;
+SCall.     Stmt1 ::= "call" Ident;
+SCallA.    Stmt1 ::= "call" Ident "with" Arg;
 SAssgn.    Stmt1 ::= "set" Var "to" Expr;
 SAssgnF.   Stmt1 ::= "set" Var "to" "call" Ident;
 SAssgnFA.  Stmt1 ::= "set" Var "to" "call" Ident "with" Arg;
 SDel.      Stmt1 ::= "del" Expr "from" Ident;
 SIfte.     Stmt2 ::= "if" Expr "then" Stmt "else" Stmt "end";
 SIfend.    Stmt2 ::= "if" Expr "then" Stmt "end";
-SWhile.    Stmt2 ::= "while" Expr "do" Stmt1;
+SWhile.    Stmt2 ::= "while" Expr "do" Stmt "end";
 SFor.      Stmt2 ::= "for" Ident "from" Expr "to" Expr "do" Stmt "end";
 SForKeys.  Stmt2 ::= "for" Ident "in" "keys" Ident "do" Stmt "end";
 SForVals.  Stmt2 ::= "for" Ident "in" "values" Ident "do" Stmt "end";
 SForPairs. Stmt2 ::= "for" Ident "," Ident "in" Ident "do" Stmt "end";
-SPrint.    Stmt  ::= "print" Ident;
-SBlock.    Stmt  ::= "begin" Decl ";" Stmt "end";
-STry.      Stmt  ::= "try" Stmt "catch" Stmt "end";
+SPrint.    Stmt1 ::= "print" Ident;
+SBlock.    Stmt1 ::= "begin" Decl ";" Stmt "end";
+STry.      Stmt1 ::= "try" Stmt "catch" Stmt "end";
 SSeq.      Stmt  ::= Stmt1 ";" Stmt;
 
 _. Stmt  ::= Stmt1;
