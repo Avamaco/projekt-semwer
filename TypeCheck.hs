@@ -2,7 +2,7 @@ module TypeCheck where
 
 import Data.Map (Map)
 import Data.Map qualified as Map
-import Jezyk.Abs (Expr (..), Ident (..), Prog (..), Stmt (..), Var (..))
+import Jezyk.Abs (Decl (..), Expr (..), Ident (..), Prog (..), Stmt (..), Var (..))
 import Jezyk.Abs qualified as Abs (CType (..), Type (..))
 
 data SType = Bool | Int deriving (Eq, Show)
@@ -12,6 +12,8 @@ data CType = Array SType | Dict SType deriving (Eq, Show)
 data Type = SType SType | CType CType | Error deriving (Eq, Show)
 
 type VEnv = Map Ident Type
+
+data DEnv = Env VEnv | DError
 
 getType :: Abs.Type -> Type
 getType Abs.TBool = SType Bool
@@ -77,6 +79,15 @@ exprType (ECheck e i) venv =
         (SType Int, CType _) -> SType Bool
         _ -> Error
 
+declare :: Decl -> VEnv -> DEnv
+declare (DSimple i t) venv = Env (Map.insert i (getType t) venv)
+declare (DComplex i ct) venv = Env (Map.insert i (getCType ct) venv)
+-- declare (DFunction {}) _ =
+declare (DSeq d1 d2) venv =
+  case declare d1 venv of
+    Env venv' -> declare d2 venv'
+    DError -> DError
+
 checkStmt :: Stmt -> VEnv -> Bool
 -- checkStmt (SCall {}) venv =
 -- checkStmt (SCallA {}) venv =
@@ -84,8 +95,8 @@ checkStmt (SAssgn v e) venv =
   let t = varType v venv
       et = exprType e venv
    in t == et && t /= Error
--- checkStmt (SAssgnF {}) venv = False
--- checkStmt (SAssgnFA {}) venv = False
+-- checkStmt (SAssgnF {}) venv =
+-- checkStmt (SAssgnFA {}) venv =
 checkStmt (SDel e i) venv =
   let et = exprType e venv
       t = varType (VId i) venv
@@ -116,7 +127,10 @@ checkStmt (SForPairs i1 i2 i' s) venv =
       venv' = Map.insert i1 (SType Int) (Map.insert i2 t venv)
    in t /= Error && checkStmt s venv'
 checkStmt (SPrint i) venv = varType (VId i) venv /= Error
--- checkStmt (SBlock {}) venv =
+checkStmt (SBlock d s) venv =
+  case declare d venv of
+    Env venv' -> checkStmt s venv'
+    DError -> False
 checkStmt (STry s1 s2) venv = checkStmt s1 venv && checkStmt s2 venv
 checkStmt (SSeq s1 s2) venv = checkStmt s1 venv && checkStmt s2 venv
 
