@@ -5,6 +5,8 @@ in BNFC.
 
 -}
 
+Prog. Prog ::= Stmt;
+
 VId. Var ::= Ident;
 VAt. Var ::= Ident "at" Expr5;
 
