@@ -1,0 +1,4 @@
+begin
+    let x be bool;
+    set x to 5
+end
