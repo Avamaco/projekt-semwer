@@ -1,0 +1,5 @@
+begin
+    let x be int;
+    set x to 5;
+    print x
+end
