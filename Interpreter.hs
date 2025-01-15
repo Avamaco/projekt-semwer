@@ -13,19 +13,39 @@ data SType = Bool | Int
 
 data CType = Array Integer SType | Dict SType
 
-data SValue = VInt Integer | VBool Bool | VError deriving (Show)
+data SValue = VInt Integer | VBool Bool | VError
+
+instance Show SValue where
+  show :: SValue -> String
+  show (VInt i) = show i
+  show (VBool True) = "true"
+  show (VBool False) = "false"
+  show VError = "Runtime error"
 
 data CValue
   = CArray {size :: Integer, typ :: SType, values :: Map Integer SValue}
   | CDict {typ :: SType, values :: Map Integer SValue}
 
+instance Show CValue where
+  show :: CValue -> String
+  show (CDict t vs) = unwords (map (\(i, v) -> show i ++ "=" ++ show v) (Map.toList vs))
+  show (CArray s t vs) = unwords (map show (Map.elems vs))
+
 data Value = SValue SValue | CValue CValue | Error
+
+instance Show Value where
+  show :: Value -> String
+  show (SValue v) = show v
+  show (CValue v) = show v
+  show Error = "Runtime error"
 
 type VEnv = Map Ident Loc
 
 data Store = CStore {currMap :: Map Loc Value, nextLoc :: Loc}
 
-type Cont = Store -> Store
+type Output = [String]
+
+type Cont = Store -> Output
 
 main :: IO ()
 main = do
@@ -46,16 +66,23 @@ venv0 = Map.fromList [(Ident "i", 0), (Ident "b", 1), (Ident "d", 2), (Ident "a"
 
 compute :: String -> IO ()
 compute str =
-  case pExpr (myLexer str) of
-    Left err -> do putStrLn err; exitFailure
-    Right expr -> do print (eE expr venv0 sto0)
+  case pProg (myLexer str) of
+    Left err -> do
+      putStrLn err
+      exitFailure
+    Right prog ->
+      if checkProg prog
+        then putStr (unlines (execProg prog))
+        else putStrLn "Type error"
 
--- case pProg (myLexer str) of
---   Left err -> do putStrLn err; exitFailure
---   Right prog -> do print (checkProg prog); print (execProg prog)
+cont0 :: Cont
+cont0 sto = []
 
-execProg :: Prog -> Bool
-execProg (Prog stmt) = True
+contx0 :: Cont
+contx0 sto = ["Runtime error"]
+
+execProg :: Prog -> Output
+execProg (Prog stmt) = sS stmt venv0 cont0 contx0 sto0
 
 -- Expressions
 
@@ -152,3 +179,77 @@ eE (ECheck e i) venv sto =
           Just (CValue (CDict t vs)) -> if Map.member i vs then VBool True else VBool False
           _ -> VError
         _ -> VError
+
+-- Statements
+
+assgnVal :: Var -> SValue -> VEnv -> Store -> Maybe Store
+assgnVal (VId i) v venv sto =
+  case Map.lookup i venv of
+    Just loc -> Just (sto {currMap = Map.insert loc (SValue v) (currMap sto)})
+    _ -> Nothing
+assgnVal (VAt i e) v venv sto =
+  let loc = Map.lookup i venv
+      val = eE e venv sto
+   in case (loc, val) of
+        (Just l, VInt i) -> case Map.lookup l (currMap sto) of
+          Just (CValue (CArray s t vs)) ->
+            if i >= 0 && i < s
+              then
+                Just (sto {currMap = Map.insert l (CValue (CArray s t (Map.insert i v vs))) (currMap sto)})
+              else Nothing
+          Just (CValue (CDict t vs)) ->
+            Just (sto {currMap = Map.insert l (CValue (CDict t (Map.insert i v vs))) (currMap sto)})
+          _ -> Nothing
+        _ -> Nothing
+
+sS :: Stmt -> VEnv -> Cont -> Cont -> Cont
+-- sS (SCall i) venv k kx = -- TODO
+-- sS (SCallA i a) venv k kx = -- TODO
+sS (SAssgn v e) venv k kx = \sto ->
+  let val = eE e venv sto
+   in case val of
+        VError -> kx sto
+        _ -> case assgnVal v val venv sto of
+          Just sto' -> k sto'
+          _ -> kx sto
+-- sS (SAssgnF v i') venv k kx = -- TODO
+-- sS (SAssgnFA v i' a) venv k kx = -- TODO
+sS (SDel e i) venv k kx = \sto ->
+  let v = eE e venv sto
+      loc = Map.lookup i venv
+   in case (v, loc) of
+        (VInt i, Just l) -> case Map.lookup l (currMap sto) of
+          Just (CValue (CDict t vs)) ->
+            k (sto {currMap = Map.insert l (CValue (CDict t (Map.delete i vs))) (currMap sto)})
+          _ -> kx sto
+        _ -> kx sto
+sS (SIfte e s1 s2) venv k kx = \sto ->
+  let v = eE e venv sto
+   in case v of
+        VBool True -> sS s1 venv k kx sto
+        VBool False -> sS s2 venv k kx sto
+        _ -> kx sto
+sS (SIfend e s) venv k kx = \sto ->
+  let v = eE e venv sto
+   in case v of
+        VBool True -> sS s venv k kx sto
+        VBool False -> k sto
+        _ -> kx sto
+sS (SWhile e s) venv k kx = \sto ->
+  let b = eE e venv sto
+   in case b of
+        VBool True -> sS s venv (sS (SWhile e s) venv k kx) kx sto
+        VBool False -> k sto
+        _ -> kx sto
+-- sS (SFor i e1 e2 s) venv k kx = -- TODO
+-- sS (SForKeys i i' s) venv k kx = -- TODO
+-- sS (SForVals i i' s) venv k kx = -- TODO
+-- sS (SForPairs i1 i2 i' s) venv k kx = -- TODO
+sS (SPrint i) venv k kx = \sto ->
+  case Map.lookup i venv of
+    Just loc -> case Map.lookup loc (currMap sto) of
+      Just v -> show v : k sto
+    _ -> kx sto
+-- sS (SBlock d s) venv k kx = -- TODO
+sS (STry s1 s2) venv k kx = sS s1 venv k (sS s2 venv k kx)
+sS (SSeq s1 s2) venv k kx = sS s1 venv (sS s2 venv k kx) kx

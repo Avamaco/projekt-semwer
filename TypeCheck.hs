@@ -198,7 +198,7 @@ checkStmt (STry s1 s2) venv fenv = checkStmt s1 venv fenv && checkStmt s2 venv f
 checkStmt (SSeq s1 s2) venv fenv = checkStmt s1 venv fenv && checkStmt s2 venv fenv
 
 venv0 :: VEnv
-venv0 = Map.empty
+venv0 = Map.fromList [(Ident "i", SType Int), (Ident "b", SType Bool), (Ident "a", CType (Array Int)), (Ident "d", CType (Dict Bool))]
 
 fenv0 :: FEnv
 fenv0 = Map.empty
