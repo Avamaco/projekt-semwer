@@ -3,6 +3,7 @@ module Main where
 import Data.Map (Map)
 import Data.Map qualified as Map
 import Jezyk.Abs (Decl (..), Expr (..), Ident (..), Prog (..), Stmt (..), Var (..))
+import Jezyk.Abs qualified as Abs (CType (..), Type (..))
 import Jezyk.Par (myLexer, pExpr, pProg)
 import System.Exit (exitFailure)
 import TypeCheck (checkProg)
@@ -31,13 +32,12 @@ instance Show CValue where
   show (CDict t vs) = unwords (map (\(i, v) -> show i ++ "=" ++ show v) (Map.toList vs))
   show (CArray s t vs) = unwords (map show (Map.elems vs))
 
-data Value = SValue SValue | CValue CValue | Error
+data Value = SValue SValue | CValue CValue
 
 instance Show Value where
   show :: Value -> String
   show (SValue v) = show v
   show (CValue v) = show v
-  show Error = "Runtime error"
 
 type VEnv = Map Ident Loc
 
@@ -47,22 +47,18 @@ type Output = [String]
 
 type Cont = Store -> Output
 
+type DCont = VEnv -> Cont
+
 main :: IO ()
 main = do
   getContents >>= compute
   putStrLn ""
 
-dict0 :: CValue
-dict0 = CDict Bool (Map.fromList [(-1, VBool True), (1, VBool False)])
-
-arr0 :: CValue
-arr0 = CArray 3 Int (Map.fromList [(0, VInt 1), (1, VInt 2), (2, VInt 3)])
-
 sto0 :: Store
-sto0 = CStore {currMap = Map.fromList [(0, SValue (VInt 3)), (1, SValue (VBool True)), (2, CValue dict0), (3, CValue arr0)], nextLoc = 0}
+sto0 = CStore {currMap = Map.empty, nextLoc = 0}
 
 venv0 :: VEnv
-venv0 = Map.fromList [(Ident "i", 0), (Ident "b", 1), (Ident "d", 2), (Ident "a", 3)]
+venv0 = Map.empty
 
 compute :: String -> IO ()
 compute str =
@@ -89,6 +85,10 @@ execProg (Prog stmt) = sS stmt venv0 cont0 contx0 sto0
 defVal :: SType -> SValue
 defVal Bool = VBool False
 defVal Int = VInt 0
+
+defCVal :: CType -> CValue
+defCVal (Array s t) = CArray s t (Map.fromList [(i, defVal t) | i <- [0 .. s - 1]])
+defCVal (Dict t) = CDict t Map.empty
 
 opInt :: Expr -> Expr -> VEnv -> Store -> (Integer -> Integer -> Integer) -> SValue
 opInt e1 e2 venv sto op =
@@ -250,6 +250,32 @@ sS (SPrint i) venv k kx = \sto ->
     Just loc -> case Map.lookup loc (currMap sto) of
       Just v -> show v : k sto
     _ -> kx sto
--- sS (SBlock d s) venv k kx = -- TODO
+sS (SBlock d s) venv k kx = dD d venv (\venv' -> sS s venv' k kx)
 sS (STry s1 s2) venv k kx = sS s1 venv k (sS s2 venv k kx)
 sS (SSeq s1 s2) venv k kx = sS s1 venv (sS s2 venv k kx) kx
+
+-- Declarations
+
+declare :: Ident -> Value -> VEnv -> Store -> (VEnv, Store)
+declare i v venv sto =
+  let loc = nextLoc sto
+      sto' = sto {currMap = Map.insert loc v (currMap sto), nextLoc = loc + 1}
+   in (Map.insert i loc venv, sto')
+
+getType :: Abs.Type -> SType
+getType Abs.TInt = Int
+getType Abs.TBool = Bool
+
+getCType :: Abs.CType -> CType
+getCType (Abs.CTArray n t) = Array n (getType t)
+getCType (Abs.CTDict t) = Dict (getType t)
+
+dD :: Decl -> VEnv -> DCont -> Cont
+dD (DSimple i t) venv k = \sto ->
+  let (venv', sto') = declare i (SValue (defVal (getType t))) venv sto
+   in k venv' sto'
+dD (DComplex i t) venv k = \sto ->
+  let (venv', sto') = declare i (CValue (defCVal (getCType t))) venv sto
+   in k venv' sto'
+-- dD (DFunction f s) venv k sto = -- TODO
+dD (DSeq d1 d2) venv k = dD d1 venv (\venv' -> dD d2 venv' k)
