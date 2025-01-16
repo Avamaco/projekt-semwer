@@ -5,7 +5,9 @@ import Data.Map qualified as Map
 import Jezyk.Abs (Decl (..), Expr (..), Ident (..), Prog (..), Stmt (..), Var (..))
 import Jezyk.Abs qualified as Abs (ADecl (..), Arg (..), CType (..), FDecl (..), Type (..))
 import Jezyk.Par (myLexer, pExpr, pProg)
+import System.Environment qualified as Env
 import System.Exit (exitFailure)
+import System.IO (IOMode (ReadMode), hGetContents, openFile)
 import TypeCheck (checkProg)
 
 type Loc = Integer
@@ -73,17 +75,12 @@ type SStmt = VEnv -> FEnv -> Cont -> Cont -> Cont
 
 main :: IO ()
 main = do
-  getContents >>= compute
-  putStrLn ""
-
-sto0 :: Store
-sto0 = CStore {currMap = Map.empty, nextLoc = 0}
-
-venv0 :: VEnv
-venv0 = Map.empty
-
-fenv0 :: FEnv
-fenv0 = Map.empty
+  a <- Env.getArgs
+  if null a || length a > 1
+    then putStrLn "Usage: Interpreter <file>"
+    else do
+      handle <- openFile (head a) ReadMode
+      hGetContents handle >>= compute
 
 compute :: String -> IO ()
 compute str =
@@ -95,6 +92,15 @@ compute str =
       if checkProg prog
         then putStr (unlines (execProg prog))
         else putStrLn "Type error"
+
+sto0 :: Store
+sto0 = CStore {currMap = Map.empty, nextLoc = 0}
+
+venv0 :: VEnv
+venv0 = Map.empty
+
+fenv0 :: FEnv
+fenv0 = Map.empty
 
 cont0 :: Cont
 cont0 sto = []
