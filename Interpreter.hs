@@ -1,11 +1,11 @@
 module Main where
 
 import Data.Map (Map)
-import Data.Map qualified as Map
+import qualified Data.Map as Map
 import Jezyk.Abs (Decl (..), Expr (..), Ident (..), Prog (..), Stmt (..), Var (..))
-import Jezyk.Abs qualified as Abs (ADecl (..), Arg (..), CType (..), FDecl (..), Type (..))
+import qualified Jezyk.Abs as Abs (ADecl (..), Arg (..), CType (..), FDecl (..), Type (..))
 import Jezyk.Par (myLexer, pExpr, pProg)
-import System.Environment qualified as Env
+import qualified System.Environment as Env
 import System.Exit (exitFailure)
 import System.IO (IOMode (ReadMode), hGetContents, openFile)
 import TypeCheck (checkProg)
@@ -21,7 +21,6 @@ data SValue = VInt Integer | VBool Bool | VError
 data FValue = Value SValue | Void
 
 instance Show SValue where
-  show :: SValue -> String
   show (VInt i) = show i
   show (VBool True) = "true"
   show (VBool False) = "false"
@@ -32,14 +31,12 @@ data CValue
   | CDict {typ :: SType, values :: Map Integer SValue}
 
 instance Show CValue where
-  show :: CValue -> String
   show (CDict t vs) = unwords (map (\(i, v) -> show i ++ "=" ++ show v) (Map.toList vs))
   show (CArray s t vs) = unwords (map show (Map.elems vs))
 
 data Value = SValue SValue | CValue CValue
 
 instance Show Value where
-  show :: Value -> String
   show (SValue v) = show v
   show (CValue v) = show v
 
