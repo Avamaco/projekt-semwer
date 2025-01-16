@@ -203,15 +203,31 @@ assgnVal (VAt i e) v venv sto =
         _ -> Nothing
 
 forNum :: Ident -> Integer -> Integer -> Stmt -> VEnv -> Cont -> Cont -> Cont
-forNum i n1 n2 s rhoV k kx = 
+forNum i n1 n2 s venv k kx = 
   if (n1 > n2)
   then k 
   else
-    let k' = sS s rhoV (forNum i (n1+1) n2 s rhoV k kx) kx
+    let k' = sS s venv (forNum i (n1+1) n2 s venv k kx) kx
      in \sto ->
-        case assgnVal (VId i) (VInt n1) rhoV sto of
+        case assgnVal (VId i) (VInt n1) venv sto of
           Just sto' -> k' sto'
           _ -> kx sto
+
+dictCheck :: Integer -> Ident -> VEnv -> Store -> Bool
+dictCheck n i venv sto = true--TODO
+
+dforNum :: Ident -> Ident -> Integer -> Integer -> Stmt -> VEnv -> Cont -> Cont -> Cont
+dforNum i i' n1 n2 s venv k kx = 
+  if (n1 > n2)
+  then k 
+  else
+    let k' = sS s venv (dforNum i i' (n1+1) n2 s venv k kx) kx
+     in \sto ->
+      if dictCheck n1 i' venv sto then 
+        case assgnVal (VId i) (VInt n1) venv sto of
+          Just sto' -> k' sto'
+          _ -> kx sto
+        else (dforNum i i' (n1+1) n2 s venv k kx) sto
 
 sS :: Stmt -> VEnv -> Cont -> Cont -> Cont
 -- sS (SCall i) venv k kx = -- TODO
