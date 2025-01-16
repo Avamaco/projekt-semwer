@@ -1,0 +1,43 @@
+Typy:
+    - int
+    - bool
+    - tablica indeksowana int od 0. Rozmiar tablicy i typ przechowywanych danych (int lub bool) jest ustalony podczas deklaracji.
+    - słownik o kluczach typu int. Typ przechowywanych danych (int lub bool) jest ustalony podczas deklaracji.
+
+Statyczne typowanie
+
+Wyrażenia:
+    - stałe: liczba całkowita, true, lub false
+    - wartość zmiennej lub elementu tablicy/słownika
+    - arytmetyczne na intach zwracające int (+, -, *, /, nawiasy, jednoargumentowy -)
+    - logiczne na boolach zwracające bool (and, or, not, nawiasy)
+    - porównania intów zwracające bool (=, <, >, <=, >=, !=)
+    - wyrażenie warunkowe, jak w C: wyrażenie_bool ? wartość_int_jeśli_prawda : wartość_int_jeśli_fałsz
+    - wyrażenie sprawdzające, czy klucz należy do tablicy lub słownika: check x in a
+
+Instrukcje:
+    - przypisanie wartości (bool lub int) na zmienną lub odpowiedni element tablicy/słownika
+    - if (bool), if else
+    - while (bool)
+    - for x from a to b - pętla iterująca po liczbach od a do b (włącznie). Wyrażenia a i b są ewaluowane raz, przed wejściem do pętli.
+    - for x in keys a - pętla iterująca się po kluczach tablicy lub słownika
+    - for x in values a - pętla iterująca się po wartościach tablicy lub słownika
+    - for x, y in a - pętla iterująca się po parach klucz-wartość tablicy lub słownika. Pierwsza zmienna to klucz, a druga zmienna to odpowiadająca mu wartość.
+    - print (dowolny typ, w tym tablica i słownik)
+    - usuwanie elementów słownika po kluczach
+    - obsługa dynamicznych błędów - try s1 catch s2 end - jeśli wystąpi błąd podczas wykonywania instrukcji s1, zostaje wykonana instrukcja s2
+    - bloki
+    - wywołanie funkcji, z możliwością zapisania jej wyniku w zmiennej
+
+Bloki:
+    - blok zaczyna się od begin, kończy end
+    - statyczne wiązanie identyfikatorów z przesłanianiem
+    - deklaracje lokalnych zmiennych i funkcji na początku bloku
+    - niezależne środowisko zmiennych i funkcji (zmienne i funkcje mogą mieć te same nazwy)
+
+Funkcje o dowolnej liczbie dowolnych parametrów określonych typów
+    - parametry przez wartość (bool lub int), określone w deklaracji funkcji
+    - zwracanie wartości określonego typu (bool lub int) lub nie zwracająca nic
+    - wartość zwracana przez funkcję jest równa wartości zmiennej o nazwie podanej w deklaracji funkcji
+    - zagnieżdżanie z zachowaniem statycznego wiązania
+    - rekurencja
