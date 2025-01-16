@@ -238,6 +238,23 @@ forNum i n1 n2 s venv fenv k kx =
               Just sto' -> k' sto'
               _ -> kx sto
 
+loop :: [SValue] -> Ident -> Stmt -> VEnv -> FEnv -> Cont -> Cont -> Cont
+loop [] i s venv fenv k kx = k
+loop (v : vs) i s venv fenv k kx =
+  let k' = sS s venv fenv (loop vs i s venv fenv k kx) kx
+   in \sto ->
+        let Just sto' = assgnVal (VId i) v venv sto
+         in k' sto'
+
+loop2 :: [(Integer, SValue)] -> Ident -> Ident -> Stmt -> VEnv -> FEnv -> Cont -> Cont -> Cont
+loop2 [] i1 i2 s venv fenv k kx = k
+loop2 ((v1, v2) : vs) i1 i2 s venv fenv k kx =
+  let k' = sS s venv fenv (loop2 vs i1 i2 s venv fenv k kx) kx
+   in \sto ->
+        let Just sto' = assgnVal (VId i1) (VInt v1) venv sto
+            Just sto'' = assgnVal (VId i2) v2 venv sto'
+         in k' sto''
+
 getArgs :: Abs.Arg -> VEnv -> Store -> AList
 getArgs (Abs.AId i) venv sto =
   let Just loc = Map.lookup i venv
@@ -320,9 +337,28 @@ sS (SFor i e1 e2 s) venv fenv k kx = \sto ->
    in case (v1, v2) of
         (VInt n1, VInt n2) -> forNum i n1 n2 s venv' fenv k kx sto'
         _ -> kx sto
--- sS (SForKeys i i' s) venv k kx = -- TODO
--- sS (SForVals i i' s) venv k kx = -- TODO
--- sS (SForPairs i1 i2 i' s) venv k kx = -- TODO
+sS (SForKeys i i' s) venv fenv k kx = \sto ->
+  let Just loc = Map.lookup i' venv
+      Just (CValue val) = Map.lookup loc (currMap sto)
+      (venv', sto') = declare i (SValue VError) venv sto
+   in case val of
+        CArray siz _ vs -> forNum i 0 (siz - 1) s venv' fenv k kx sto'
+        CDict _ vs -> loop (map VInt (Map.keys vs)) i s venv' fenv k kx sto'
+sS (SForVals i i' s) venv fenv k kx = \sto ->
+  let Just loc = Map.lookup i' venv
+      Just (CValue val) = Map.lookup loc (currMap sto)
+      (venv', sto') = declare i (SValue VError) venv sto
+   in case val of
+        CArray siz t vs -> loop (Map.elems vs) i s venv' fenv k kx sto'
+        CDict t vs -> loop (Map.elems vs) i s venv' fenv k kx sto'
+sS (SForPairs i1 i2 i' s) venv fenv k kx = \sto ->
+  let Just loc = Map.lookup i' venv
+      Just (CValue val) = Map.lookup loc (currMap sto)
+      (venv', sto') = declare i1 (SValue VError) venv sto
+      (venv'', sto'') = declare i2 (SValue VError) venv' sto'
+   in case val of
+        CArray siz t vs -> loop2 (Map.toList vs) i1 i2 s venv'' fenv k kx sto''
+        CDict t vs -> loop2 (Map.toList vs) i1 i2 s venv'' fenv k kx sto''
 sS (SPrint i) venv fenv k kx = \sto ->
   case Map.lookup i venv of
     Just loc -> case Map.lookup loc (currMap sto) of
