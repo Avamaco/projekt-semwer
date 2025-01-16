@@ -1,0 +1,8 @@
+begin
+    let x be int;
+    set x to 1;
+    while x < 10 do
+        print x;
+        set x to x + 1
+    end
+end

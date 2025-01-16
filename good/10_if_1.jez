@@ -1,0 +1,20 @@
+begin
+    let x be int;
+    set x to 10;
+    if x = 10 then
+        print x
+    end;
+
+    set x to 20;
+    if x = 30 then
+        print x
+    end;
+
+    if true then
+        set x to 40;
+        if x = 40 then
+            print x
+        end
+    end;
+    print x
+end

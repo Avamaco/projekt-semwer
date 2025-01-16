@@ -1,0 +1,7 @@
+begin
+    let x be dict of int;
+    set x at 10 to 3;
+    set x at -6 to 7;
+    set x at (8 * 5) to (x at 10);
+    print x
+end

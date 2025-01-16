@@ -1,0 +1,8 @@
+begin
+    let x be int;
+    set x to 10;
+    for i from 1 to x do
+        print i;
+        set x to x - 1
+    end
+end

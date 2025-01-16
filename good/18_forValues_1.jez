@@ -1,0 +1,16 @@
+begin
+    let x be array of 5 int;
+    let y be dict of int;
+    set x at 0 to 10;
+    set x at 1 to 20;
+    set x at 4 to 50;
+    set y at 8 to 800;
+    set y at -8 to -800;
+    set y at 100 to 1000;
+    for i in values x do
+        print i
+    end;
+    for i in values y do
+        print i
+    end
+end
