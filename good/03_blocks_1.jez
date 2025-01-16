@@ -1,0 +1,17 @@
+begin
+    let x be int;
+    let y be int;
+    set x to 1;
+    set y to 2;
+    print x;
+    print y;
+    begin
+        let x be int;
+        set x to 11;
+        set y to 12;
+        print x;
+        print y
+    end;
+    print x;
+    print y
+end

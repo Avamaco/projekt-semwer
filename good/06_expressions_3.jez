@@ -1,0 +1,15 @@
+begin
+    let x be bool;
+    set x to true;
+    print x;
+    set x to true & false;
+    print x;
+    set x to true | false;
+    print x;
+    set x to !true;
+    print x;
+    set x to (false | true) & !false;
+    print x;
+    set x to !x;
+    print x 
+end

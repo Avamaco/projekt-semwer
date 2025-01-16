@@ -1,0 +1,21 @@
+begin
+    let x be bool;
+    set x to 1 = 1;
+    print x;
+    set x to 1 < 2;
+    print x;
+    set x to 2 > 1;
+    print x;
+    set x to 1 <= 1;
+    print x;
+    set x to 1 <= 2;
+    print x;
+    set x to 1 >= 1;
+    print x;
+    set x to 2 >= 1;
+    print x;
+    set x to 2 != 1;
+    print x;
+    set x to 1 != 2;
+    print x
+end

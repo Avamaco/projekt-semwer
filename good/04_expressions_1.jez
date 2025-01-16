@@ -1,0 +1,21 @@
+begin
+    let x be int;
+    let y be int;
+    let z be int;
+    set x to 8;
+    set y to 2;
+    set z to x;
+    print z;
+    set z to x + y;
+    print z;
+    set z to x - y;
+    print z;
+    set z to x * y;
+    print z;
+    set z to x / y;
+    print z;
+    set z to -x;
+    print z;
+    set z to 10 + x;
+    print z
+end

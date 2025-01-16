@@ -1,0 +1,10 @@
+begin
+    let x be int;
+    let y be int;
+    set x to 1;
+    print x;
+    set x to 2;
+    set y to 3;
+    print x;
+    print y
+end

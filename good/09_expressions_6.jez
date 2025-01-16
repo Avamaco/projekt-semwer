@@ -1,0 +1,13 @@
+begin
+    let x be int;
+    set x to true ? 1 : 0;
+    print x;
+    set x to false ? 11 : 10;
+    print x;
+    set x to 20 > 30 ? 1 + 1 : 2 + 2;
+    print x;
+    set x to true ? false ? 1 : 2 : 3;
+    print x;
+    set x to 2 + (false ? 10 : 20) + 7;
+    print x
+end
