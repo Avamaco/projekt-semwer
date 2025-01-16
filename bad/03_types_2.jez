@@ -1,0 +1,7 @@
+begin
+    let x be int;
+    set x to 10;
+    print x;
+    set x to false;
+    print x
+end

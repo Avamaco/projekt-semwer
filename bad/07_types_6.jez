@@ -1,0 +1,8 @@
+begin
+    let f be fun from a of int to r of bool do
+        set r to a
+    end;
+    let x be int;
+    let y be bool;
+    set y to call f with x
+end

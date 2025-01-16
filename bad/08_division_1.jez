@@ -1,0 +1,5 @@
+begin
+    let x be int;
+    set x to 20 / 0;
+    print x
+end

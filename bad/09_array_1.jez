@@ -1,0 +1,5 @@
+begin
+    let a be array of 10 int;
+    set a at 12 to 120;
+    print a
+end

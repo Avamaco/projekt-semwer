@@ -1,0 +1,5 @@
+begin
+    let x be int;
+    set x to 42;
+    print x
+eeend

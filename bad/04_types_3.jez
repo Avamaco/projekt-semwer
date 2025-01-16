@@ -1,0 +1,5 @@
+begin
+    let x be dict of int;
+    set x at 18 to true;
+    print x
+end

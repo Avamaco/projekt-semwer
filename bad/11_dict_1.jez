@@ -1,0 +1,6 @@
+begin
+    let a be dict of int;
+    let x be int;
+    set x to a at 12;
+    print x
+end

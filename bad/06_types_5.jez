@@ -1,0 +1,8 @@
+begin
+    let x be int;
+    let f be fun to void do
+        set x to 8
+    end;
+    set x to call f;
+    print x
+end
