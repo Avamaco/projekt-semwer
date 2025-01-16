@@ -1,0 +1,16 @@
+begin
+    let x be int;
+    let y be bool;
+    set x to 10;
+    set y to false;
+    try
+        set x to -7;
+        print x;
+        set x to 20 / 0;
+        print x
+    catch
+        set y to true
+    end;
+    print y;
+    print x
+end

@@ -1,0 +1,21 @@
+begin
+    let gcd be fun from a of int, b of int to r of int do
+        if a < b then
+            set r to call gcd with b, a
+        else
+            if b = 0 then
+                set r to a
+            else
+                set a to a - b;
+                set r to call gcd with b, a
+            end
+        end
+    end;
+    let x be int;
+    let y be int;
+    let z be int;
+    set x to 24;
+    set y to 30;
+    set z to call gcd with x, y;
+    print z
+end

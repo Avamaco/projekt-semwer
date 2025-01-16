@@ -1,0 +1,8 @@
+begin
+    let x be int;
+    let f be fun to void do
+        print x
+    end;
+    set x to 42;
+    call f
+end

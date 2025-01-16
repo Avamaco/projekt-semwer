@@ -1,0 +1,15 @@
+begin
+    let pow be fun from a of int, b of int to r of int do
+        set r to 1;
+        for i from 1 to b do
+            set r to r * a
+        end
+    end;
+    let x be int;
+    let y be int;
+    let z be int;
+    set x to 2;
+    set y to 10;
+    set z to call pow with x, y;
+    print z
+end

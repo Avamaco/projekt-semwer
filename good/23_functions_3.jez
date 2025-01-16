@@ -1,0 +1,13 @@
+begin
+    let x be int;
+    let y be int;
+    let increment_x be fun to r of int do
+        set x to x + 1;
+        set r to x * 10
+    end;
+    set x to 0;
+    print x;
+    set y to call increment_x;
+    print x;
+    print y
+end
