@@ -5,6 +5,9 @@ in BNFC.
 
 -}
 
+comment "//" ;
+comment "/*" "*/" ;
+
 Prog. Prog ::= Stmt;
 
 VId. Var ::= Ident;

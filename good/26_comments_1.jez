@@ -1,0 +1,11 @@
+begin
+    // single-line comment
+    let x be int;
+    /*
+    multi-line
+    comment
+    */
+    set x to 42;
+    // set x to 10
+    print x
+end
