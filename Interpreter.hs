@@ -3,7 +3,7 @@ module Main where
 import Data.Map (Map)
 import Data.Map qualified as Map
 import Jezyk.Abs (Decl (..), Expr (..), Ident (..), Prog (..), Stmt (..), Var (..))
-import Jezyk.Abs qualified as Abs (CType (..), Type (..))
+import Jezyk.Abs qualified as Abs (ADecl (..), Arg (..), CType (..), FDecl (..), Type (..))
 import Jezyk.Par (myLexer, pExpr, pProg)
 import System.Exit (exitFailure)
 import TypeCheck (checkProg)
@@ -15,6 +15,8 @@ data SType = Bool | Int
 data CType = Array Integer SType | Dict SType
 
 data SValue = VInt Integer | VBool Bool | VError
+
+data FValue = Value SValue | Void
 
 instance Show SValue where
   show :: SValue -> String
@@ -41,13 +43,33 @@ instance Show Value where
 
 type VEnv = Map Ident Loc
 
+type FEnv = Map Ident Fun
+
 data Store = CStore {currMap :: Map Loc Value, nextLoc :: Loc}
 
 type Output = [String]
 
 type Cont = Store -> Output
 
-type DCont = VEnv -> Cont
+type DCont = VEnv -> FEnv -> Cont
+
+type FCont = FValue -> Cont
+
+data ADecl = ADecl Ident SType
+
+type ADList = [ADecl]
+
+data RType = Return Ident SType | RVoid
+
+data FDecl = FDecl ADList RType
+
+type Arg = SValue
+
+type AList = [Arg]
+
+type Fun = AList -> FCont -> Cont -> Cont
+
+type SStmt = VEnv -> FEnv -> Cont -> Cont -> Cont
 
 main :: IO ()
 main = do
@@ -59,6 +81,9 @@ sto0 = CStore {currMap = Map.empty, nextLoc = 0}
 
 venv0 :: VEnv
 venv0 = Map.empty
+
+fenv0 :: FEnv
+fenv0 = Map.empty
 
 compute :: String -> IO ()
 compute str =
@@ -78,7 +103,7 @@ contx0 :: Cont
 contx0 sto = ["Runtime error"]
 
 execProg :: Prog -> Output
-execProg (Prog stmt) = sS stmt venv0 cont0 contx0 sto0
+execProg (Prog stmt) = sS stmt venv0 fenv0 cont0 contx0 sto0
 
 -- Expressions
 
@@ -202,30 +227,66 @@ assgnVal (VAt i e) v venv sto =
           _ -> Nothing
         _ -> Nothing
 
-forNum :: Ident -> Integer -> Integer -> Stmt -> VEnv -> Cont -> Cont -> Cont
-forNum i n1 n2 s rhoV k kx = 
-  if (n1 > n2)
-  then k 
-  else
-    let k' = sS s rhoV (forNum i (n1+1) n2 s rhoV k kx) kx
-     in \sto ->
-        case assgnVal (VId i) (VInt n1) rhoV sto of
-          Just sto' -> k' sto'
-          _ -> kx sto
+forNum :: Ident -> Integer -> Integer -> Stmt -> VEnv -> FEnv -> Cont -> Cont -> Cont
+forNum i n1 n2 s venv fenv k kx =
+  if n1 > n2
+    then k
+    else
+      let k' = sS s venv fenv (forNum i (n1 + 1) n2 s venv fenv k kx) kx
+       in \sto ->
+            case assgnVal (VId i) (VInt n1) venv sto of
+              Just sto' -> k' sto'
+              _ -> kx sto
 
-sS :: Stmt -> VEnv -> Cont -> Cont -> Cont
--- sS (SCall i) venv k kx = -- TODO
--- sS (SCallA i a) venv k kx = -- TODO
-sS (SAssgn v e) venv k kx = \sto ->
+getArgs :: Abs.Arg -> VEnv -> Store -> AList
+getArgs (Abs.AId i) venv sto =
+  let Just loc = Map.lookup i venv
+      Just (SValue val) = Map.lookup loc (currMap sto)
+   in [val]
+getArgs (Abs.ASeq i as) venv sto =
+  let Just loc = Map.lookup i venv
+      Just (SValue val) = Map.lookup loc (currMap sto)
+   in val : getArgs as venv sto
+
+sS :: Stmt -> SStmt
+sS (SCall i) venv fenv k kx =
+  let Just fun = Map.lookup i fenv
+   in fun [] (const k) kx
+sS (SCallA i a) venv fenv k kx = \sto ->
+  let Just fun = Map.lookup i fenv
+      args = getArgs a venv sto
+   in fun args (const k) kx sto
+sS (SAssgn v e) venv fenv k kx = \sto ->
   let val = eE e venv sto
    in case val of
         VError -> kx sto
         _ -> case assgnVal v val venv sto of
           Just sto' -> k sto'
           _ -> kx sto
--- sS (SAssgnF v i') venv k kx = -- TODO
--- sS (SAssgnFA v i' a) venv k kx = -- TODO
-sS (SDel e i) venv k kx = \sto ->
+sS (SAssgnF v i) venv fenv k kx = \sto ->
+  let Just fun = Map.lookup i fenv
+   in fun
+        []
+        ( \ret sto ->
+            let Value val = ret
+                Just sto' = assgnVal v val venv sto
+             in k sto'
+        )
+        kx
+        sto
+sS (SAssgnFA v i' a) venv fenv k kx = \sto ->
+  let Just fun = Map.lookup i' fenv
+      args = getArgs a venv sto
+   in fun
+        args
+        ( \ret sto ->
+            let Value val = ret
+                Just sto' = assgnVal v val venv sto
+             in k sto'
+        )
+        kx
+        sto
+sS (SDel e i) venv fenv k kx = \sto ->
   let v = eE e venv sto
       loc = Map.lookup i venv
    in case (v, loc) of
@@ -234,44 +295,42 @@ sS (SDel e i) venv k kx = \sto ->
             k (sto {currMap = Map.insert l (CValue (CDict t (Map.delete i vs))) (currMap sto)})
           _ -> kx sto
         _ -> kx sto
-sS (SIfte e s1 s2) venv k kx = \sto ->
+sS (SIfte e s1 s2) venv fenv k kx = \sto ->
   let v = eE e venv sto
    in case v of
-        VBool True -> sS s1 venv k kx sto
-        VBool False -> sS s2 venv k kx sto
+        VBool True -> sS s1 venv fenv k kx sto
+        VBool False -> sS s2 venv fenv k kx sto
         _ -> kx sto
-sS (SIfend e s) venv k kx = \sto ->
+sS (SIfend e s) venv fenv k kx = \sto ->
   let v = eE e venv sto
    in case v of
-        VBool True -> sS s venv k kx sto
+        VBool True -> sS s venv fenv k kx sto
         VBool False -> k sto
         _ -> kx sto
-sS (SWhile e s) venv k kx = \sto ->
+sS (SWhile e s) venv fenv k kx = \sto ->
   let b = eE e venv sto
    in case b of
-        VBool True -> sS s venv (sS (SWhile e s) venv k kx) kx sto
+        VBool True -> sS s venv fenv (sS (SWhile e s) venv fenv k kx) kx sto
         VBool False -> k sto
         _ -> kx sto
-
-sS (SFor i e1 e2 s) venv k kx = \sto ->
+sS (SFor i e1 e2 s) venv fenv k kx = \sto ->
   let v1 = eE e1 venv sto
       v2 = eE e2 venv sto
       (venv', sto') = declare i (SValue (VInt 0)) venv sto
    in case (v1, v2) of
-        (VInt n1, VInt n2) -> (forNum i n1 n2 s venv' k kx) sto'
+        (VInt n1, VInt n2) -> forNum i n1 n2 s venv' fenv k kx sto'
         _ -> kx sto
-
 -- sS (SForKeys i i' s) venv k kx = -- TODO
 -- sS (SForVals i i' s) venv k kx = -- TODO
 -- sS (SForPairs i1 i2 i' s) venv k kx = -- TODO
-sS (SPrint i) venv k kx = \sto ->
+sS (SPrint i) venv fenv k kx = \sto ->
   case Map.lookup i venv of
     Just loc -> case Map.lookup loc (currMap sto) of
       Just v -> show v : k sto
     _ -> kx sto
-sS (SBlock d s) venv k kx = dD d venv (\venv' -> sS s venv' k kx)
-sS (STry s1 s2) venv k kx = sS s1 venv k (sS s2 venv k kx)
-sS (SSeq s1 s2) venv k kx = sS s1 venv (sS s2 venv k kx) kx
+sS (SBlock d s) venv fenv k kx = dD d venv fenv (\venv' fenv' -> sS s venv' fenv' k kx)
+sS (STry s1 s2) venv fenv k kx = sS s1 venv fenv k (sS s2 venv fenv k kx)
+sS (SSeq s1 s2) venv fenv k kx = sS s1 venv fenv (sS s2 venv fenv k kx) kx
 
 -- Declarations
 
@@ -289,12 +348,52 @@ getCType :: Abs.CType -> CType
 getCType (Abs.CTArray n t) = Array n (getType t)
 getCType (Abs.CTDict t) = Dict (getType t)
 
-dD :: Decl -> VEnv -> DCont -> Cont
-dD (DSimple i t) venv k = \sto ->
+getres :: FDecl -> VEnv -> Store -> FValue
+getres (FDecl ad RVoid) venv sto = Void
+getres (FDecl ad (Return ri rt)) venv sto =
+  let Just loc = Map.lookup ri venv
+      Just (SValue val) = Map.lookup loc (currMap sto)
+   in Value val
+
+declArgs :: VEnv -> Store -> ADList -> AList -> (VEnv, Store)
+declArgs venv sto [] [] = (venv, sto)
+declArgs venv sto (ADecl i t : ads) (v : as) =
+  let (venv', sto') = declare i (SValue v) venv sto
+   in declArgs venv' sto' ads as
+
+declRes :: VEnv -> Store -> FDecl -> (VEnv, Store)
+declRes venv sto (FDecl ad RVoid) = (venv, sto)
+declRes venv sto (FDecl ad (Return ri rt)) = declare ri (SValue (defVal rt)) venv sto
+
+declFun :: VEnv -> FEnv -> Ident -> FDecl -> SStmt -> FEnv
+declFun venv fenv i fd s =
+  let fun a kf kx sto = s venv'' fenv'' k kx sto''
+        where
+          k stor = kf (getres fd venv'' stor) stor
+          FDecl ad r = fd
+          (venv', sto') = declArgs venv sto ad a
+          (venv'', sto'') = declRes venv' sto' fd
+          fenv'' = Map.insert i fun fenv
+   in Map.insert i fun fenv
+
+dA :: Abs.ADecl -> ADList
+dA (Abs.ADId i t) = [ADecl i (getType t)]
+dA (Abs.ADSeq i t a) = ADecl i (getType t) : dA a
+
+dF :: Abs.FDecl -> FDecl
+dF Abs.FDVoid = FDecl [] RVoid
+dF (Abs.FDRet i t) = FDecl [] (Return i (getType t))
+dF (Abs.FDArg a) = FDecl (dA a) RVoid
+dF (Abs.FDFull a i t) = FDecl (dA a) (Return i (getType t))
+
+dD :: Decl -> VEnv -> FEnv -> DCont -> Cont
+dD (DSimple i t) venv fenv k = \sto ->
   let (venv', sto') = declare i (SValue (defVal (getType t))) venv sto
-   in k venv' sto'
-dD (DComplex i t) venv k = \sto ->
+   in k venv' fenv sto'
+dD (DComplex i t) venv fenv k = \sto ->
   let (venv', sto') = declare i (CValue (defCVal (getCType t))) venv sto
-   in k venv' sto'
--- dD (DFunction f s) venv k sto = -- TODO
-dD (DSeq d1 d2) venv k = dD d1 venv (\venv' -> dD d2 venv' k)
+   in k venv' fenv sto'
+dD (DFunction i f s) venv fenv k = \sto ->
+  let fenv' = declFun venv fenv i (dF f) (sS s)
+   in k venv fenv' sto
+dD (DSeq d1 d2) venv fenv k = dD d1 venv fenv (\venv' fenv' -> dD d2 venv' fenv' k)
